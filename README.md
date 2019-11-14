@@ -1,4 +1,4 @@
-# dataplattform-webpage
+# Dataplattform-Webpage
 
 ## Project setup
 ```
