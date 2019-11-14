@@ -1,28 +1,47 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+
+import EventbooksView from '@/views/EventbooksView.vue';
+import EventSelector from '@/components/Eventbooks/EventSelector.vue';
+import EventRating from '@/components/Eventbooks/EventRating.vue';
+
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    component: Home
-  },
-  {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: '/',
+    component: AuthenticatedLayout,
+    children: [
+      {
+        path: '',
+        name: 'eventbooks',
+        component: EventbooksView,
+        children: [
+          {
+            path: '/',
+            redirect: { name: 'eventSelector' }
+          },
+          {
+            path: 'select',
+            name: 'eventSelector',
+            component: EventSelector
+          },
+          {
+            path: 'event/:eventId',
+            name: 'eventRating',
+            component: EventRating,
+            props: true
+          }
+        ]
+      }
+    ]
   }
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes
 });
