@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import EventbooksView from '@/views/EventboksView.vue';
+import EventboksView from '@/views/EventboksView.vue';
 import EventSelector from '@/components/eventboks/EventSelector.vue';
 import EventRating from '@/components/eventboks/EventRating.vue';
-import EventFinished from '@/components/eventboks/EventFinished.vue'
+import EventFinished from '@/components/eventboks/EventFinished.vue';
+import AdminView from '@/views/AdminView.vue';
+import AdminEvents from '@/components/admin/AdminEvents.vue';
 
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 
@@ -17,8 +19,8 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'eventbooks',
-        component: EventbooksView,
+        name: 'eventboks',
+        component: EventboksView,
         children: [
           {
             path: '/',
@@ -39,6 +41,22 @@ const routes = [
             path: 'finished',
             name: 'eventFinished',
             component: EventFinished
+          }
+        ]
+      },
+      {
+        path: 'admin',
+        name: 'admin',
+        component: AdminView,
+        children: [
+          {
+            path: '/',
+            redirect: { name: 'adminEvents' }
+          },
+          {
+            path: 'events',
+            name: 'adminEvents',
+            component: AdminEvents
           }
         ]
       }
