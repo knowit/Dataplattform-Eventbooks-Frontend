@@ -9,7 +9,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({})
-export default class EventbooksView extends Vue {
+export default class EventboksView extends Vue {
 }
 </script>
 
