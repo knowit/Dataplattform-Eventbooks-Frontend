@@ -11,13 +11,14 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import service from "@/services/EventRatingService";
 
 import EventRatingButton, { RatingButtonType } from "./EventRatingButton.vue";
 import EventComment from "./EventComment.vue";
 
 @Component({
   components: {
-    EventRatingButton,  
+    EventRatingButton,
     EventComment
   }
 })
@@ -55,7 +56,18 @@ export default class EventRating extends Vue {
   }
 
   private finished() {
-    this.$router.push({name: 'finished'});
+    service.sendEvent({
+      button: this.rating!,
+      eventCode: this.eventId
+    })
+      .then(res => {
+        console.log(res.data);
+        this.$router.push({ name: "eventFinished" });
+      })
+      .catch(e => {
+        console.log("Error sending data");
+        console.log(e);
+      });
   }
 }
 </script>
@@ -72,5 +84,4 @@ export default class EventRating extends Vue {
   flex-direction: column;
   align-items: flex-start;
 }
-
 </style>
