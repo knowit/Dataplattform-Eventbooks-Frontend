@@ -30,16 +30,16 @@ export default class AdminSearchBar extends Vue {
   opacity: 1;
   width: 100%;
   text-align: left;
-  font: Regular 20px/24px Roboto;
+  font: normal 20px/24px 'Roboto';
   letter-spacing: 0;
   opacity: 1;
   font-size: 24px;
-  padding: 9px;
+  padding: 9px 0px 9px 9px;
   color: #696969;
 }
 
 ::placeholder {
-  font: Regular 15px/18px Roboto;
+  font: normal 15px/18px 'Roboto';
   color: #949494;
   font-size: 18px;
 }
