@@ -27,6 +27,10 @@ export default class App extends Vue {
   height: 100%;
   width: 100%;
 }
+:root {
+  --btn-blue: #4573E3;
+}
+
 html {
   background-color: #f1f0ed;
   height: 100vh;

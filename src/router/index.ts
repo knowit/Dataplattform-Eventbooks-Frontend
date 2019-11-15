@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import EventbooksView from '@/views/EventbooksView.vue';
-import EventSelector from '@/components/Eventbooks/EventSelector.vue';
-import EventRating from '@/components/Eventbooks/EventRating.vue';
+import EventbooksView from '@/views/EventboksView.vue';
+import EventSelector from '@/components/eventboks/EventSelector.vue';
+import EventRating from '@/components/eventboks/EventRating.vue';
+import EventFinished from '@/components/eventboks/EventFinished.vue'
 
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 
@@ -33,6 +34,11 @@ const routes = [
             name: 'eventRating',
             component: EventRating,
             props: true
+          },
+          {
+            path: 'finished',
+            name: 'eventFinished',
+            component: EventFinished
           }
         ]
       }
