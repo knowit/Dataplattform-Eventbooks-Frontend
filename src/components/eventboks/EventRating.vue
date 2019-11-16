@@ -10,11 +10,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import service from "@/services/EventRatingService";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import service from '@/services/EventRatingService';
 
-import EventRatingButton, { RatingButtonType } from "./EventRatingButton.vue";
-import EventComment from "./EventComment.vue";
+import EventRatingButton, { RatingButtonType } from './EventRatingButton.vue';
+import EventComment from './EventComment.vue';
 
 @Component({
   components: {
@@ -32,7 +32,7 @@ export default class EventRating extends Vue {
   @Prop()
   private eventId!: string;
 
-  private comment: string = "";
+  private comment: string = '';
 
   private step: number = 1;
 
@@ -68,10 +68,10 @@ export default class EventRating extends Vue {
     })
       .then(res => {
         console.log(res.data);
-        this.$router.push({ name: "eventFinished" });
+        this.$router.push({ name: 'eventFinished' });
       })
       .catch(e => {
-        console.log("Error sending data");
+        console.log('Error sending data');
         console.log(e);
       });
   }

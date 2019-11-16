@@ -9,9 +9,9 @@ module.exports = {
     '@vue/typescript'
   ],
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
-    quotes: ["warn", "single"]
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    quotes: ['warn', 'single']
   },
   globals: {
     Atomics: 'readonly',
@@ -28,7 +28,7 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ["**/__tests__/*.{j,t}s?(x)"],
+      files: ['**/__tests__/*.{j,t}s?(x)'],
       env: {
         mocha: true
       }
