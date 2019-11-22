@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <event-code-input v-model="code" />
-    <button class="ok-button" :class="{ active: isActive }" @click="goToEvent">Neste</button>
+    <button class="ok-button" :disabled="!isActive" @click="goToEvent">Neste</button>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 
 import EventCodeInput from './EventCodeInput.vue';
 
@@ -53,7 +53,7 @@ export default class EventSelector extends Vue {
   cursor: pointer; 
 }
 
-.active {
+.ok-button:enabled {
   background-color: #4573e3 !important;
 }
 </style>
