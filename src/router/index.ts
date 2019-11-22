@@ -17,7 +17,6 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'eventbooks',
         component: EventbooksView,
         children: [
           {
@@ -36,7 +35,7 @@ const routes = [
             props: true
           },
           {
-            path: 'finished',
+            path: 'event/finished',
             name: 'eventFinished',
             component: EventFinished
           }

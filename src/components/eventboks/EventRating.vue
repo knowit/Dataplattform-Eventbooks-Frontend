@@ -4,7 +4,7 @@
       <event-rating-button v-for="i in buttons" :key="i" :type="i" @rating-click="ratingClick" />
     </div>
     <div class="feedback-container" v-if="step===2">
-      <event-comment v-model="comment" @back="back" @finished="finished"></event-comment>
+      <event-comment v-model.trim="comment" @back="back" @finished="finished"></event-comment>
     </div>
   </div>
 </template>
@@ -30,8 +30,6 @@ export default class EventRating extends Vue {
 
   private step: number = 1;
 
-  private rating?: RatingButtonType;
-
   private buttons = [
     RatingButtonType.HAPPY,
     RatingButtonType.NEUTRAL,
@@ -43,10 +41,16 @@ export default class EventRating extends Vue {
   }
 
   private ratingClick(rating: RatingButtonType) {
-    console.log(rating);
-    this.rating = rating;
-    // Call function in service class for sending data
-    this.step++;
+    service
+      .sendVote(this.eventId, rating)
+      .then(() => {
+        this.step++;
+      })
+      .catch((e: Error) => {
+        console.log(e);
+        alert('Noe gikk galt');
+        this.$router.push({name: 'eventSelector'});
+      });
   }
 
   private back() {
@@ -56,18 +60,18 @@ export default class EventRating extends Vue {
   }
 
   private finished() {
-    service.sendEvent({
-      button: this.rating!,
-      eventCode: this.eventId
-    })
-      .then(res => {
-        console.log(res.data);
-        this.$router.push({ name: 'eventFinished' });
-      })
-      .catch(e => {
-        console.log('Error sending data');
-        console.log(e);
-      });
+    if (this.comment) {
+      service
+        .sendComment(this.eventId, this.comment)
+        .then(() => {
+          this.$router.push({name: 'eventFinished'});
+        })
+        .catch((e: Error) => {
+          console.log(e);
+          alert('Noe gikk galt');
+          this.$router.push({name: 'eventSelector'});
+        });
+    }
   }
 }
 </script>
