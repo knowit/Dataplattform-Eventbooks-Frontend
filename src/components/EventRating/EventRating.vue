@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
-import EventRatingButton, { RatingButtonType } from "./EventRatingButton.vue";
-import EventComment from "./EventComment.vue";
+import EventRatingButton, { RatingButtonType } from './EventRatingButton.vue';
+import EventComment from './EventComment.vue';
 
 @Component({
   components: {
@@ -25,7 +25,7 @@ export default class EventRating extends Vue {
   @Prop()
   private eventId!: string;
 
-  private comment: string = "";
+  private comment: string = '';
 
   private step: number = 1;
 
@@ -55,7 +55,7 @@ export default class EventRating extends Vue {
   }
 
   private finished() {
-    this.$router.push({name: 'finished'});
+    this.$router.push({ name: 'eventFinished' });
   }
 }
 </script>
