@@ -20,12 +20,6 @@ import EventComment from './EventComment.vue';
   components: {
     EventRatingButton,
     EventComment
-  },
-  beforeRouteLeave (to, from, next) {
-    if (confirm('Vil du avbryte tilbakemeldingen?')) {
-      return next()
-    }
-    return next(false)
   }
 })
 export default class EventRating extends Vue {
