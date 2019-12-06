@@ -6,9 +6,9 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 export enum RatingButtonType {
-  HAPPY,
-  NEUTRAL,
-  SAD
+  HAPPY = 1,
+  NEUTRAL = 0,
+  SAD = -1
 }
 
 @Component({})

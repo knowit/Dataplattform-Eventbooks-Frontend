@@ -2,7 +2,7 @@
   <div class="container">
     <label for="feedback">Hva likte du? Hva kunne vært bedre? (Valgfritt)</label>
     <br />
-    <textarea v-model="value" id="comment"></textarea>
+    <textarea v-model="comment" id="comment"></textarea>
     <div class="nav-btn-container">
       <button class="nav-btn back-btn" @click="emitBack">Tilbake</button>
       <button class="nav-btn next-btn" @click="emitFinished">Ferdig</button>
@@ -20,10 +20,12 @@ export default class EventComment extends Vue {
   @Prop()
   private value!: string;
 
-  @Watch('input')
+  private comment = this.value
+
+  @Watch('comment')
   @Emit('input')
   private emitInput() {
-    return this.value;
+    return this.comment;
   }
 
   @Emit('back')

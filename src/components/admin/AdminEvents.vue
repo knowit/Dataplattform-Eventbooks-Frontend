@@ -1,21 +1,18 @@
 <template>
   <div class="container">
-    <admin-search-bar v-model="searchTerm"/>
-    <admin-event-list title="Aktiv nå"/>
-    <admin-event-list title="Kommende eventer"/>
-    <admin-event-list title="Tidligere eventer"/>
+    <admin-event-list title="Aktive nå" />
+    <admin-event-list title="Kommende eventer" />
+    <admin-event-list title="Tidligere eventer" />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 
-import AdminSearchBar from './AdminSearchBar.vue';
 import AdminEventList from './AdminEventList.vue';
 
 @Component({
   components: {
-    AdminSearchBar,
     AdminEventList
   }
 })

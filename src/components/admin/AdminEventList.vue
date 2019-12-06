@@ -1,17 +1,22 @@
 <template>
   <div class="container">
+  <div class="wrapper">
     <h1>{{title}}</h1>
-    <admin-event-item/>
-    <admin-event-item v-bind:isNow="true" v-bind:isActive="true"/>
-    <admin-event-item v-bind:isNow="true" v-bind:isActive="false"/>
-    <admin-event-item v-bind:isFinished="true"/>
+    <div class="hide-show-button" :class="{show: isExpanded}" @click="isExpanded = !isExpanded"></div>
+    </div>
+    <table v-if="isExpanded">
+      <admin-event-item />
+      <admin-event-item />
+      <admin-event-item />
+      <admin-event-item />
+    </table>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop } from "vue-property-decorator";
 
-import AdminEventItem from './AdminEventItem.vue';
+import AdminEventItem from "./AdminEventItem.vue";
 
 @Component({
   components: {
@@ -21,18 +26,42 @@ import AdminEventItem from './AdminEventItem.vue';
 export default class AdminEventList extends Vue {
   @Prop()
   private title!: string;
+  
+  private isExpanded: boolean = true;
 }
 </script>
 
 <style scoped>
+table {
+  table-layout: fixed;
+}
 .container {
   margin-left: 3px;
 }
+.wrapper{
+  display: flex;
+  flex-direction: row;
+  width:100%;
+  justify-content: space-between;
+}
 h1 {
-  font: bold 15px/18px 'Roboto';
+  display:flex;
+  font: Medium 20px/24px Roboto;
   font-size: 15px;
   letter-spacing: 0;
-  color: #707070;
+  color: #212121;
   opacity: 1;
+  
 }
+
+.hide-show-button {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #696969;
+}
+
+.show{
+  transform: rotate(45deg);
+}
+
 </style>

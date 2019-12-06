@@ -1,77 +1,80 @@
 <template>
-  <div class="container" :class="{ now: isNow }">
-    <div class="event-active" v-if="isNow">
-      <div class="event-active-indicator on" v-if="isActive" />
-      <div class="event-active-indicator off" v-else />
+  <tr class="container">
+    <td class="event-date">{{date}}</td>
+    <td class="event-time">{{startTime}}-{{endTime}}</td>
+    <td class="event-name">{{eventName}}</td>
+    <td class="event-finished" v-if="isFinished"></td>
+    <div class="event-id" v-else>
+      <td class="event-id">{{eventId}}</td>
     </div>
-    <div class="event-date-time" v-else>
-      <div class="event-date">{{date}}</div>
-      <div class="event-time">{{startTime}}-{{endTime}}</div>
-    </div>
-    <div class="event-name">{{eventName}}</div>
-    <div class="event-id">{{eventId}}</div>
-    <div class="drop-down-icon" v-if="isFinished">
-      <img src="../../assets/expand_less.svg" v-if="isExpanded"/>
-      <img src="../../assets/expand_more.svg" v-else/>
-    </div>
-  </div>
+
+    
+  </tr>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch, Emit, Prop } from 'vue-property-decorator';
+import { Vue, Component, Watch, Emit, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class AdminEventItem extends Vue {
   @Prop()
-  private isNow!: boolean;
-  @Prop()
-  private isActive!: boolean;
-  @Prop()
-  private isFinished!: boolean;
-
-  private isExpanded: boolean = false;
-
   private date: string = "12.34";
+  @Prop()
   private startTime: string = "11:11";
+  @Prop()
   private endTime: string = "12:34";
+  @Prop()
   private eventName: string = "Eventnavn - Charlie";
+  @Prop()
   private eventId: string = "12345";
 
+  private get isNow() {
+    return false;
+  }
+  private get isActive() {
+    return false;
+  }
+  private get isFinished() {
+    return false;
+  }
+
+  
 }
 </script>
 
 <style scoped>
 .container {
   display: flex;
-  justify-content: left;
-  flex-direction: row;
+  text-align: left;
   width: 100%;
-  font: normal 15px/14px 'Roboto';
+  font: regular 15px/14px "Roboto";
   letter-spacing: 0;
-  color: #696969;
-}
-.now {
-  font: normal 20px/24px 'Roboto';
   color: #212121;
 }
+.now {
+}
 .event-date-time {
-  margin-right: 20px;
   display: flex;
   justify-content: left;
   flex-direction: row;
 }
 .event-date {
-  margin-right: 10px;
 }
 .event-time {
-  white-space: nowrap
+  margin-left: 1.25rem;
+  white-space: nowrap;
 }
 .event-name {
-  margin-right: 20px;
+  font: Italic 15px/14px Roboto;
+  margin-left: 1.333rem;
+  margin-right: 7rem;
   text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 10rem;
 }
 .event-id {
-  margin-left: auto;
   font-style: italic;
 }
 .event-active-indicator {
@@ -83,15 +86,19 @@ export default class AdminEventItem extends Vue {
   margin-right: 10px;
 }
 .on {
-  background-color: #13A313;
+  background-color: #13a313;
 }
 .off {
-  background-color: #D51919;
+  background-color: #d51919;
 }
-.drop-down-icon {
-  width: 19px;
-  height: 11px;
-  opacity: 1;
-  margin-left: 3px;
+tr:nth-child(even) {
+  background-color: #f5f5f3;
 }
+/*td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 30px;
+}*/
+
 </style>
