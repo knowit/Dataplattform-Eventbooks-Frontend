@@ -77,6 +77,11 @@ const routes: RouteConfig[] = [
               }
             ]
           },
+          {
+            path: 'event/finished',
+            name: 'eventFinished',
+            component: EventFinished
+          }
         ]
       }
     ]
