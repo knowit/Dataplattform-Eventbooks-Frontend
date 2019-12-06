@@ -1,5 +1,5 @@
 <template>
-  <button :style="style" @click="click()"></button>
+  <button class="rating-button" :class="typeName" @click="click()"></button>
 </template>
 
 <script lang="ts">
@@ -16,15 +16,8 @@ export default class EventRatingButton extends Vue {
   @Prop()
   private type!: RatingButtonType;
 
-  private get style() {
-    switch(this.type) {
-      case RatingButtonType.HAPPY:
-        return 'background-color: #5FFF8E';
-      case RatingButtonType.NEUTRAL:
-        return 'background-color: #FFFB5F';
-      default:
-        return 'background-color: #FF615F';
-    }
+  private get typeName() {
+    return RatingButtonType[this.type].toLocaleLowerCase();
   }
 
   @Emit('rating-click')
@@ -35,14 +28,33 @@ export default class EventRatingButton extends Vue {
 </script>
 
 <style scoped>
-button {
+.rating-button {
   font-size: 18pt;
-  height: 9em;
-  width: 9em;
-  /* padding: 48px; */
+  height: 9rem;
+  width: 9rem;
   border-radius: 50%;
   border: none;
-  margin: 1em;
+  margin: 1rem;
   cursor: pointer; 
 }
+
+.happy {
+  background-color: #5FFF8E;
+}
+
+.neutral {
+  background-color: #FFFB5F;
+}
+
+.sad {
+  background-color: #FF615F;
+}
+
+@media only screen and (max-width: 580px) {
+  .rating-button {
+    height: 5rem;
+    width: 5rem;
+  }
+}
+
 </style>

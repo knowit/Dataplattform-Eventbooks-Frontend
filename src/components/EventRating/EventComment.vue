@@ -66,9 +66,10 @@ export default class EventComment extends Vue {
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: block;
+  text-align: start;
+  width: 90vw;
+  max-width: 48em;
 }
 
 #comment {
@@ -77,9 +78,10 @@ export default class EventComment extends Vue {
   border-style: none;
   resize: none;
   height: 15em;
-  width: 48em;
+  width: 100%;
   padding: 2em;
   font: 400 14px "Roboto", sans-serif;
+  box-sizing: border-box;
 }
 
 .nav-btn-container {
