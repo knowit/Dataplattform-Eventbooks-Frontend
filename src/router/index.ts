@@ -2,11 +2,11 @@ import Vue, { CreateElement } from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import EventboksView from '@/views/EventboksView.vue';
-import EventSelector from '@/components/eventboks/EventSelector.vue';
-import EventRating from '@/components/eventboks/EventRating.vue';
-import EventFinished from '@/components/eventboks/EventFinished.vue';
+import EventSelector from '@/components/EventSelect/EventSelector.vue';
+import EventRating from '@/components/EventRating/EventRating.vue';
+import EventFinished from '@/components/EventRating/EventFinished.vue';
 import AdminView from '@/views/AdminView.vue';
-import AdminEvents from '@/components/admin/AdminEvents.vue';
+import AdminEvents from '@/components/Admin/AdminEvents.vue';
 
 import CallbackView from '@/views/CallbackView.vue';
 import SignInView from '@/views/SignInView.vue';
@@ -83,22 +83,6 @@ const routes: RouteConfig[] = [
             path: 'event/finished',
             name: 'eventFinished',
             component: EventFinished
-          }
-        ]
-      },
-      {
-        path: 'admin',
-        name: 'admin',
-        component: AdminView,
-        children: [
-          {
-            path: '/',
-            redirect: { name: 'adminEvents' }
-          },
-          {
-            path: 'events',
-            name: 'adminEvents',
-            component: AdminEvents
           }
         ]
       }

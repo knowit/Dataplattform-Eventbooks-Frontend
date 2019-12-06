@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <admin-event-list title="Aktive nå" />
-    <admin-event-list title="Kommende eventer" />
-    <admin-event-list title="Tidligere eventer" />
+    <admin-event-list title="Aktive nå" :events="this.active" />
+    <admin-event-list title="Kommende eventer" :events="this.future" />
+    <admin-event-list title="Tidligere eventer" :events="this.past" />
   </div>
 </template>
 
@@ -10,6 +10,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 import AdminEventList from './AdminEventList.vue';
+import Event from '../../models/event.model';
 
 @Component({
   components: {
@@ -18,6 +19,24 @@ import AdminEventList from './AdminEventList.vue';
 })
 export default class AdminEvents extends Vue {
   private searchTerm: string = '';
+
+  private event: Event = this.createEvent();
+
+  private active: Event[] = [this.createEvent(), this.createEvent()];
+  private future: Event[] = [this.createEvent(), this.createEvent()];
+  private past: Event[] = [this.createEvent(), this.createEvent()];
+
+  // Helper
+  private createEvent(): Event {
+    const e = new Event();
+    e.id = 'idhei';
+    e.timestampFrom = new Date();
+    e.timestampTo = new Date();
+    e.eventSummary = 'summary';
+    e.active = true;
+    e.eventId = 'ABCDE';
+    return e;
+  }
 }
 </script>
 
