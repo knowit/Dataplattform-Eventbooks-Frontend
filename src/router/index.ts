@@ -1,38 +1,81 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue, { CreateElement } from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
 
 import EventbooksView from '@/views/EventboksView.vue';
-import EventSelector from '@/components/eventboks/EventSelector.vue';
-import EventRating from '@/components/eventboks/EventRating.vue';
-import EventFinished from '@/components/eventboks/EventFinished.vue'
+import EventSelector from '@/components/EventSelect/EventSelector.vue';
+import EventRating from '@/components/EventRating/EventRating.vue';
+import EventFinished from '@/components/EventRating/EventFinished.vue';
 
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
+import AdminView from '@/views/AdminView.vue';
+
+import CallbackView from '@/views/CallbackView.vue';
+import SignInView from '@/views/SignInView.vue';
+import { signinCallbackGuard, signinSilentCallbackGuard } from './callbacks';
 
 Vue.use(VueRouter);
 
-const routes = [
+const routes: RouteConfig[] = [
   {
     path: '/',
-    component: AuthenticatedLayout,
+    component: { name: 'Base', render: (h: CreateElement) => h('router-view') },
+    redirect: { name: 'eventSelector' },
     children: [
       {
-        path: '',
-        component: EventbooksView,
+        path: 'callback/signin',
+        component: CallbackView,
+        beforeEnter: signinCallbackGuard
+      },
+      {
+        path: 'callback/signin/silent',
+        component: { render: (h: CreateElement) => h('div') },
+        beforeEnter: signinSilentCallbackGuard
+      },
+      {
+        path: 'admin/signin',
+        name: 'signin',
+        component: SignInView
+      },
+      {
+        path: 'admin',
+        name: 'admin',
+        component: AdminView,
         children: [
           {
-            path: '/',
-            redirect: { name: 'eventSelector' }
-          },
+            // Example of child route
+            path: 'relativePathToAdmin',
+            name: 'REMEMBERME',
+            component: { render: (h: CreateElement) => h('div', 'Example child') } // Or component like below,
+          }
+        ]
+      },
+      {
+        path: 'event',
+        component: EventbooksView,
+        redirect: { name: 'eventSelector' },
+        children: [
           {
             path: 'select',
             name: 'eventSelector',
             component: EventSelector
           },
           {
-            path: 'event/:eventId',
-            name: 'eventRating',
-            component: EventRating,
-            props: true
+            path: ':eventId',
+            component: { render: (h: CreateElement) => h('router-view') },
+            redirect: { name: 'eventRating' },
+            children: [
+              {
+                path: 'rate',
+                name: 'eventRating',
+                component: EventRating,
+                props: true
+              },
+              {
+                path: 'finished',
+                name: 'eventFinished',
+                component: EventFinished,
+                props: true
+              }
+            ]
           },
           {
             path: 'event/finished',

@@ -8,7 +8,7 @@ class EventRatingService {
   private url = 'dataplattform_ingest/VoteType';
 
   public sendVote(eventCode: string, vote: number) {
-    const storedVote = localStorage.getItem(eventCode)
+    const storedVote = localStorage.getItem(eventCode);
     const previousVote = storedVote !== null ? Number(storedVote) : undefined;
 
     localStorage.setItem(eventCode, vote.toString());
@@ -17,7 +17,7 @@ class EventRatingService {
       event_code: eventCode,
       current_vote: vote,
       previous_vote: previousVote
-    }
+    };
 
     return axios.post(this.url, data, {
       baseURL: this.baseUrl,
@@ -38,7 +38,7 @@ class EventRatingService {
       event_code: eventCode,
       current_vote: currentVote,
       comment
-    }
+    };
     return axios.post(this.url, data, {
       baseURL: this.baseUrl,
       headers: {
@@ -49,4 +49,4 @@ class EventRatingService {
 
 }
 
-export default new EventRatingService()
+export default new EventRatingService();

@@ -23,7 +23,7 @@ export default class EventSelector extends Vue {
   }
 
   private goToEvent() {
-    this.$router.push({ name: 'eventRating', params: { eventId: this.code } })
+    this.$router.push({ name: 'eventRating', params: { eventId: this.code } });
   }
 
 }

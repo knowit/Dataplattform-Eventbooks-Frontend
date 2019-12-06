@@ -14,11 +14,15 @@
     "types": [
       "webpack-env",
       "mocha",
-      "chai"
+      "chai",
+      "node"
     ],
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@services/*": [
+        "src/services/*"
       ]
     },
     "lib": [
