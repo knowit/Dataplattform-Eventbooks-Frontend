@@ -1,0 +1,133 @@
+<template>
+  <div class="container">
+    <div class="ratings">
+      <div class="positive">
+        <div class="wrapper">
+          <div class="green circle"></div>
+          <div class="number">{{positive}}</div>
+        </div>
+        <div class="type">Positiv</div>
+      </div>
+      <div class="neutral">
+        <div class="wrapper">
+          <div class="yellow circle"></div>
+          <div class="number">{{neutral}}</div>
+        </div>
+        <div class="type">Nøytral</div>
+      </div>
+      <div class="negative">
+        <div class="wrapper">
+          <div class="red circle"></div>
+          <div class="number">{{negative}}</div>
+        </div>
+        <div class="type">Negativ</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="votes">
+        <div class="big-number">{{voteCount}}</div>
+        <div class="type">Stemmer</div>
+      </div>
+      <div class="participants">
+        <div class="big-number">{{participants}}</div>
+        <div class="type">Deltagere</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
+import AdminEventItem from './AdminEventItem.vue';
+import Event from '@/models/event.model';
+
+@Component({
+  components: {
+    AdminEventItem
+  }
+})
+export default class AdminEventList extends Vue {
+  @Prop()
+  private event!: Event;
+
+  private get positive() {
+    return this.event.positiveCount? this.event.positiveCount : 0;
+  }
+  private get neutral() {
+    return this.event.neutralCount? this.event.neutralCount: 0;
+  }
+  private get negative() {
+    return this.event.negativeCount? this.event.negativeCount: 0;
+  }
+  private get voteCount() {
+    const positive = this.event.positiveCount? this.event.positiveCount : 0;
+    const neutral = this.event.neutralCount? this.event.neutralCount: 0;
+    const negative = this.event.negativeCount? this.event.negativeCount: 0;
+    return positive + neutral + negative;
+  }
+  private get participants() {
+    // Not currently in model
+    return 100;
+  }
+}
+</script>
+
+<style scoped>
+.container{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 30px 0px 30px 0px;
+}
+.ratings{
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+}
+.wrapper{
+  display: flex;
+  padding-bottom: 5px;
+}
+.stats{
+  display: flex;
+  width: 25%;
+  justify-content: space-between;
+}
+.circle{
+  height: 38px;
+  width: 38px;
+  border-radius: 50%;
+}
+.green {
+  background-color: #5FFF8E;
+}
+.yellow {
+  background-color: #FFFB5F;
+}
+.red {
+  background-color: #FF615F;
+}
+.vote-container{
+  display:flex;
+}
+.ratings{
+  display:flex;
+}
+.number{
+  font-size: 20px;
+  color: #212121;
+  padding: 7px 0 0 5px;
+}
+.type{
+  font-size: 12px;
+  color: #212121;
+  text-align: left;
+}
+.big-number{
+  font-size: 27px;
+  color: #212121;
+  padding: 5px 0 5px 0;
+}
+
+</style>

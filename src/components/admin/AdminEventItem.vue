@@ -1,5 +1,5 @@
 <template>
-  <tr class="container">
+  <tr class="container" @click="onClickItem">
     <td class="event-date">{{date}}</td>
     <td class="event-time">{{startTime}}-{{endTime}}</td>
     <td class="event-name">{{event.eventSummary}}</td>
@@ -17,33 +17,38 @@ export default class AdminEventItem extends Vue {
   @Prop()
   private event!: Event;
 
+  // Fix these to consider times and dates below
   private get isNow() {
     return false;
   }
   private get isActive() {
     return false;
   }
-  private get isFinished() {
+  private get isFinished() { 
     return false;
   }
 
   private get date() {
-    return this.event.timestampFrom!.toLocaleDateString();
+    // Fix to only display day and month
+    return this.event.timestampFrom!.toLocaleDateString([],{dateStyle:"short"});
   }
-
   private get startTime() {
-    return this.event.timestampFrom!.toLocaleTimeString();
+    return this.event.timestampFrom!.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   }
 
   private get endTime() {
-    return this.event.timestampTo!.toLocaleTimeString();
+    return this.event.timestampTo!.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   }
-
-
+  private onClickItem() {
+    if (this.isFinished) {
+      this.$emit('show', this.event.id);
+    }
+  }
 }
 </script>
 
 <style scoped>
+
 .container {
   display: flex;
   text-align: left;
@@ -51,6 +56,7 @@ export default class AdminEventItem extends Vue {
   font: regular 15px/14px "Roboto";
   letter-spacing: 0;
   color: #212121;
+  max-width: 29rem;
 }
 
 .event-date-time {
@@ -64,17 +70,20 @@ export default class AdminEventItem extends Vue {
   white-space: nowrap;
 }
 .event-name {
-  font: Italic 15px/14px Roboto;
+
   margin-left: 1.333rem;
-  margin-right: 7rem;
+  
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-width: 10rem;
+
+  min-width: 13.3rem;
+  
 }
 .event-id {
   font-style: italic;
+
 }
 
 tr:nth-child(even) {
