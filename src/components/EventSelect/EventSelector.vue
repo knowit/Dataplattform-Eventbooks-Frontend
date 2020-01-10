@@ -6,7 +6,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
+import { verifyEventCode } from '@/services/event.service';
 
 import EventCodeInput from './EventCodeInput.vue';
 
@@ -23,7 +24,13 @@ export default class EventSelector extends Vue {
   }
 
   private goToEvent() {
-    this.$router.push({ name: 'eventRating', params: { eventId: this.code } });
+    verifyEventCode(this.code).then(() => {
+      console.log('success');
+      this.$router.push({ name: 'eventRating', params: { eventId: this.code } });
+    }).catch((err) => {
+      alert(`Fant ikke event med kode ${this.code}`);
+      console.log(err);
+    });
   }
 
 }

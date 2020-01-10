@@ -1,7 +1,8 @@
 import API from '@aws-amplify/api';
-import { EVENT_API } from '@/constants/api.constants';
+import { EVENT_API, EVENT_ENDPOINT } from '@/constants/api.constants';
 import { deserialize } from 'class-transformer';
 import Event from '@/models/event.model';
+import axios from 'axios';
 
 
 export const getEvents = async () => {
@@ -11,4 +12,12 @@ export const getEvents = async () => {
   } catch (error) {
     throw error;
   }
+};
+
+export const verifyEventCode = (eventCode: String) => {
+  const url = EVENT_ENDPOINT + `/events/${eventCode}`;
+
+  return axios.get(url, {
+    baseURL: EVENT_ENDPOINT,
+  });
 };

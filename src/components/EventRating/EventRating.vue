@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import service from '@/services/EventRatingService';
+import service from '@/services/eventRating.service';
 
 import EventRatingButton, { RatingButtonType } from './EventRatingButton.vue';
 import EventComment from './EventComment.vue';

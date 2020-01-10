@@ -1,4 +1,5 @@
 import API from '@aws-amplify/api';
+import Amplify from '@aws-amplify/core';
 import { EVENT_API } from '@/constants/api.constants';
 
 import { getToken } from '@/services/authentication.service';
