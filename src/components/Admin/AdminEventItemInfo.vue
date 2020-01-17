@@ -1,16 +1,18 @@
 <template>
   <div class="container">
     <div class="wrapper">
-      <div class="title">{{event.eventName}}</div>
+      <div class="title">{{ event.eventName }}</div>
       <img class="exit-button" @click="onClickButton" src="@/assets/plus.svg" />
     </div>
     <div class="row">
-      <div class="description column">Dato: {{date}}</div>
-      <div class="description">Eventboks: {{eventBoxes}}</div>
+      <div class="description column">Dato: {{ date }}</div>
+      <div class="description">Eventboks: {{ eventBoxes }}</div>
     </div>
     <div class="row">
-      <div class="description column">Tid: {{startTime}} - {{endTime}}</div>
-      <div class="description">Eventkode: {{event.eventId ? event.eventId : ''}}</div>
+      <div class="description column">Tid: {{ startTime }} - {{ endTime }}</div>
+      <div class="description">
+        Eventkode: {{ event.eventId ? event.eventId : "" }}
+      </div>
     </div>
     <admin-event-votes :event="this.event" />
     <admin-event-feedback :feedback="this.event.eventFeedback" />
@@ -24,6 +26,7 @@ import AdminEventItem from './AdminEventItem.vue';
 import Event from '@/models/event.model';
 import AdminEventVotes from './AdminEventVotes.vue';
 import AdminEventFeedback from './AdminEventFeedback.vue';
+import { DateTimeFormatter } from '@js-joda/core';
 
 @Component({
   components: {
@@ -47,19 +50,23 @@ export default class AdminEventItemInfo extends Vue {
   }
 
   private get date() {
-    return this.event.timestampFrom!.toLocaleDateString([], {});
+    return DateTimeFormatter.ofPattern('DD.MM').format(
+      this.event.timestampFrom!
+    );
   }
 
   private get startTime() {
-    return this.event.timestampFrom!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return DateTimeFormatter.ofPattern('HH:mm').format(
+      this.event.timestampFrom!
+    );
   }
 
   private get endTime() {
-    return this.event.timestampTo!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return DateTimeFormatter.ofPattern('HH:mm').format(this.event.timestampTo!);
   }
 
   @Emit('toggle')
-  private onClickButton() { }
+  private onClickButton() {}
 }
 </script>
 

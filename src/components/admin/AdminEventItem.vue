@@ -1,10 +1,14 @@
 <template>
   <tr id="container" @click="onClickItem">
-    <td class="event-date">{{date}}</td>
-    <td class="event-time">{{startTime}}-{{endTime}}</td>
-    <td class="event-name" v-if="type === 1">{{event.eventName}} - {{eventBoxes}}</td>
-    <td class="event-name" v-else>{{event.eventName}}</td>
-    <td class="event-id" v-if="type === 1">{{event.eventId ? event.eventId : ''}}</td>
+    <td class="event-date">{{ date }}</td>
+    <td class="event-time">{{ startTime }}-{{ endTime }}</td>
+    <td class="event-name" v-if="type === 1">
+      {{ event.eventName }} - {{ eventBoxes }}
+    </td>
+    <td class="event-name" v-else>{{ event.eventName }}</td>
+    <td class="event-id" v-if="type === 1">
+      {{ event.eventId ? event.eventId : "" }}
+    </td>
   </tr>
 </template>
 
@@ -12,6 +16,8 @@
 import { Vue, Component, Watch, Emit, Prop } from 'vue-property-decorator';
 
 import Event from '@/models/event.model';
+
+import { ZonedDateTime, DateTimeFormatter } from '@js-joda/core';
 
 export enum RowType {
   FINISHED = 0,
@@ -31,7 +37,7 @@ export default class AdminEventItem extends Vue {
     const names = this.event.eventBoxes!.map(eb => eb.eventBoxName);
     const first = names.slice(0, -1);
     const last = names.slice(-1)[0];
-    return first.length ? first.join(', ') + '& ' + last : last;
+    return first.length ? first.join(', ') + ' & ' + last : last;
   }
 
   // Fix these to consider times and dates below
@@ -42,19 +48,23 @@ export default class AdminEventItem extends Vue {
     return false;
   }
   private get isFinished() {
-    return this.event.timestampTo!.getTime() < Date.now();
+    return this.event.timestampTo!.isBefore(ZonedDateTime.now());
   }
 
   private get date() {
-    // Fix to only display day and month
-    return this.event.timestampFrom!.toLocaleDateString([], {});
+    return DateTimeFormatter.ofPattern('DD.MM').format(
+      this.event.timestampFrom!
+    );
   }
+
   private get startTime() {
-    return this.event.timestampFrom!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return DateTimeFormatter.ofPattern('HH:mm').format(
+      this.event.timestampFrom!
+    );
   }
 
   private get endTime() {
-    return this.event.timestampTo!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return DateTimeFormatter.ofPattern('HH:mm').format(this.event.timestampTo!);
   }
   private onClickItem() {
     if (this.isFinished) {
@@ -82,11 +92,11 @@ export default class AdminEventItem extends Vue {
 }
 
 .event-time {
-  margin-left: 1.25rem;
+  margin-left: 0.5rem;
   white-space: nowrap;
 }
 .event-name {
-  margin-left: 1.333rem;
+  margin-left: 0.5rem;
 
   text-align: left;
   overflow: hidden;

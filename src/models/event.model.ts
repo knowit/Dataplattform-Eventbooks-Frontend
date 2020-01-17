@@ -1,7 +1,7 @@
 import { Expose, Transform } from 'class-transformer';
-import moment from 'moment';
 import EventBox from '@/models/eventBox.model';
 import EventFeedback from '@/models/eventFeedback.model';
+import { ZonedDateTime } from '@js-joda/core';
 
 export default class Event {
   public id?: string;
@@ -28,14 +28,14 @@ export default class Event {
   public eventSummary?: string;
 
   @Expose({ name: 'timestamp_from' })
-  @Transform(value => moment.unix(value).toDate(), { toClassOnly: true })
-  @Transform(value => moment(value).unix(), { toPlainOnly: true })
-  public timestampFrom?: Date;
+  @Transform(value => ZonedDateTime.parse(value), { toClassOnly: true })
+  @Transform(value => value.toString(), { toPlainOnly: true })
+  public timestampFrom?: ZonedDateTime;
 
   @Expose({ name: 'timestamp_to' })
-  @Transform(value => moment.unix(value).toDate(), { toClassOnly: true })
-  @Transform(value => moment(value).unix(), { toPlainOnly: true })
-  public timestampTo?: Date;
+  @Transform(value => ZonedDateTime.parse(value), { toClassOnly: true })
+  @Transform(value => value.toString(), { toPlainOnly: true })
+  public timestampTo?: ZonedDateTime;
 
   @Expose({ name: 'event_box' })
   public eventBoxes?: EventBox[];

@@ -1,16 +1,35 @@
 <template>
   <div class="container">
-    <div class="title">{{title}}</div>
+    <div class="title">{{ title }}</div>
     <div class="wrapper">
-      <div class="name">{{event.eventName}}</div>
-      <img v-if="isActive" class="toggle-button" @click="isActive = !isActive" src="@/assets/toggle-active.svg" />
-      <img v-else class="toggle-button" @click="isActive = !isActive" src="@/assets/toggle-inactive.svg" />
+      <div class="name">{{ event.eventName }}</div>
+      <img
+        v-if="isActive"
+        class="toggle-button"
+        @click="isActive = !isActive"
+        src="@/assets/toggle-active.svg"
+      />
+      <img
+        v-else
+        class="toggle-button"
+        @click="isActive = !isActive"
+        src="@/assets/toggle-inactive.svg"
+      />
     </div>
-    <div class="description">Tid:<div class="content">{{ startTime }} - {{ endTime }}</div>
+    <div class="description">
+      Tid:
+      <div class="content">{{ startTime }} - {{ endTime }}</div>
     </div>
-    <div class="description">Eventkode:<div class="content">{{ event.eventId ? event.eventId : '' }}</div>
+    <div class="description">
+      Eventkode:
+      <div class="content">{{ event.eventId ? event.eventId : "" }}</div>
     </div>
-    <div class="description">Eventboks:<div class="content">{{ eventBoxes }}<span v-if="isActive" class="indicator"></span><span v-else class="indicator-inactive"></span></div>
+    <div class="description">
+      Eventboks:
+      <div class="content">
+        {{ eventBoxes }}<span v-if="isActive" class="indicator"></span
+        ><span v-else class="indicator-inactive"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -20,6 +39,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 import AdminEventItem from './AdminEventItem.vue';
 import Event from '@/models/event.model';
+import { DateTimeFormatter } from '@js-joda/core';
 
 @Component({
   components: {
@@ -34,11 +54,13 @@ export default class AdminCurrentEvent extends Vue {
   private isActive: boolean = true;
 
   private get startTime() {
-    return this.event.timestampFrom!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return DateTimeFormatter.ofPattern('HH:mm').format(
+      this.event.timestampFrom!
+    );
   }
 
   private get endTime() {
-    return this.event.timestampTo!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return DateTimeFormatter.ofPattern('HH:mm').format(this.event.timestampTo!);
   }
 
   private get eventBoxes() {

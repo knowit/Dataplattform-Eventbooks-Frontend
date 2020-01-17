@@ -1,5 +1,4 @@
 import { Expose, Transform } from 'class-transformer';
-import moment from 'moment';
 
 export default class EventBox {
   @Transform(value => !!value, { toClassOnly: true })

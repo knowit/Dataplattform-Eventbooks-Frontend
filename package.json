@@ -19,7 +19,6 @@
     "core-js": "^3.3.2",
     "es6-shim": "^0.35.5",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.24.0",
     "oidc-client": "^1.9.1",
     "reflect-metadata": "^0.1.13",
     "vue": "^2.6.10",
