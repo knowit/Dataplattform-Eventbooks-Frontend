@@ -1,11 +1,10 @@
 
 import axios, { AxiosResponse } from 'axios';
+import { INGEST_API, INGEST_APIKEY } from '@/constants/api.constants';
 
 class EventRatingService {
 
-  private baseUrl = process.env.VUE_APP_INGEST_BASE_URL;
-  private apiKey = process.env.VUE_APP_INGEST_APIKEY;
-  private url = 'dataplattform_ingest/VoteType';
+  private url = '/VoteType';
 
   public sendVote(eventCode: string, vote: number) {
     const storedVote = localStorage.getItem(eventCode);
@@ -20,9 +19,9 @@ class EventRatingService {
     };
 
     return axios.post(this.url, data, {
-      baseURL: this.baseUrl,
+      baseURL: INGEST_API,
       headers: {
-        'x-api-key': this.apiKey
+        'x-api-key': INGEST_APIKEY
       }
     });
   }
@@ -40,9 +39,9 @@ class EventRatingService {
       comment
     };
     return axios.post(this.url, data, {
-      baseURL: this.baseUrl,
+      baseURL: INGEST_API,
       headers: {
-        'x-api-key': this.apiKey
+        'x-api-key': INGEST_APIKEY
       }
     });
   }
