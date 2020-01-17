@@ -2,8 +2,9 @@
   <tr id="container" @click="onClickItem">
     <td class="event-date">{{date}}</td>
     <td class="event-time">{{startTime}}-{{endTime}}</td>
-    <td class="event-name">{{event.eventName}}</td>
-    <td class="event-id">{{event.eventId ? event.eventId : ''}}</td>
+    <td class="event-name" v-if="type === 1">{{event.eventName}} - {{eventBoxes}}</td>
+    <td class="event-name" v-else>{{event.eventName}}</td>
+    <td class="event-id" v-if="type === 1">{{event.eventId ? event.eventId : ''}}</td>
   </tr>
 </template>
 
@@ -12,10 +13,26 @@ import { Vue, Component, Watch, Emit, Prop } from 'vue-property-decorator';
 
 import Event from '@/models/event.model';
 
+export enum RowType {
+  FINISHED = 0,
+  FUTURE = 1,
+  ACTIVE = 2
+}
+
 @Component({})
 export default class AdminEventItem extends Vue {
   @Prop()
   private event!: Event;
+
+  @Prop()
+  private type!: RowType;
+
+  private get eventBoxes() {
+    const names = this.event.eventBoxes!.map(eb => eb.eventBoxName);
+    const first = names.slice(0, -1);
+    const last = names.slice(-1)[0];
+    return first.length ? first.join(', ') + '& ' + last : last;
+  }
 
   // Fix these to consider times and dates below
   private get isNow() {

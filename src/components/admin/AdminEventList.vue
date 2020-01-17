@@ -5,7 +5,7 @@
       <img class="hide-show-button" :class="{show: isExpanded}" @click="isExpanded = !isExpanded" src="@/assets/plus.svg" />
     </div>
     <table v-if="isExpanded">
-      <admin-event-item v-for="e in events" :key="e.id" :event="e" @show="onShow" />
+      <admin-event-item v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" />
     </table>
   </div>
 </template>
@@ -13,7 +13,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
-import AdminEventItem from './AdminEventItem.vue';
+import AdminEventItem, { RowType } from './AdminEventItem.vue';
 import Event from '@/models/event.model';
 
 @Component({
@@ -26,6 +26,8 @@ export default class AdminEventList extends Vue {
   private title!: string;
   @Prop()
   private events!: Event[];
+  @Prop()
+  private type!: RowType;
 
   private isExpanded: boolean = true;
 
@@ -39,6 +41,7 @@ export default class AdminEventList extends Vue {
 <style scoped>
 table {
   table-layout: fixed;
+  border-collapse: collapse;
 }
 .wrapper {
   display: flex;

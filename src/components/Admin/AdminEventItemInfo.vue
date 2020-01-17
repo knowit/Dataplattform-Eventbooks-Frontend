@@ -6,7 +6,7 @@
     </div>
     <div class="row">
       <div class="description column">Dato: {{date}}</div>
-      <div class="description">Eventboks: {{event.eventButtonName}}</div>
+      <div class="description">Eventboks: {{eventBoxes}}</div>
     </div>
     <div class="row">
       <div class="description column">Tid: {{startTime}} - {{endTime}}</div>
@@ -38,6 +38,13 @@ export default class AdminEventItemInfo extends Vue {
   @Prop()
   private event!: Event;
   private isActive: boolean = true;
+
+  private get eventBoxes() {
+    const names = this.event.eventBoxes!.map(eb => eb.eventBoxName);
+    const first = names.slice(0, -1);
+    const last = names.slice(-1)[0];
+    return first.length ? first.join(', ') + ' & ' + last : last;
+  }
 
   private get date() {
     return this.event.timestampFrom!.toLocaleDateString([], {});

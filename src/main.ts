@@ -8,6 +8,9 @@ import 'es6-shim';
 import './config';
 
 Vue.config.productionTip = false;
+Vue.directive('visible', (el, binding) => {
+  el.style.visibility = !!binding.value ? 'visible' : 'hidden';
+});
 
 new Vue({
   router,

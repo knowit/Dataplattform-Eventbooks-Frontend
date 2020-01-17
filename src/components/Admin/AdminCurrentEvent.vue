@@ -10,7 +10,7 @@
     </div>
     <div class="description">Eventkode:<div class="content">{{ event.eventId ? event.eventId : '' }}</div>
     </div>
-    <div class="description">Eventboks:<div class="content">{{ event.eventBoxes[0].eventBoxName }}<span v-if="isActive" class="indicator"></span><span v-else class="indicator-inactive"></span></div>
+    <div class="description">Eventboks:<div class="content">{{ eventBoxes }}<span v-if="isActive" class="indicator"></span><span v-else class="indicator-inactive"></span></div>
     </div>
   </div>
 </template>
@@ -40,15 +40,19 @@ export default class AdminCurrentEvent extends Vue {
   private get endTime() {
     return this.event.timestampTo!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
+
+  private get eventBoxes() {
+    const names = this.event.eventBoxes!.map(eb => eb.eventBoxName);
+    const first = names.slice(0, -1);
+    const last = names.slice(-1)[0];
+    return first.length ? first.join(', ') + ' & ' + last : last;
+  }
 }
 </script>
 
 <style scoped>
 table {
   table-layout: fixed;
-}
-.container {
-  margin-left: 3px;
 }
 .wrapper {
   display: flex;
