@@ -1,12 +1,12 @@
 import Vue, { CreateElement } from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
-import EventbooksView from '@/views/EventboksView.vue';
+import EventboksView from '@/views/EventboksView.vue';
 import EventSelector from '@/components/EventSelect/EventSelector.vue';
 import EventRating from '@/components/EventRating/EventRating.vue';
 import EventFinished from '@/components/EventRating/EventFinished.vue';
-
 import AdminView from '@/views/AdminView.vue';
+import AdminEvents from '@/components/Admin/AdminEvents.vue';
 
 import CallbackView from '@/views/CallbackView.vue';
 import SignInView from '@/views/SignInView.vue';
@@ -44,13 +44,15 @@ const routes: RouteConfig[] = [
             // Example of child route
             path: 'relativePathToAdmin',
             name: 'REMEMBERME',
-            component: { render: (h: CreateElement) => h('div', 'Example child') } // Or component like below,
+            component: {
+              render: (h: CreateElement) => h('div', 'Example child')
+            } // Or component like below,
           }
         ]
       },
       {
         path: 'event',
-        component: EventbooksView,
+        component: EventboksView,
         redirect: { name: 'eventSelector' },
         children: [
           {
