@@ -2,7 +2,7 @@
   <tr class="container" @click="onClickItem">
     <td class="event-date">{{date}}</td>
     <td class="event-time">{{startTime}}-{{endTime}}</td>
-    <td class="event-name">{{event.eventSummary}}</td>
+    <td class="event-name">{{event.eventName}}</td>
     <td class="event-id">{{event.eventId ? event.eventId : ''}}</td>
   </tr>
 </template>
@@ -24,20 +24,20 @@ export default class AdminEventItem extends Vue {
   private get isActive() {
     return false;
   }
-  private get isFinished() { 
+  private get isFinished() {
     return false;
   }
 
   private get date() {
     // Fix to only display day and month
-    return this.event.timestampFrom!.toLocaleDateString([],{dateStyle:"short"});
+    return this.event.timestampFrom!.toLocaleDateString([], {});
   }
   private get startTime() {
-    return this.event.timestampFrom!.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return this.event.timestampFrom!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
   private get endTime() {
-    return this.event.timestampTo!.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return this.event.timestampTo!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
   private onClickItem() {
     if (this.isFinished) {
@@ -48,7 +48,6 @@ export default class AdminEventItem extends Vue {
 </script>
 
 <style scoped>
-
 .container {
   display: flex;
   text-align: left;
@@ -70,20 +69,17 @@ export default class AdminEventItem extends Vue {
   white-space: nowrap;
 }
 .event-name {
-
   margin-left: 1.333rem;
-  
+
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
   min-width: 13.3rem;
-  
 }
 .event-id {
   font-style: italic;
-
 }
 
 tr:nth-child(even) {

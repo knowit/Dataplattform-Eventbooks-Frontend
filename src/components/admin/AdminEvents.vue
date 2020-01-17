@@ -2,7 +2,7 @@
   <div class="container">
     <admin-current-event title="Pågår nå" :event="this.active" />
     <admin-event-list title="Mine kommende eventer" :events="this.future" />
-    <admin-event-list title="Mine tidligere eventer" :events="this.past" @show="onShow"/>
+    <admin-event-list title="Mine tidligere eventer" :events="this.past" @show="onShow" />
     <admin-event-item-info :event="this.showEvent" @toggle="onToggle" />
   </div>
 </template>
@@ -11,9 +11,13 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 
 import AdminEventList from './AdminEventList.vue';
-import Event from '../../models/event.model';
+import Event from '@/models/event.model';
 import AdminCurrentEvent from './AdminCurrentEvent.vue';
 import AdminEventItemInfo from './AdminEventItemInfo.vue';
+
+//TODO: Remove with helper
+import EventFeedback, { FeedbackDetails } from '@/models/eventFeedback.model';
+import EventBox from '@/models/eventBox.model';
 
 @Component({
   components: {
@@ -25,8 +29,8 @@ import AdminEventItemInfo from './AdminEventItemInfo.vue';
 export default class AdminEvents extends Vue {
   private searchTerm: string = '';
 
-  private showEvent: Event = this.createEvent();
-  
+  private showEvent?: Event = this.createEvent();
+
 
   private active: Event = this.createEvent();
   private future: Event[] = [this.createEvent(), this.createEvent()];
@@ -35,9 +39,9 @@ export default class AdminEvents extends Vue {
   private details: boolean = false;
 
   private onToggle() {
-    this.details = !this.details;
+    this.showEvent = undefined;
   }
-  
+
   private onShow(id: string) {
     const event = this.past.find((event) => {
       if (event.id === id) {
@@ -50,16 +54,23 @@ export default class AdminEvents extends Vue {
   // Helper
   private createEvent(): Event {
     const e = new Event();
-    e.id = 'idhei' + Math.floor(Math.random()*100);
+    e.id = 'idhei' + Math.floor(Math.random() * 100);
     e.timestampFrom = new Date();
     e.timestampTo = new Date();
-    e.eventSummary = 'Navn på event';
+    e.eventName = 'Navn på event';
     e.active = true;
     e.eventId = 'ABCDE';
-    e.eventButtonName = 'Charlie';
-    e.negativeCount = 12;
-    e.neutralCount = 8;
-    e.positiveCount = 54;
+    e.eventBoxes = [new EventBox()];
+    e.eventBoxes[0].eventBoxName = 'Charlie';
+    e.eventFeedback = new EventFeedback();
+    e.eventFeedback.negativeCount = 12;
+    e.eventFeedback.neutralCount = 8;
+    e.eventFeedback.positiveCount = 54;
+    e.eventFeedback.details = [new FeedbackDetails(), new FeedbackDetails()];
+    e.eventFeedback.details[0].comment = 'Lorem Ipsum Dolor Sit Amet';
+    e.eventFeedback.details[0].vote = 1;
+    e.eventFeedback.details[1].comment = 'The quick brown fox jumps over the lazy dogfox jumps over the lazy dog fox jumps over the lazy dog fox jumps over the lazy dog fox jumps over the lazy dog';
+    e.eventFeedback.details[1].vote = -1;
     return e;
   }
 }

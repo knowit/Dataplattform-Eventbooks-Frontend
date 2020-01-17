@@ -1,18 +1,19 @@
 <template>
   <div class="container">
     <div class="wrapper">
-      <div class="title">{{event.eventSummary}}</div>
+      <div class="title">{{event.eventName}}</div>
       <img class="exit-button" @click="onClickButton" src="@/assets/plus.svg" />
-     </div>
-      <div class="row">
-        <div class="description column">Dato: {{date}}</div>
-        <div class="description">Eventboks: {{event.eventButtonName}}</div>
-      </div>
-      <div class="row">
-        <div class="description column">Tid: {{startTime}} - {{endTime}}</div> 
-        <div class="description">Eventkode: {{event.eventId ? event.eventId : ''}}</div>
-      </div>
-      <admin-event-votes :event="this.event"/>
+    </div>
+    <div class="row">
+      <div class="description column">Dato: {{date}}</div>
+      <div class="description">Eventboks: {{event.eventButtonName}}</div>
+    </div>
+    <div class="row">
+      <div class="description column">Tid: {{startTime}} - {{endTime}}</div>
+      <div class="description">Eventkode: {{event.eventId ? event.eventId : ''}}</div>
+    </div>
+    <admin-event-votes :event="this.event" />
+    <admin-event-feedback :feedback="this.event.eventFeedback" />
   </div>
 </template>
 
@@ -22,11 +23,13 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import AdminEventItem from './AdminEventItem.vue';
 import Event from '@/models/event.model';
 import AdminEventVotes from './AdminEventVotes.vue';
+import AdminEventFeedback from './AdminEventFeedback.vue';
 
 @Component({
   components: {
     AdminEventItem,
-    AdminEventVotes
+    AdminEventVotes,
+    AdminEventFeedback
   }
 })
 export default class AdminEventItemInfo extends Vue {
@@ -37,24 +40,23 @@ export default class AdminEventItemInfo extends Vue {
   private isActive: boolean = true;
 
   private get date() {
-    return this.event.timestampFrom!.toLocaleDateString([],{dateStyle:"short"});
+    return this.event.timestampFrom!.toLocaleDateString([], {});
   }
 
   private get startTime() {
-    return this.event.timestampFrom!.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return this.event.timestampFrom!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
   private get endTime() {
-    return this.event.timestampTo!.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return this.event.timestampTo!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
   @Emit('toggle')
-  private onClickButton() {}
+  private onClickButton() { }
 }
 </script>
 
 <style scoped>
-
 table {
   table-layout: fixed;
 }
@@ -76,7 +78,7 @@ table {
   opacity: 1;
 }
 
-.name{
+.name {
   text-align: left;
   font: Italic 20px/26px Roboto;
   letter-spacing: 0;
@@ -84,17 +86,15 @@ table {
   margin-right: 5px;
 }
 
-.description{
+.description {
   text-align: left;
   font: Regular 18px/14px Roboto;
   letter-spacing: 0;
   color: #212121;
   padding: 1px 0px 1px 0px;
-  
 }
-.row{
-  display:flex;
-
+.row {
+  display: flex;
 }
 .column {
   width: 150px;

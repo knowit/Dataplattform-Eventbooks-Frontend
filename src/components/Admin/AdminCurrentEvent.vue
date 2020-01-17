@@ -2,13 +2,16 @@
   <div class="container">
     <div class="title">{{title}}</div>
     <div class="wrapper">
-      <div class="name">{{event.eventSummary}}</div> 
+      <div class="name">{{event.eventName}}</div>
       <img v-if="isActive" class="toggle-button" @click="isActive = !isActive" src="@/assets/toggle-active.svg" />
       <img v-else class="toggle-button" @click="isActive = !isActive" src="@/assets/toggle-inactive.svg" />
     </div>
-      <div class="description">Tid:<div class="content">{{startTime}} - {{endTime}}</div></div> 
-      <div class="description">Eventkode:<div class="content">{{event.eventId ? event.eventId : ''}}</div></div>
-      <div class="description">Eventboks:<div class="content">{{event.eventButtonName}}<span v-if="isActive" class="indicator"></span><span v-else class="indicator-inactive"></span></div></div>
+    <div class="description">Tid:<div class="content">{{ startTime }} - {{ endTime }}</div>
+    </div>
+    <div class="description">Eventkode:<div class="content">{{ event.eventId ? event.eventId : '' }}</div>
+    </div>
+    <div class="description">Eventboks:<div class="content">{{ event.eventBoxes[0].eventBoxName }}<span v-if="isActive" class="indicator"></span><span v-else class="indicator-inactive"></span></div>
+    </div>
   </div>
 </template>
 
@@ -31,11 +34,11 @@ export default class AdminCurrentEvent extends Vue {
   private isActive: boolean = true;
 
   private get startTime() {
-    return this.event.timestampFrom!.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return this.event.timestampFrom!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
   private get endTime() {
-    return this.event.timestampTo!.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return this.event.timestampTo!.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 }
 </script>
@@ -62,7 +65,7 @@ table {
   opacity: 1;
 }
 
-.name{
+.name {
   text-align: left;
   font: Italic 20px/26px Roboto;
   letter-spacing: 0;
@@ -70,39 +73,37 @@ table {
   margin-right: 5px;
 }
 
-.description{
+.description {
   text-align: left;
   font: Regular 18px/14px Roboto;
   letter-spacing: 0;
   color: #212121;
   padding: 1px 0px 1px 0px;
-  
 }
-.content{
+.content {
   display: inline;
   text-align: left;
   font: Medium 18px/14px Roboto;
   letter-spacing: 0;
   color: #212121;
-  padding-left:3px;
+  padding-left: 3px;
 }
-.indicator{
+.indicator {
   height: 13px;
-  width: 13px;  
-  background-color: #13A313;
+  width: 13px;
+  background-color: #13a313;
   border-radius: 50%;
   display: inline-block;
   margin-left: 4px;
   margin-bottom: -1px;
 }
-.indicator-inactive{
+.indicator-inactive {
   height: 13px;
-  width: 13px;  
-  background-color: #D51919;
+  width: 13px;
+  background-color: #d51919;
   border-radius: 50%;
   display: inline-block;
   margin-left: 4px;
   margin-bottom: -1px;
 }
-
 </style>

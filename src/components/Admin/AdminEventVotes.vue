@@ -47,23 +47,23 @@ import Event from '@/models/event.model';
     AdminEventItem
   }
 })
-export default class AdminEventList extends Vue {
+export default class AdminEventVotes extends Vue {
   @Prop()
   private event!: Event;
 
   private get positive() {
-    return this.event.positiveCount? this.event.positiveCount : 0;
+    return this.event.eventFeedback ? this.event.eventFeedback.positiveCount : 0;
   }
   private get neutral() {
-    return this.event.neutralCount? this.event.neutralCount: 0;
+    return this.event.eventFeedback ? this.event.eventFeedback.neutralCount : 0;
   }
   private get negative() {
-    return this.event.negativeCount? this.event.negativeCount: 0;
+    return this.event.eventFeedback ? this.event.eventFeedback.negativeCount : 0;
   }
   private get voteCount() {
-    const positive = this.event.positiveCount? this.event.positiveCount : 0;
-    const neutral = this.event.neutralCount? this.event.neutralCount: 0;
-    const negative = this.event.negativeCount? this.event.negativeCount: 0;
+    const positive = this.event.eventFeedback ? this.event.eventFeedback.positiveCount : 0;
+    const neutral = this.event.eventFeedback ? this.event.eventFeedback.neutralCount : 0;
+    const negative = this.event.eventFeedback ? this.event.eventFeedback.negativeCount : 0;
     return positive + neutral + negative;
   }
   private get participants() {
@@ -74,60 +74,59 @@ export default class AdminEventList extends Vue {
 </script>
 
 <style scoped>
-.container{
+.container {
   display: flex;
   justify-content: space-between;
   width: 100%;
   padding: 30px 0px 30px 0px;
 }
-.ratings{
+.ratings {
   display: flex;
   width: 50%;
   justify-content: space-between;
 }
-.wrapper{
+.wrapper {
   display: flex;
   padding-bottom: 5px;
 }
-.stats{
+.stats {
   display: flex;
   width: 25%;
   justify-content: space-between;
 }
-.circle{
+.circle {
   height: 38px;
   width: 38px;
   border-radius: 50%;
 }
 .green {
-  background-color: #5FFF8E;
+  background-color: #5fff8e;
 }
 .yellow {
-  background-color: #FFFB5F;
+  background-color: #fffb5f;
 }
 .red {
-  background-color: #FF615F;
+  background-color: #ff615f;
 }
-.vote-container{
-  display:flex;
+.vote-container {
+  display: flex;
 }
-.ratings{
-  display:flex;
+.ratings {
+  display: flex;
 }
-.number{
+.number {
   font-size: 20px;
   color: #212121;
   padding: 7px 0 0 5px;
 }
-.type{
+.type {
   font-size: 12px;
   color: #212121;
   text-align: left;
 }
-.big-number{
+.big-number {
   font-size: 27px;
   color: #212121;
   padding: 5px 0 5px 0;
 }
-
 </style>
