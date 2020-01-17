@@ -111,9 +111,6 @@ export default class AdminEventVotes extends Vue {
 .vote-container {
   display: flex;
 }
-.ratings {
-  display: flex;
-}
 .number {
   font-size: 20px;
   color: #212121;

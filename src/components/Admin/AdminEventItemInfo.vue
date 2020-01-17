@@ -66,7 +66,7 @@ export default class AdminEventItemInfo extends Vue {
   }
 
   @Emit('toggle')
-  private onClickButton() {}
+  private onClickButton() { }
 }
 </script>
 
@@ -85,8 +85,7 @@ table {
 }
 .title {
   display: flex;
-  font: Bold 20px/24px Roboto;
-  font-size: 15px;
+  font: Bold 20px/26px Roboto;
   letter-spacing: 0;
   color: #212121;
   opacity: 1;

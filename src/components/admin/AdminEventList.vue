@@ -51,8 +51,7 @@ table {
 }
 .title {
   display: flex;
-  font: Bold 20px/24px Roboto;
-  font-size: 15px;
+  font: Bold 20px/26px Roboto;
   letter-spacing: 0;
   color: #212121;
   opacity: 1;
@@ -63,6 +62,7 @@ table {
   width: 1.5rem;
   height: 1.5rem;
   float: right;
+  cursor: pointer;
 }
 
 .show {

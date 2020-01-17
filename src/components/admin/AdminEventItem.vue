@@ -40,17 +40,6 @@ export default class AdminEventItem extends Vue {
     return first.length ? first.join(', ') + ' & ' + last : last;
   }
 
-  // Fix these to consider times and dates below
-  private get isNow() {
-    return false;
-  }
-  private get isActive() {
-    return false;
-  }
-  private get isFinished() {
-    return this.event.timestampTo!.isBefore(ZonedDateTime.now());
-  }
-
   private get date() {
     return DateTimeFormatter.ofPattern('DD.MM').format(
       this.event.timestampFrom!
@@ -67,7 +56,7 @@ export default class AdminEventItem extends Vue {
     return DateTimeFormatter.ofPattern('HH:mm').format(this.event.timestampTo!);
   }
   private onClickItem() {
-    if (this.isFinished) {
+    if (this.type === RowType.FINISHED) {
       this.$emit('show', this.event.id);
     }
   }

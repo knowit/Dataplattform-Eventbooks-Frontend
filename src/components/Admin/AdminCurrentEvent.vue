@@ -3,18 +3,8 @@
     <div class="title">{{ title }}</div>
     <div class="wrapper">
       <div class="name">{{ event.eventName }}</div>
-      <img
-        v-if="isActive"
-        class="toggle-button"
-        @click="isActive = !isActive"
-        src="@/assets/toggle-active.svg"
-      />
-      <img
-        v-else
-        class="toggle-button"
-        @click="isActive = !isActive"
-        src="@/assets/toggle-inactive.svg"
-      />
+      <img v-if="isActive" class="toggle-button" @click="isActive = !isActive" src="@/assets/toggle-active.svg" />
+      <img v-else class="toggle-button" @click="isActive = !isActive" src="@/assets/toggle-inactive.svg" />
     </div>
     <div class="description">
       Tid:
@@ -27,8 +17,7 @@
     <div class="description">
       Eventboks:
       <div class="content">
-        {{ eventBoxes }}<span v-if="isActive" class="indicator"></span
-        ><span v-else class="indicator-inactive"></span>
+        {{ eventBoxes }}<span v-if="isActive" class="indicator"></span><span v-else class="indicator-inactive"></span>
       </div>
     </div>
   </div>
@@ -84,8 +73,7 @@ table {
 }
 .title {
   display: flex;
-  font: Bold 20px/24px Roboto;
-  font-size: 15px;
+  font: Bold 20px/26px Roboto;
   letter-spacing: 0;
   color: #212121;
   opacity: 1;
