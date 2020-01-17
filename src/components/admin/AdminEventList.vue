@@ -5,7 +5,7 @@
       <img class="hide-show-button" :class="{show: isExpanded}" @click="isExpanded = !isExpanded" src="@/assets/plus.svg" />
     </div>
     <table v-if="isExpanded">
-      <admin-event-item v-for="e in events" :key="e.id" :event="e" @show="onShow"/>
+      <admin-event-item v-for="e in events" :key="e.id" :event="e" @show="onShow" />
     </table>
   </div>
 </template>

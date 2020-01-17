@@ -1,5 +1,5 @@
 <template>
-  <tr class="container" @click="onClickItem">
+  <tr id="container" @click="onClickItem">
     <td class="event-date">{{date}}</td>
     <td class="event-time">{{startTime}}-{{endTime}}</td>
     <td class="event-name">{{event.eventName}}</td>
@@ -25,7 +25,7 @@ export default class AdminEventItem extends Vue {
     return false;
   }
   private get isFinished() {
-    return false;
+    return this.event.timestampTo!.getTime() < Date.now();
   }
 
   private get date() {
@@ -48,7 +48,7 @@ export default class AdminEventItem extends Vue {
 </script>
 
 <style scoped>
-.container {
+#container {
   display: flex;
   text-align: left;
   width: 100%;

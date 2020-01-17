@@ -2,8 +2,8 @@
   <div class="container">
     <admin-current-event title="Pågår nå" :event="this.active" />
     <admin-event-list title="Mine kommende eventer" :events="this.future" />
-    <admin-event-list title="Mine tidligere eventer" :events="this.past" @show="onShow" />
-    <admin-event-item-info :event="this.showEvent" @toggle="onToggle" />
+    <admin-event-item-info v-if="showEvent" :event="this.showEvent" @toggle="onToggle" />
+    <admin-event-list id="past" v-else title="Mine tidligere eventer" :events="this.past" @show="onShow" />
   </div>
 </template>
 
@@ -29,8 +29,7 @@ import EventBox from '@/models/eventBox.model';
 export default class AdminEvents extends Vue {
   private searchTerm: string = '';
 
-  private showEvent?: Event = this.createEvent();
-
+  private showEvent: Event | null = null;
 
   private active: Event = this.createEvent();
   private future: Event[] = [this.createEvent(), this.createEvent()];
@@ -39,7 +38,7 @@ export default class AdminEvents extends Vue {
   private details: boolean = false;
 
   private onToggle() {
-    this.showEvent = undefined;
+    this.showEvent = null;
   }
 
   private onShow(id: string) {
@@ -48,7 +47,7 @@ export default class AdminEvents extends Vue {
         return event;
       }
     });
-    this.showEvent = event;
+    this.showEvent = event ? event : null;
   }
 
   // Helper
@@ -83,5 +82,9 @@ export default class AdminEvents extends Vue {
   flex-direction: column;
   align-items: flex-start;
   width: 30em;
+}
+
+#past {
+  cursor: pointer;
 }
 </style>
