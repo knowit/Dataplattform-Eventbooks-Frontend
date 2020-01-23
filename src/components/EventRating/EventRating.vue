@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import service from '@/services/eventRating.service';
+import { sendVote, sendComment } from '@/services/event.service';
 
 import EventRatingButton, { RatingButtonType } from './EventRatingButton.vue';
 import EventComment from './EventComment.vue';
@@ -41,8 +41,7 @@ export default class EventRating extends Vue {
   }
 
   private ratingClick(rating: RatingButtonType) {
-    service
-      .sendVote(this.eventId, rating)
+    sendVote(this.eventId, rating)
       .then(() => {
         this.step++;
       })
@@ -61,8 +60,7 @@ export default class EventRating extends Vue {
 
   private finished() {
     if (this.comment) {
-      service
-        .sendComment(this.eventId, this.comment)
+      sendComment(this.eventId, this.comment)
         .then(() => {
           this.$router.push({name: 'eventFinished'});
         })
