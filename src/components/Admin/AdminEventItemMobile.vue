@@ -1,13 +1,13 @@
 <template>
   <tr id="container" @click="onClickItem">
-    <td class="event-date">{{ date }}</td>
-    <td class="event-time">{{ startTime }}-{{ endTime }}</td>
-    <td class="event-name" v-if="type === 1">
-      {{ event.eventName }} - {{ eventBoxes }}
+    <td class="event-name">{{ event.eventName }}</td>
+    <td class="event-info">Dato: {{ date }}</td>
+    <td class="event-info">Tid: {{ startTime }}-{{ endTime }}</td>
+    <td class="event-info" v-if="type === 1">
+      Eventkode: {{ event.eventId ? event.eventId : "" }}
     </td>
-    <td class="event-name" v-else>{{ event.eventName }}</td>
-    <td class="event-id" v-if="type === 1">
-      {{ event.eventId ? event.eventId : "" }}
+    <td class="event-info" v-if="type === 1">
+      Eventboks: {{ eventBoxes }}
     </td>
   </tr>
 </template>
@@ -26,7 +26,7 @@ export enum RowType {
 }
 
 @Component({})
-export default class AdminEventItem extends Vue {
+export default class AdminEventItemMobile extends Vue {
   @Prop()
   private event!: Event;
 
@@ -65,35 +65,33 @@ export default class AdminEventItem extends Vue {
 
 <style scoped>
 #container {
+  margin-top: 2px;
   display: flex;
-  text-align: left;
+  flex-direction: column;
   width: 100%;
   font: regular 15px/14px "Roboto";
   letter-spacing: 0;
   color: #212121;
+  max-width: 100%;
+  padding-left: 1rem;
 }
 
-.event-date-time {
-  display: flex;
-  justify-content: left;
-  flex-direction: row;
-}
-
-.event-time {
-  margin-left: 0.5rem;
-  white-space: nowrap;
-}
-.event-name {
-  margin-left: 0.5rem;
-
+.event-info {
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   min-width: 13.3rem;
 }
-.event-id {
+
+.event-name {
+  font-weight: bold;
   font-style: italic;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 13.3rem;
 }
 
 tr:nth-child(odd) {

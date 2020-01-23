@@ -104,4 +104,10 @@ export default class AdminEvents extends Vue {
 #past {
   cursor: pointer;
 }
+
+@media only screen and (max-width: 580px) {
+  .container {
+    width: 100%;
+  }
+}
 </style>

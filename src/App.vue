@@ -25,10 +25,9 @@ export default class App extends Vue {
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100%;
 }
 :root {
-  --btn-blue: #4573E3;
+  --btn-blue: #4573e3;
 }
 
 html {
@@ -38,5 +37,13 @@ html {
 body {
   height: 100%;
   margin: 0;
+}
+
+@media only screen and (max-width: 580px) {
+  #app {
+    height: 100%;
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
 }
 </style>

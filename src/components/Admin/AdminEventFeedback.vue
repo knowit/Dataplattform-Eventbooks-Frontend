@@ -81,8 +81,7 @@ export default class AdminEventFeedback extends Vue {
 }
 
 .page-selector {
-  /*display: inline-block;*/
-  padding-top: 1em;
+  padding: 1rem 0 2rem 0;
   margin: auto;
 }
 .svg {
