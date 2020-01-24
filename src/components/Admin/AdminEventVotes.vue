@@ -114,16 +114,38 @@ export default class AdminEventVotes extends Vue {
 .number {
   font-size: 20px;
   color: #212121;
-  padding: 7px 0 0 5px;
+  padding: 7px;
 }
 .type {
   font-size: 12px;
   color: #212121;
-  text-align: left;
+  text-align: center;
 }
 .big-number {
   font-size: 27px;
   color: #212121;
   padding: 5px 0 5px 0;
+}
+
+.votes,
+.participants {
+  width: 5rem;
+  text-align: center;
+}
+
+@media only screen and (max-width: 580px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stats {
+    width: 50%;
+  }
+
+  .ratings {
+    width: 75%;
+    margin-bottom: 1rem;
+  }
 }
 </style>

@@ -4,9 +4,14 @@
       <div class="title">{{title}}</div>
       <img class="hide-show-button" :class="{show: isExpanded}" @click="isExpanded = !isExpanded" src="@/assets/plus.svg" />
     </div>
-    <table v-if="isExpanded">
-      <admin-event-item v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" />
-    </table>
+    <div v-if="isExpanded">
+      <table v-if="isMobile">
+        <admin-event-item-mobile v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" />
+      </table>
+      <table v-else>
+        <admin-event-item v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" />
+      </table>
+    </div>
   </div>
 </template>
 
@@ -14,11 +19,13 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 import AdminEventItem, { RowType } from './AdminEventItem.vue';
+import AdminEventItemMobile from './AdminEventItemMobile.vue';
 import Event from '@/models/event.model';
 
 @Component({
   components: {
-    AdminEventItem
+    AdminEventItem,
+    AdminEventItemMobile
   }
 })
 export default class AdminEventList extends Vue {
@@ -30,18 +37,32 @@ export default class AdminEventList extends Vue {
   private type!: RowType;
 
   private isExpanded: boolean = true;
+  private windowWidth: number = window.innerWidth;
 
   @Emit('show')
   private onShow(id: string): string {
     return id;
   }
+
+  private get isMobile() {
+    return this.windowWidth <= 580;
+  }
+
+  private mounted() {
+    window.addEventListener('resize', () => {
+      this.windowWidth = window.innerWidth;
+    });
+  }
+
 }
+
 </script>
 
 <style scoped>
 table {
   table-layout: fixed;
   border-collapse: collapse;
+  width: 100%;
 }
 .wrapper {
   display: flex;
@@ -67,5 +88,12 @@ table {
 
 .show {
   transform: rotate(45deg);
+}
+
+@media only screen and (max-width: 580px) {
+  table {
+    width: 100vw;
+    transform: translateX(-1rem);
+  }
 }
 </style>

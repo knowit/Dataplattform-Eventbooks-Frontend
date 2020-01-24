@@ -74,9 +74,7 @@ export default class AdminEventItemInfo extends Vue {
 table {
   table-layout: fixed;
 }
-.container {
-  margin-left: 3px;
-}
+
 .wrapper {
   display: flex;
   flex-direction: row;
