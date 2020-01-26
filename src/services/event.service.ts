@@ -4,6 +4,8 @@ import { deserialize } from 'class-transformer';
 import Event from '@/models/event.model';
 import axios, { AxiosResponse } from 'axios';
 
+// Mock the network layer during dev
+if (process.env.NODE_ENV !== 'production' && process.env.VUE_APP_MOCK_NETWORK) require('../../tests/mock/services/event.service');
 
 export const getEvents = async () => {
   try {
