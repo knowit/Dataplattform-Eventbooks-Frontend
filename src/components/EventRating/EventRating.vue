@@ -48,7 +48,7 @@ export default class EventRating extends Vue {
       .catch((e: Error) => {
         console.log(e);
         alert('Noe gikk galt');
-        this.$router.push({name: 'eventSelector'});
+        this.$router.push({ name: 'eventSelector' });
       });
   }
 
@@ -59,17 +59,15 @@ export default class EventRating extends Vue {
   }
 
   private finished() {
-    if (this.comment) {
-      sendComment(this.eventId, this.comment)
-        .then(() => {
-          this.$router.push({name: 'eventFinished'});
-        })
-        .catch((e: Error) => {
-          console.log(e);
-          alert('Noe gikk galt');
-          this.$router.push({name: 'eventSelector'});
-        });
-    }
+    sendComment(this.eventId, this.comment)
+      .then(() => {
+        this.$router.push({ name: 'eventFinished' });
+      })
+      .catch((e: Error) => {
+        console.log(e);
+        alert('Noe gikk galt');
+        this.$router.push({ name: 'eventSelector' });
+      });
   }
 }
 </script>
