@@ -1,33 +1,29 @@
 # Dataplattform-Webpage
 
-## Project setup
+Nettside som er lagd for å la brukere stemme og gi tilbakemelding på eventer, i tilegg til administrasjon av disse. Laget av Dataplattform i Trondheim
+
+## Basic info
+
+Prosjektet bruker Vue med Typescript. Prosjektet kan enkelt kjøres med kommandoene
+
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
+Dette installerer depedencies og starter en dev server. For å bygge til produksjon kjøres
+
 ```
 npm run build
 ```
 
-### Run your unit tests
-```
-npm run test:unit
-```
+Dette er forøvrig vanlig standard for Vue applikasjoner.
 
-### Lints and fixes files
-```
-npm run lint
-```
+### Enviroment variabler
 
-## VSCode
+Prosjektet har noen flagg/bygg variabler som kan settes, de er som følger
 
-### Extensions
-* Vetur
-* ESLint
-* Vue Peek (optional)
+|Navn|Påkrevd|Beskrivelse|
+|:--:|:-----:|:----------|
+|`VUE_APP_INGEST_APIKEY`|`true`|API nøkkel for ingest API til dataplattform|
+|`VUE_APP_MOCK_NETWORK`|`false`|Flagg som brukes for å mocke nettverks-laget i `development` modus. Disse er definert [her](./tests/mock/services/event.service.ts).|
