@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <img id="logo" src="@/assets/app-logo.svg" />
     <router-view />
   </div>
 </template>
@@ -22,20 +23,20 @@ export default class App extends Vue {
   text-align: center;
   color: #2c3e50;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  background-color: #f1f0ed;
 }
 :root {
   --btn-blue: #4573e3;
 }
 
-html {
-  background-color: #f1f0ed;
-  height: 100vh;
-}
 body {
-  height: 100%;
+  padding: 0;
   margin: 0;
 }
 

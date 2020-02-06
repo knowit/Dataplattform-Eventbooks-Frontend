@@ -26,7 +26,7 @@ export default class EventSelector extends Vue {
   private goToEvent() {
     verifyEventCode(this.code).then(() => {
       console.log('success');
-      this.$router.push({ name: 'eventRating', params: { eventId: this.code } });
+      this.$router.push({ name: 'eventRating', params: { eventCode: this.code } });
     }).catch((err) => {
       alert(`Fant ikke event med kode ${this.code}`);
       console.log(err);

@@ -2,9 +2,11 @@ import Vue, { CreateElement } from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import EventboksView from '@/views/EventboksView.vue';
+import EventSelectView from '@/views/EventSelectView.vue';
+import EventRatingView from '@/views/EventRatingView.vue';
 import EventSelector from '@/components/EventSelect/EventSelector.vue';
 import EventRating from '@/components/EventRating/EventRating.vue';
-import EventFinished from '@/components/EventRating/EventFinished.vue';
+import EventRatingFinished from '@/components/EventRating/EventRatingFinished.vue';
 import AdminView from '@/views/AdminView.vue';
 import AdminEvents from '@/components/Admin/AdminEvents.vue';
 
@@ -16,83 +18,62 @@ Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
   {
-    path: '/',
-    component: { name: 'Base', render: (h: CreateElement) => h('router-view') },
-    redirect: { name: 'eventSelector' },
+    path: '/authadmin/signin',
+    name: 'signin',
+    component: SignInView
+  },
+  {
+    path: '/authadmin',
+    name: 'authadmin',
+    component: AdminView,
     children: [
       {
-        path: 'callback/signin',
-        component: CallbackView,
-        beforeEnter: signinCallbackGuard
-      },
-      {
-        path: 'callback/signin/silent',
-        component: { render: (h: CreateElement) => h('div') },
-        beforeEnter: signinSilentCallbackGuard
-      },
-      {
-        path: 'authadmin/signin',
-        name: 'signin',
-        component: SignInView
-      },
-      {
-        path: 'authadmin',
-        name: 'authadmin',
-        component: AdminView,
-        children: [
-          {
-            // Example of child route
-            path: 'relativePathToAdmin',
-            name: 'REMEMBERME',
-            component: {
-              render: (h: CreateElement) => h('div', 'Example child')
-            } // Or component like below,
-          }
-        ]
-      },
-      {
-        path: 'admin',
-        name: 'admin',
-        component: AdminView,
-      },
-      {
-        path: 'event',
-        component: EventboksView,
-        redirect: { name: 'eventSelector' },
-        children: [
-          {
-            path: 'select',
-            name: 'eventSelector',
-            component: EventSelector
-          },
-          {
-            path: ':eventId',
-            component: { render: (h: CreateElement) => h('router-view') },
-            redirect: { name: 'eventRating' },
-            children: [
-              {
-                path: 'rate',
-                name: 'eventRating',
-                component: EventRating,
-                props: true
-              },
-              {
-                path: 'finished',
-                name: 'eventFinished',
-                component: EventFinished,
-                props: true
-              }
-            ]
-          },
-          {
-            path: 'event/finished',
-            name: 'eventFinished',
-            component: EventFinished
-          }
-        ]
+        // Example of child route
+        path: 'relativePathToAdmin',
+        name: 'REMEMBERME',
+        component: {
+          render: (h: CreateElement) => h('div', 'Example child')
+        } // Or component like below,
       }
     ]
-  }
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: AdminView,
+  },
+  // This should always be last
+  {
+    path: '/',
+    component: EventSelectView,
+    redirect: 'select',
+    children: [
+      {
+        path: '',
+        name: 'select',
+        component: EventSelector,
+      },
+      {
+        path: 'finished',
+        name: 'eventRatingFinished',
+        component: EventRatingFinished,
+        props: true
+      },
+      // This should always be last among the children
+      // {
+      //   path: ':eventId',
+      //   name: 'eventRating',
+      //   component: EventRating,
+      //   props: true,
+      // },
+    ],
+  },
+  {
+    path: '/:eventCode',
+    name: 'eventRating',
+    component: EventRatingView,
+    props: true,
+  },
 ];
 
 const router = new VueRouter({

@@ -36,14 +36,10 @@ export default class EventRating extends Vue {
     RatingButtonType.SAD
   ];
 
-  private created() {
-    console.log(this.eventId);
-  }
-
   private ratingClick(rating: RatingButtonType) {
     sendVote(this.eventId, rating)
       .then(() => {
-        this.step++;
+        this.$router.push({ name: 'eventRatingFinished' });
       })
       .catch((e: Error) => {
         console.log(e);
