@@ -17,9 +17,6 @@ import { RatingButtonType } from '@/components/EventRating/EventRatingButtons.vu
 @Component({})
 export default class EventRatingFinished extends Vue {
 
-  // @Prop()
-  // private event!: RawEvent;
-
   @Prop()
   private rating!: RatingButtonType;
 
