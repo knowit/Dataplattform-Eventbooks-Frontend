@@ -28,11 +28,19 @@ export default class App extends Vue {
   align-items: center;
   height: 100vh;
   width: 100vw;
-  box-sizing: border-box;
   background-color: #f1f0ed;
 }
+
 :root {
   --btn-blue: #4573e3;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 body {
@@ -40,11 +48,14 @@ body {
   margin: 0;
 }
 
-@media only screen and (max-width: 580px) {
-  #app {
-    height: 100%;
-    margin-right: 1rem;
-    margin-left: 1rem;
-  }
+.btn {
+  padding: 11px 13px;
+  font: normal normal 12px/14px "Roboto";
+  border: none;
+  border-radius: 2px;
+  opacity: 1;
+  text-align: center;
+  letter-spacing: 0;
+  cursor: pointer;
 }
 </style>

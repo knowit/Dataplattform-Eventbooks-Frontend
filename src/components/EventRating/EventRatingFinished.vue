@@ -1,10 +1,16 @@
 <template>
   <!-- <p id="txt">Takk for ditt innspill til forbedring av Knowit</p> -->
-  <div id="container">
-    <div class="txt">
-      Din {{ratingText}} stemme er nå sendt
+  <div>
+    <div id="msg-container">
+      <div class="txt">
+        Din {{ratingText}} stemme er nå sendt
+      </div>
+      <img class="icon" src="@/assets/success.svg" />
     </div>
-    <img class="icon" src="@/assets/success.svg" />
+    <button id="comment-btn" class="btn">
+      <img src="@/assets/add_comment.svg" align="middle" />
+      <span class="btn-txt">Legg gjerne til en kommentar</span>
+    </button>
   </div>
 
 </template>
@@ -39,18 +45,36 @@ export default class EventRatingFinished extends Vue {
 
 <style scoped>
 .txt {
-  font: 400 48px 'Roboto', sans-serif;
+  font: 400 48px "Roboto", sans-serif;
   width: 70%;
 }
 
 .icon {
   width: 30%;
+  padding: auto;
+  margin: auto;
 }
 
-#container {
+.btn-txt {
+  margin: auto;
+}
+
+#msg-container {
   display: flex;
   align-items: center;
   max-width: 30rem;
 }
 
+#comment-btn {
+  background-color: var(--btn-blue, blue);
+  color: #fff;
+  width: 100%;
+  margin-top: 2rem;
+  font-size: 1.5em;
+  text-align: center;
+  vertical-align: bottom;
+  display: flex;
+  flex-direction: row;
+  align-items: center
+}
 </style>
