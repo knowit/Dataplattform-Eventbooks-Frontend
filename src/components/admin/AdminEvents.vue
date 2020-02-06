@@ -3,7 +3,7 @@
     <admin-current-event title="Pågår nå" :event="this.active" />
     <admin-event-list title="Mine kommende eventer" :events="this.future" :type="type[0]" />
     <admin-event-item-info v-if="showEvent" :event="this.showEvent" @toggle="onToggle" />
-    <admin-event-list id="past" v-else title="Mine tidligere eventer" :events="this.past" :type="type[1]" @show="onShow" />
+    <admin-event-list class="clickable" v-else title="Mine tidligere eventer" :events="this.past" :type="type[1]" @show="onShow" />
   </div>
 </template>
 
@@ -62,7 +62,7 @@ export default class AdminEvents extends Vue {
     e.timestampTo = ZonedDateTime.now();
     e.eventName = 'Navn på event';
     e.active = true;
-    e.eventId = 'ABCDE';
+    e.eventId = '12345';
     e.eventBoxes = [
       new EventBox(),
       new EventBox()
@@ -99,8 +99,16 @@ export default class AdminEvents extends Vue {
   align-items: flex-start;
   width: 30em;
 }
-
-#past {
+.margin-top {
+ margin-top: 22px;
+}
+::v-deep .header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+::v-deep .clickable {
   cursor: pointer;
 }
 

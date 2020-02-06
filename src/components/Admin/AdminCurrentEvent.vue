@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="title">{{ title }}</div>
-    <div class="wrapper">
+    <div class="header">
       <div class="name">{{ event.eventName }}</div>
       <img v-if="isActive" class="toggle-button" @click="isActive = !isActive" src="@/assets/toggle-active.svg" />
       <img v-else class="toggle-button" @click="isActive = !isActive" src="@/assets/toggle-inactive.svg" />
@@ -16,8 +16,8 @@
     </div>
     <div class="description">
       Eventboks:
-      <div class="content">
-        {{ eventBoxes }}<span v-if="isActive" class="indicator"></span><span v-else class="indicator-inactive"></span>
+      <div class="content" v-for="eb in event.eventBoxes" :key="eb.eventBoxName">
+        {{ eb.eventBoxName }}<span v-if="isActive" class="indicator active"></span><span v-else class="indicator inactive"></span>
       </div>
     </div>
   </div>
@@ -65,12 +65,6 @@ export default class AdminCurrentEvent extends Vue {
 table {
   table-layout: fixed;
 }
-.wrapper {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-}
 .title {
   display: flex;
   font: Bold 20px/26px Roboto;
@@ -78,7 +72,6 @@ table {
   color: #212121;
   opacity: 1;
 }
-
 .name {
   text-align: left;
   font: Italic 20px/26px Roboto;
@@ -97,7 +90,7 @@ table {
 .content {
   display: inline;
   text-align: left;
-  font: Medium 18px/14px Roboto;
+  font: bold 16px/14px Roboto;
   letter-spacing: 0;
   color: #212121;
   padding-left: 3px;
@@ -105,19 +98,15 @@ table {
 .indicator {
   height: 13px;
   width: 13px;
-  background-color: #13a313;
   border-radius: 50%;
   display: inline-block;
   margin-left: 4px;
   margin-bottom: -1px;
 }
-.indicator-inactive {
-  height: 13px;
-  width: 13px;
+.active {
+  background-color: #13a313;
+}
+.inactive {
   background-color: #d51919;
-  border-radius: 50%;
-  display: inline-block;
-  margin-left: 4px;
-  margin-bottom: -1px;
 }
 </style>

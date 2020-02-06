@@ -2,10 +2,11 @@
   <tr id="container" @click="onClickItem">
     <td class="event-date">{{ date }}</td>
     <td class="event-time">{{ startTime }}-{{ endTime }}</td>
-    <td class="event-name" v-if="type === 1">
-      {{ event.eventName }} - {{ eventBoxes }}
+    <td class="event-name-wrapper" v-if="type === 1">
+      <div class="event-name"> {{ event.eventName }} </div>
+       &ndash; {{ eventBoxes }}
     </td>
-    <td class="event-name" v-else>{{ event.eventName }}</td>
+    <td class="event-name-wrapper event-name" v-else>{{ event.eventName }}</td>
     <td class="event-id" v-if="type === 1">
       {{ event.eventId ? event.eventId : "" }}
     </td>
@@ -84,16 +85,24 @@ export default class AdminEventItem extends Vue {
   white-space: nowrap;
 }
 .event-name {
-  margin-left: 0.5rem;
-
   text-align: left;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  margin-right: 0.3rem;
+}
+.event-name-wrapper {
+  display: flex;
+  margin-left: 0.5rem;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
   min-width: 13.3rem;
+  margin-right: 0.5rem
 }
 .event-id {
   font-style: italic;
+  margin-right: 5px;
+  margin-left: auto;
 }
 
 tr:nth-child(odd) {

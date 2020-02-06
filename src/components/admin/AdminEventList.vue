@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
-    <div class="wrapper" @click="isExpanded = !isExpanded">
+  <div class="container margin-top">
+    <div class="header clickable" @click="isExpanded = !isExpanded">
       <div class="title">{{title}}</div>
-      <img class="hide-show-button" :class="{show: isExpanded}"  src="@/assets/dropdown_arrow.svg" />
+      <img class="dropdown-button" :class="{show: isExpanded}"  src="@/assets/dropdown_arrow.svg" />
     </div>
     <div v-if="isExpanded">
       <table v-if="isMobile">
@@ -59,24 +59,10 @@ export default class AdminEventList extends Vue {
 </script>
 
 <style scoped>
-.container {
-  margin-top: 22px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 30em;
-}
 table {
   table-layout: fixed;
   border-collapse: collapse;
   width: 100%;
-}
-.wrapper {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  cursor: pointer;
 }
 .title {
   display: flex;
@@ -87,7 +73,7 @@ table {
   margin-right: auto;
 }
 
-.hide-show-button {
+.dropdown-button {
   width: 1rem;
   height: 1rem;
   float: right;
