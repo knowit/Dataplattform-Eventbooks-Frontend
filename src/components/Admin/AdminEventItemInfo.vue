@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="wrapper">
+    <div class="wrapper" @click="onClickButton">
       <div class="title">{{ event.eventName }}</div>
-      <img class="exit-button" @click="onClickButton" src="@/assets/plus.svg" />
+      <img class="exit-button" src="@/assets/plus.svg" />
     </div>
     <div class="row">
       <div class="description column">Dato: {{ date }}</div>
@@ -80,6 +80,7 @@ table {
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
+  cursor: pointer;
 }
 .title {
   display: flex;
