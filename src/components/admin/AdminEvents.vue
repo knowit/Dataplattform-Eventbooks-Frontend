@@ -94,7 +94,6 @@ export default class AdminEvents extends Vue {
 
 <style scoped>
 .container {
-  margin-top: 22px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

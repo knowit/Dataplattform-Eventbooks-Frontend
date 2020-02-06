@@ -31,13 +31,13 @@ const routes: RouteConfig[] = [
         beforeEnter: signinSilentCallbackGuard
       },
       {
-        path: 'admin/signin',
+        path: 'authadmin/signin',
         name: 'signin',
         component: SignInView
       },
       {
-        path: 'admin',
-        name: 'admin',
+        path: 'authadmin',
+        name: 'authadmin',
         component: AdminView,
         children: [
           {
@@ -49,6 +49,11 @@ const routes: RouteConfig[] = [
             } // Or component like below,
           }
         ]
+      },
+      {
+        path: 'admin',
+        name: 'admin',
+        component: AdminView,
       },
       {
         path: 'event',

@@ -59,6 +59,13 @@ export default class AdminEventList extends Vue {
 </script>
 
 <style scoped>
+.container {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 30em;
+}
 table {
   table-layout: fixed;
   border-collapse: collapse;
