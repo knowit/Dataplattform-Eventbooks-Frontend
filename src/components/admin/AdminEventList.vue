@@ -2,7 +2,7 @@
   <div class="container">
     <div class="wrapper" @click="isExpanded = !isExpanded">
       <div class="title">{{title}}</div>
-      <img class="hide-show-button" :class="{show: isExpanded}"  src="@/assets/plus.svg" />
+      <img class="hide-show-button" :class="{show: isExpanded}"  src="@/assets/dropdown_arrow.svg" />
     </div>
     <div v-if="isExpanded">
       <table v-if="isMobile">
@@ -81,13 +81,15 @@ table {
 }
 
 .hide-show-button {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1rem;
+  height: 1rem;
   float: right;
+  margin: 7px 2px 0 0;
+  transform: rotate(180deg);
 }
 
 .show {
-  transform: rotate(45deg);
+  transform: rotate(0deg);
 }
 
 @media only screen and (max-width: 580px) {
