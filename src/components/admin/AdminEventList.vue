@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="wrapper">
+    <div class="wrapper" @click="isExpanded = !isExpanded">
       <div class="title">{{title}}</div>
-      <img class="hide-show-button" :class="{show: isExpanded}" @click="isExpanded = !isExpanded" src="@/assets/plus.svg" />
+      <img class="hide-show-button" :class="{show: isExpanded}"  src="@/assets/plus.svg" />
     </div>
     <div v-if="isExpanded">
       <table v-if="isMobile">
@@ -69,6 +69,7 @@ table {
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
+  cursor: pointer;
 }
 .title {
   display: flex;
@@ -83,7 +84,6 @@ table {
   width: 1.5rem;
   height: 1.5rem;
   float: right;
-  cursor: pointer;
 }
 
 .show {
