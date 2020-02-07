@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="container">
     <p id="event-name">EVENT NAME GOES HERE</p>
     <component :is="stepComponent" :rating="rating" @rating-click="ratingClick" />
   </div>
@@ -68,5 +68,9 @@ export default class EventRatingView extends Vue {
 
 #event-name {
   margin: 1em 0 2.5em 0;
+}
+
+#container {
+  width: 100%;
 }
 </style>

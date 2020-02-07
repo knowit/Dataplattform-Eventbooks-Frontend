@@ -21,7 +21,7 @@ export default class App extends Vue {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #232323;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,6 +46,7 @@ html {
 body {
   padding: 0;
   margin: 0;
+  color: #232323;
 }
 
 .btn {
@@ -58,4 +59,11 @@ body {
   letter-spacing: 0;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 580px) {
+  #app {
+    padding: 0 1em;
+  }
+}
+
 </style>

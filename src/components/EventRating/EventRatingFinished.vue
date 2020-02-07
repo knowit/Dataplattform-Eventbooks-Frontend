@@ -8,7 +8,9 @@
       <img class="icon" src="@/assets/success.svg" />
     </div>
     <button id="comment-btn" class="btn">
-      <img src="@/assets/add_comment.svg" align="middle" />
+      <div id="icon-container">
+        <img id="icon" src="@/assets/add_comment.svg" align="middle" />
+      </div>
       <span class="btn-txt">Legg gjerne til en kommentar</span>
     </button>
   </div>
@@ -62,13 +64,15 @@ export default class EventRatingFinished extends Vue {
 #msg-container {
   display: flex;
   align-items: center;
-  max-width: 30rem;
+  width: 30em;
+  margin: auto;
 }
 
 #comment-btn {
-  background-color: var(--btn-blue, blue);
-  color: #fff;
-  width: 100%;
+  background-color: rgba(0,0,0,0);
+  color: #232323;
+  width: 20em;
+  margin: auto;
   margin-top: 2rem;
   font-size: 1.5em;
   text-align: center;
@@ -77,4 +81,34 @@ export default class EventRatingFinished extends Vue {
   flex-direction: row;
   align-items: center
 }
+
+#icon {
+  height: 30px;
+}
+
+#icon-container {
+  height: 62px;
+  width: 62px;
+  background-color: var(--btn-blue, blue);
+  border-radius: 50%;
+  padding: 16px;
+  text-align: center;
+  vertical-align: center;
+}
+
+@media only screen and (max-width: 580px) {
+  #comment-btn {
+    font-size: 1em;
+  }
+
+  .txt {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  #msg-container {
+    width: 15em;
+  }
+}
+
 </style>
