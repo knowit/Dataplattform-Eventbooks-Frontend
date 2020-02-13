@@ -1,7 +1,7 @@
 <template>
   <div id="container">
     <p id="event-name">EVENT NAME GOES HERE</p>
-    <component :is="stepComponent" :rating="rating" @rating-click="ratingClick" />
+    <component :is="stepComponent" :rating="rating" @rating-click="ratingClick" @send-comment="sendComment"/>
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 import EventRatingButtons, { RatingButtonType } from '@/components/EventRating/EventRatingButtons.vue';
 import EventRatingFinished from '@/components/EventRating/EventRatingFinished.vue';
-import { sendVote, sendComment } from "@/services/event.service";
+import { sendVote, sendComment } from '@/services/event.service';
 
 @Component({
   components: {
@@ -48,6 +48,14 @@ export default class EventRatingView extends Vue {
       .catch((e: Error) => {
         console.log(e);
       });
+  }
+
+  private sendComment(comment: string) {
+    sendComment(this.eventCode, comment)
+    .then(() => console.log('comment sent'))
+    .catch((e: Error) => {
+      console.log(e);
+    });
   }
 
 }

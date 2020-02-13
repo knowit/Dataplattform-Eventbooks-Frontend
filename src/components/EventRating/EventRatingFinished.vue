@@ -1,5 +1,4 @@
 <template>
-  <!-- <p id="txt">Takk for ditt innspill til forbedring av Knowit</p> -->
   <div>
     <div id="msg-container">
       <div class="txt">
@@ -7,26 +6,38 @@
       </div>
       <img class="icon" src="@/assets/success.svg" />
     </div>
-    <button id="comment-btn" class="btn">
+    <button id="comment-btn" class="btn" @click="showCommentClick" >
       <div id="icon-container">
-        <img id="icon" src="@/assets/add_comment.svg" align="middle" />
+        <i class="material-icons-outlined comment-icon">add_comment</i>
       </div>
       <span class="btn-txt">Legg gjerne til en kommentar</span>
     </button>
-  </div>
 
+    <event-comment v-if="showComment" v-model="comment" @back="hideCommentClick" @finished="commentFinished" />
+
+  </div>
 </template>
 
 <script lang="ts">
 
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { RatingButtonType } from '@/components/EventRating/EventRatingButtons.vue';
+import EventComment from '@/components/EventRating/EventComment.vue';
+import { sendComment } from '../../services/event.service';
 
-@Component({})
+@Component({
+  components: {
+    EventComment
+  }
+})
 export default class EventRatingFinished extends Vue {
 
   @Prop()
   private rating!: RatingButtonType;
+
+  private comment: string = '';
+
+  private showComment: boolean = false;
 
   private get ratingText() {
     switch (this.rating) {
@@ -39,6 +50,20 @@ export default class EventRatingFinished extends Vue {
       default:
         return 'ERROR';
     }
+  }
+
+  private showCommentClick() {
+    this.showComment = true;
+  }
+
+  private hideCommentClick() {
+    this.showComment = false;
+  }
+
+  @Emit('send-comment')
+  private commentFinished() {
+    this.hideCommentClick();
+    return this.comment;
   }
 
 }
@@ -59,6 +84,11 @@ export default class EventRatingFinished extends Vue {
 
 .btn-txt {
   margin: auto;
+}
+
+.comment-icon {
+  font-size: 30px;
+  color: white;
 }
 
 #msg-container {
@@ -82,9 +112,6 @@ export default class EventRatingFinished extends Vue {
   align-items: center
 }
 
-#icon {
-  height: 30px;
-}
 
 #icon-container {
   height: 62px;

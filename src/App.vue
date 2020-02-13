@@ -26,7 +26,7 @@ export default class App extends Vue {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   background-color: #f1f0ed;
 }
@@ -35,8 +35,9 @@ export default class App extends Vue {
   --btn-blue: #4573e3;
 }
 
-html {
+html, body {
   box-sizing: border-box;
+  height: 100%
 }
 
 *, *::before, *::after {
