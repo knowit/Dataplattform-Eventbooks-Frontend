@@ -89,7 +89,6 @@ export default class AdminEventFeedback extends Vue {
   width: 15px;
   min-width: 15px;
   cursor: pointer;
-
   vertical-align: middle;
 }
 </style>

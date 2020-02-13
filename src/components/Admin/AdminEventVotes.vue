@@ -26,11 +26,11 @@
     <div class="stats">
       <div class="votes">
         <div class="big-number">{{voteCount}}</div>
-        <div class="type">Stemmer</div>
+        <div class="big-number-type">Stemmer</div>
       </div>
       <div class="participants">
         <div class="big-number">{{participants}}</div>
-        <div class="type">Deltagere</div>
+        <div class="big-number-type">Deltagere</div>
       </div>
     </div>
   </div>
@@ -82,7 +82,7 @@ export default class AdminEventVotes extends Vue {
 }
 .ratings {
   display: flex;
-  width: 50%;
+  width: 55%;
   justify-content: space-between;
 }
 .wrapper {
@@ -98,6 +98,7 @@ export default class AdminEventVotes extends Vue {
   height: 38px;
   width: 38px;
   border-radius: 50%;
+  border: 2px solid #ffffff;
 }
 .green {
   background-color: #5fff8e;
@@ -119,12 +120,20 @@ export default class AdminEventVotes extends Vue {
 .type {
   font-size: 12px;
   color: #212121;
-  text-align: center;
+  text-align: left;
+  margin-left: 0.2rem;
 }
 .big-number {
   font-size: 27px;
   color: #212121;
-  padding: 5px 0 5px 0;
+  margin: 5px;
+  background-color: #ffffff;
+}
+.big-number-type {
+  font-size: 12px;
+  color: #212121;
+  text-align: center;
+  margin-left: 0.2rem;
 }
 
 .votes,

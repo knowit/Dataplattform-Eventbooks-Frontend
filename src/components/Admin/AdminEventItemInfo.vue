@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="wrapper" @click="onClickButton">
+  <div class="container margin-top">
+    <div class="header clickable margin-bottom" @click="onClickButton">
       <div class="title">{{ event.eventName }}</div>
       <img class="exit-button" src="@/assets/plus.svg" />
     </div>
@@ -74,13 +74,8 @@ export default class AdminEventItemInfo extends Vue {
 table {
   table-layout: fixed;
 }
-
-.wrapper {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  cursor: pointer;
+.margin-bottom{
+  margin-bottom: 10px;
 }
 .title {
   display: flex;
