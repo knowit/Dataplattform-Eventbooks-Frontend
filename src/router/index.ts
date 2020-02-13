@@ -12,7 +12,7 @@ import AdminEvents from '@/components/Admin/AdminEvents.vue';
 
 import CallbackView from '@/views/CallbackView.vue';
 import SignInView from '@/views/SignInView.vue';
-import { signinCallbackGuard, signinSilentCallbackGuard } from './callbacks';
+import { signinCallbackGuard, signinSilentCallbackGuard, eventNavigationGuard } from './callbacks';
 
 Vue.use(VueRouter);
 
@@ -52,6 +52,7 @@ const routes: RouteConfig[] = [
         path: '',
         name: 'select',
         component: EventSelector,
+        props: ((r) => { redirect: !!r.query.r; }),
       },
       {
         path: 'finished',
@@ -73,6 +74,7 @@ const routes: RouteConfig[] = [
     name: 'eventRating',
     component: EventRatingView,
     props: true,
+    beforeEnter: eventNavigationGuard,
   },
 ];
 

@@ -58,7 +58,6 @@ export default class EventComment extends Vue {
   }
 
   private mounted() {
-    console.log('mounted');
     (this.$refs.field as HTMLElement).focus();
   }
 }
