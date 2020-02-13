@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <admin-current-event title="Pågår nå" :event="this.active" />
-    <admin-event-list title="Mine kommende eventer" :events="this.future" :type="type[0]" />
+    <button class="create-event-button clickable" v-if="!showEdit" @click="onCreate">Opprett event</button>
+    <admin-edit-event v-else :event="this.editEvent" />
+    <admin-current-event title="Pågår nå" :event="this.active" @edit="onEdit" />
+    <admin-event-list title="Mine kommende eventer" :events="this.future" :type="type[0]" @edit="onEdit" />
     <admin-event-item-info v-if="showEvent" :event="this.showEvent" @toggle="onToggle" />
     <admin-event-list class="clickable" v-else title="Mine tidligere eventer" :events="this.past" :type="type[1]" @show="onShow" />
   </div>
@@ -15,6 +17,7 @@ import Event from '@/models/event.model';
 import AdminCurrentEvent from './AdminCurrentEvent.vue';
 import AdminEventItemInfo from './AdminEventItemInfo.vue';
 import { RowType } from './AdminEventItem.vue';
+import AdminEditEvent from './AdminEditEvent.vue';
 
 //TODO: Remove with helper
 import EventFeedback, { FeedbackDetails } from '@/models/eventFeedback.model';
@@ -25,12 +28,15 @@ import { ZonedDateTime } from '@js-joda/core';
   components: {
     AdminEventList,
     AdminCurrentEvent,
-    AdminEventItemInfo
+    AdminEventItemInfo,
+    AdminEditEvent
   }
 })
 export default class AdminEvents extends Vue {
   private searchTerm: string = '';
 
+  private showEdit: boolean = false;
+  private editEvent: Event | null = null;
   private showEvent: Event | null = null;
 
   private active: Event = this.createEvent();
@@ -46,12 +52,35 @@ export default class AdminEvents extends Vue {
   }
 
   private onShow(id: string) {
+    const event = this.findPastEvent(id);
+    this.showEvent = event ? event : null;
+  }
+
+  private onCreate() {
+    this.showEdit = !this.showEdit;
+  }
+
+  private onEdit(id: string) {
+    const event = this.findFutureEvent(id);
+    this.editEvent = event ? event : null;
+    this.showEdit = true;
+
+  }
+  private findPastEvent(id: string): Event | null {
     const event = this.past.find(event => {
       if (event.id === id) {
         return event;
       }
     });
-    this.showEvent = event ? event : null;
+    return event ? event : null;
+  }
+  private findFutureEvent(id: string): Event | null {
+    const event = this.future.concat(this.active).find(event => {
+      if (event.id === id) {
+        return event;
+      }
+    });
+    return event ? event : null;
   }
 
   // Helper
@@ -100,8 +129,21 @@ export default class AdminEvents extends Vue {
   width: 30em;
 }
 .margin-top {
- margin-top: 22px;
+  margin-top: 22px;
 }
+.create-event-button {
+  background: #4573e3 0% 0% no-repeat padding-box;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  text-align: center;
+  font: 15px/20px Roboto;
+  letter-spacing: 0;
+  color: #ffffff;
+  height: 42px;
+  margin-bottom: 22px;
+}
+
 ::v-deep .header {
   display: flex;
   flex-direction: row;

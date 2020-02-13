@@ -4,11 +4,14 @@
     <td class="event-time">{{ startTime }}-{{ endTime }}</td>
     <td class="event-name-wrapper" v-if="type === 1">
       <div class="event-name"> {{ event.eventName }} </div>
-       &ndash; {{ eventBoxes }}
+      &ndash; {{ eventBoxes }}
     </td>
     <td class="event-name-wrapper event-name" v-else>{{ event.eventName }}</td>
     <td class="event-id" v-if="type === 1">
       {{ event.eventId ? event.eventId : "" }}
+    </td>
+    <td class="edit-button clickable" v-if="type === 1">
+      <img src="@/assets/edit-symbol.svg" @click="onEdit" />
     </td>
   </tr>
 </template>
@@ -61,6 +64,9 @@ export default class AdminEventItem extends Vue {
       this.$emit('show', this.event.id);
     }
   }
+  private onEdit() {
+    this.$emit('edit', this.event.id);
+  }
 }
 </script>
 
@@ -97,7 +103,7 @@ export default class AdminEventItem extends Vue {
   white-space: nowrap;
   overflow: hidden;
   min-width: 13.3rem;
-  margin-right: 0.5rem
+  margin-right: 0.5rem;
 }
 .event-id {
   font-style: italic;

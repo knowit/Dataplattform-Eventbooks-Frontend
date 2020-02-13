@@ -2,14 +2,14 @@
   <div class="container margin-top">
     <div class="header clickable" @click="isExpanded = !isExpanded">
       <div class="title">{{title}}</div>
-      <img class="dropdown-button" :class="{show: isExpanded}"  src="@/assets/dropdown_arrow.svg" />
+      <img class="dropdown-button" :class="{show: isExpanded}" src="@/assets/dropdown_arrow.svg" />
     </div>
     <div v-if="isExpanded">
       <table v-if="isMobile">
         <admin-event-item-mobile v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" />
       </table>
       <table v-else>
-        <admin-event-item v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" />
+        <admin-event-item v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" @edit="onEdit" />
       </table>
     </div>
   </div>
@@ -44,6 +44,11 @@ export default class AdminEventList extends Vue {
     return id;
   }
 
+  @Emit('edit')
+  private onEdit(id: string): string {
+    return id;
+  }
+
   private get isMobile() {
     return this.windowWidth <= 580;
   }
@@ -53,6 +58,8 @@ export default class AdminEventList extends Vue {
       this.windowWidth = window.innerWidth;
     });
   }
+
+
 
 }
 
