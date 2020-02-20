@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <button class="create-event-button clickable" v-if="!showEdit" @click="onCreate">Opprett event</button>
-    <admin-edit-event v-else :event="this.editEvent" />
+    <admin-edit-event v-else :event="this.editEvent" @cancel="onCancel" />
     <admin-current-event title="Pågår nå" :event="this.active" @edit="onEdit" />
     <admin-event-list title="Mine kommende eventer" :events="this.future" :type="type[0]" @edit="onEdit" />
     <admin-event-item-info v-if="showEvent" :event="this.showEvent" @toggle="onToggle" />
@@ -66,6 +66,13 @@ export default class AdminEvents extends Vue {
     this.showEdit = true;
 
   }
+
+  private onCancel() {
+    this.showEdit = false;
+    this.editEvent = null;
+
+  }
+
   private findPastEvent(id: string): Event | null {
     const event = this.past.find(event => {
       if (event.id === id) {
@@ -91,13 +98,16 @@ export default class AdminEvents extends Vue {
     e.timestampTo = ZonedDateTime.now();
     e.eventName = 'Navn på event';
     e.active = true;
+    e.eventLocation = 'Her';
     e.eventId = '12345';
     e.eventBoxes = [
       new EventBox(),
       new EventBox()
     ];
     e.eventBoxes[0].eventBoxName = 'Alpha';
+    e.eventBoxes[0].eventBoxId = 'id1';
     e.eventBoxes[1].eventBoxName = 'Bravo';
+    e.eventBoxes[1].eventBoxId = 'id2';
     e.eventFeedback = new EventFeedback();
     e.eventFeedback.negativeCount = 12;
     e.eventFeedback.neutralCount = 8;

@@ -21,6 +21,7 @@
     "jwt-decode": "^2.2.0",
     "oidc-client": "^1.9.1",
     "reflect-metadata": "^0.1.13",
+    "v-calendar": "^1.0.0-beta.23",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.3.0",
