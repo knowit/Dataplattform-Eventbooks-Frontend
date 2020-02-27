@@ -1,29 +1,22 @@
 <template>
   <div class="container">
-    <input
-      class="input-name"
-      placeholder="Hva skal eventet hete?"
-      v-model="eventName"
-    />
+    <input class="input-name" placeholder="Hva skal eventet hete?" v-model="eventName" />
     <div class="wrapper">
       <div class="half">
-        <div class="row">
-          <img class="svg" src="@/assets/clock.svg" />
+        <div class="row baseline">
+          <img class="svg clock" src="@/assets/clock.svg" />
 
-          <date-picker class="clickable" v-model="date">
+          <date-picker class="clickable " v-model="date">
             <div class="date-time">{{ date.toLocaleDateString() }}</div>
           </date-picker>
-          <div class="date-time time">{{ startTime }}</div>
+          <time-picker v-model="startTime" class="" />
           &ndash;
-          <div class="date-time time">{{ endTime }}</div>
+          <time-picker v-model="endTime" class="" />
         </div>
+
         <div class="row location-row">
           <img class="svg" src="@/assets/position.svg" />
-          <input
-            class="input-location"
-            placeholder="Hvor er eventet?"
-            v-model="eventLocation"
-          />
+          <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
         </div>
         <div class="row">
           <img class="svg" src="@/assets/person.svg" />
@@ -34,11 +27,7 @@
         <div class="column">
           <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
             <div>{{ eb.eventBoxName }}</div>
-            <img
-              class="cross clickable"
-              @click="removeBox(eb.eventBoxId)"
-              src="@/assets/plus.svg"
-            />
+            <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
           </div>
           <button @click="onAddBox" class="add-box blue clickable">
             <img class="plus" src="@/assets/plus.svg" />
@@ -61,9 +50,10 @@ import Event from '@/models/event.model';
 import { ZonedDateTime, DateTimeFormatter, convert } from '@js-joda/core';
 import EventBox from '../../models/eventBox.model';
 import { DatePicker } from 'v-calendar';
+import TimePicker from './TimePicker.vue';
 
 @Component({
-  components: { DatePicker }
+  components: { DatePicker, TimePicker }
 })
 export default class AdminEditEvent extends Vue {
   @Prop()
@@ -122,6 +112,7 @@ export default class AdminEditEvent extends Vue {
 .option-buttons {
   margin-left: auto;
 }
+
 .button {
   height: 35px;
   border-radius: 2px;
@@ -160,6 +151,10 @@ export default class AdminEditEvent extends Vue {
   background-color: #f1f0ed;
   outline: none;
 }
+.baseline {
+  align-items: center;
+}
+
 .row {
   display: flex;
   margin-bottom: 25px;
@@ -238,5 +233,11 @@ export default class AdminEditEvent extends Vue {
   height: 20px;
   filter: invert(7%) sepia(0%) saturate(2275%) hue-rotate(65deg)
     brightness(106%) contrast(87%);
+}
+.end-time {
+  margin-right: 3.2rem;
+}
+.dash {
+  margin-left: 1.8rem;
 }
 </style>
