@@ -5,15 +5,13 @@
       <div class="half">
         <div class="row baseline">
           <img class="svg clock" src="@/assets/clock.svg" />
-
           <date-picker class="clickable " v-model="date">
             <div class="date-time">{{ date.toLocaleDateString() }}</div>
           </date-picker>
-          <time-picker v-model="startTime" class="" />
+          <time-picker :current-timestamp="this.startTime"/>
           &ndash;
-          <time-picker v-model="endTime" class="" />
+          <time-picker :current-timestamp="this.endTime"/>
         </div>
-
         <div class="row location-row">
           <img class="svg" src="@/assets/position.svg" />
           <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
@@ -36,7 +34,6 @@
         </div>
       </div>
     </div>
-
     <div class="option-buttons">
       <button class="cancel button clickable" @click="onCancel">Avbryt</button>
       <button class="blue button clickable">Opprett</button>
@@ -152,9 +149,13 @@ export default class AdminEditEvent extends Vue {
   outline: none;
 }
 .baseline {
-  align-items: center;
+  align-items: baseline;
 }
-
+.clock {
+  position: absolute;
+  margin-top: 4px;
+  padding-left: 1px;
+}
 .row {
   display: flex;
   margin-bottom: 25px;
@@ -165,7 +166,7 @@ export default class AdminEditEvent extends Vue {
 }
 .date-time {
   color: #212121;
-  margin: 0px 15px 0px 15px;
+  margin: 0px 15px 0px 34px;
   font-size: 15px;
 }
 .svg {

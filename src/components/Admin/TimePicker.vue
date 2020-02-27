@@ -15,7 +15,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component({})
 export default class TimePicker extends Vue {
   @Prop()
-  private currentTimeStamp?: string;
+  private currentTimestamp?: string;
 
   private timestamps: string[] = [
     '00:00',
@@ -116,12 +116,13 @@ export default class TimePicker extends Vue {
     '23:45'
   ];
 
-  private input: string = this.currentTimeStamp ? this.currentTimeStamp : '';
+  private input: string = this.currentTimestamp ? this.currentTimestamp : '';
   private show: Boolean = false;
 
   private onSelect(item: string) {
     this.input = item;
     this.show = false;
+    this.$emit('input', this.input);
   }
 }
 </script>
@@ -129,12 +130,12 @@ export default class TimePicker extends Vue {
 <style scoped>
 .input {
   color: #212121;
-  width: 40px;
+  width: 42px;
   font-size: 15px;
   background-color: #f1f0ed;
   outline: none;
   border: none;
-  padding: 5px 10px 5px 10px;
+  padding: 5px 8px 5px 10px;
 }
 .green {
   background-color: #b7debd;
@@ -148,15 +149,14 @@ export default class TimePicker extends Vue {
 .autocomplete-items {
   position: absolute;
   width: 100%;
-  height: 122px;
+  height: 127px;
   overflow: scroll;
 }
 
 .autocomplete-item {
   background: white;
   text-align: left;
-  padding-left: 7px;
-  padding-top: 6px;
+  padding: 3px 0px 3px 5px;
 }
 .autocomplete-item:hover {
   background: #f7f7f7 0% 0% no-repeat padding-box;
