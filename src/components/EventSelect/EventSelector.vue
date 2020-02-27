@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <event-code-input v-model="code" />
-    <button class="ok-button" :disabled="!isActive" @click="goToEvent">Neste</button>
+    <button class="ok-button btn" :disabled="!isActive" @click="goToEvent">Neste</button>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { verifyEventCode } from '@/services/event.service';
 
 import EventCodeInput from './EventCodeInput.vue';
@@ -17,6 +17,10 @@ import EventCodeInput from './EventCodeInput.vue';
     }
 })
 export default class EventSelector extends Vue {
+
+  @Prop()
+  private redirect: boolean = false;
+
   private code: string = '';
 
   private get isActive() {
@@ -25,12 +29,17 @@ export default class EventSelector extends Vue {
 
   private goToEvent() {
     verifyEventCode(this.code).then(() => {
-      console.log('success');
-      this.$router.push({ name: 'eventRating', params: { eventId: this.code } });
+      this.$router.push({ name: 'eventRating', params: { eventCode: this.code } });
     }).catch((err) => {
       alert(`Fant ikke event med kode ${this.code}`);
       console.log(err);
     });
+  }
+
+  private mounted() {
+    if (this.$route.query.r) {
+      alert('Fant ikke eventet du leter etter');
+    }
   }
 
 }
@@ -47,17 +56,9 @@ export default class EventSelector extends Vue {
 
 .ok-button {
   width: 91%;
-  padding: 11px 13px;
   background: #949494 0% 0% no-repeat padding-box;
-  border: none;
-  border-radius: 2px;
-  opacity: 1;
-  text-align: center;
-  font: Regular 12px/14px Roboto;
-  letter-spacing: 0;
   color: #ffffff;
   margin-top: 10px;
-  cursor: pointer; 
 }
 
 .ok-button:enabled {
