@@ -4,17 +4,6 @@
     <div class="wrapper">
       <div class="half">
         <date-time-picker :timestamps="this.getTimestamps()" @input="updateTimestamps"/>
-        <!--
-        <div class="row baseline">
-          <img class="svg clock" src="@/assets/clock.svg" />
-          <date-picker class="clickable date-picker" color="green" :min-date="new Date()" v-model="date">
-            <div class="date-time">{{ date.toLocaleDateString() }}</div>
-          </date-picker>
-          <time-picker :current-timestamp="this.startTime" @input="updateStartTime"/>
-          &ndash;
-          <time-picker :current-timestamp="this.endTime" @input="updateEndTime"/>
-        </div>
-        -->
         <div class="row location-row">
           <img class="svg" src="@/assets/position.svg" />
           <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
@@ -106,8 +95,8 @@ export default class AdminEditEvent extends Vue {
     }
   }
 
-  private updateTimestamps(newTimestamps: {timeStampFrom: ZonedDateTime, timeStampTo: ZonedDateTime}) {
-    console.log(newTimestamps);
+  private updateTimestamps(newTimestamps: {timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime}) {
+    this.timestamps = newTimestamps;
   }
 
   private createEvent(): Event {
