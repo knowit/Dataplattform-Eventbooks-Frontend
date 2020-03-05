@@ -36,7 +36,8 @@
     </div>
     <div class="option-buttons">
       <button class="cancel button clickable" @click="onCancel">Avbryt</button>
-      <button class="blue button clickable">Opprett</button>
+      <button class="delete button clickable" @click="onDelete">Slett</button>
+      <button class="blue button clickable" @click="onCreate">Opprett</button>
     </div>
   </div>
 </template>
@@ -75,6 +76,17 @@ export default class AdminEditEvent extends Vue {
     this.$emit('cancel');
   }
 
+  private onCreate() {
+    // Feilsjekking
+    // Opprettt eller oppdater event
+    console.log('Opprett - Not implemented');
+  }
+  private onDelete() {
+    // Slett event
+    // Popup varsel før det tar effekt?
+    console.log('Slett - Not implemented');
+  }
+
   private get startTime() {
     return this.event
       ? DateTimeFormatter.ofPattern('HH:mm').format(this.event.timestampFrom!)
@@ -100,6 +112,7 @@ export default class AdminEditEvent extends Vue {
 
   private onAddBox() {
     //Backend logic to allocate eventbox
+    console.log('Add box - Not implemented');
   }
   private removeBox(id: string) {
     if (this.eventBoxes) {
@@ -123,7 +136,7 @@ export default class AdminEditEvent extends Vue {
   text-align: center;
   font-size: 12px/16px;
   letter-spacing: 0;
-  width: 7rem;
+  width: 6rem;
   margin-left: 0.7rem;
 }
 .add-box {
@@ -135,6 +148,11 @@ export default class AdminEditEvent extends Vue {
 }
 .blue {
   background: #4573e3 0% 0% no-repeat padding-box;
+  color: #ffffff;
+  border: none;
+}
+.delete {
+  background: #D51919 0% 0% no-repeat padding-box;
   color: #ffffff;
   border: none;
 }
