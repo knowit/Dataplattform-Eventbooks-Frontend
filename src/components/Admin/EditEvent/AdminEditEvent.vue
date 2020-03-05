@@ -3,6 +3,8 @@
     <input class="input-name" placeholder="Hva skal eventet hete?" v-model="eventName" />
     <div class="wrapper">
       <div class="half">
+        <date-time-picker :timestamps="this.getTimestamps()" @input="updateTimestamps"/>
+        <!--
         <div class="row baseline">
           <img class="svg clock" src="@/assets/clock.svg" />
           <date-picker class="clickable date-picker" color="green" :min-date="new Date()" v-model="date">
@@ -12,6 +14,7 @@
           &ndash;
           <time-picker :current-timestamp="this.endTime" @input="updateEndTime"/>
         </div>
+        -->
         <div class="row location-row">
           <img class="svg" src="@/assets/position.svg" />
           <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
@@ -45,34 +48,26 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import Event from '@/models/event.model';
-import { ZonedDateTime, DateTimeFormatter, convert } from '@js-joda/core';
-import EventBox from '../../models/eventBox.model';
-import { DatePicker } from 'v-calendar';
+import EventBox from '@/models/eventBox.model';
 import TimePicker from './TimePicker.vue';
+import DateTimePicker from './DateTimePicker.vue';
+import { ZonedDateTime, DateTimeFormatter, convert } from '@js-joda/core';
+import { DatePicker } from 'v-calendar';
 
 @Component({
-  components: { DatePicker, TimePicker }
+  components: { DatePicker, TimePicker, DateTimePicker }
 })
 export default class AdminEditEvent extends Vue {
   @Prop()
   private event?: Event;
+
   private createButtonString: string = this.event? 'Oppdater' : 'Opprett';
 
   private eventName: string | undefined = this.event
     ? this.event.eventName
     : '';
 
-  private date: Date = this.event
-    ? convert(this.event.timestampFrom!).toDate()
-    : convert(ZonedDateTime.now()).toDate();
-
-  private startTime: string = this.event ?
-    DateTimeFormatter.ofPattern('HH:mm').format(this.event.timestampFrom!)
-    : this.getRoundedTimeString(15, ZonedDateTime.now());
-
-  private endTime: string = this.event ?
-    DateTimeFormatter.ofPattern('HH:mm').format(this.event.timestampTo!)
-    : this.getRoundedTimeString(15, ZonedDateTime.now().plusHours(1));
+  private timestamps: {timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime} | undefined = this.getTimestamps();
 
   private eventBoxes: EventBox[] | undefined = this.event ?
     this.event.eventBoxes
@@ -101,47 +96,6 @@ export default class AdminEditEvent extends Vue {
     console.log('Slett - Not implemented');
   }
 
-  private updateStartTime(newTime: string) {
-    this.startTime = newTime;
-  }
-
-  private updateEndTime(newTime: string) {
-    this.endTime = newTime;
-  }
-
-  private createEvent(): Event {
-    const e = new Event();
-    e.id = this.event ? this.event.id : this.createNewID();
-    e.eventName = this.eventName;
-    e.timestampFrom = this.getTimeStamp(this.startTime);
-    e.timestampTo = this.getTimeStamp(this.endTime);
-    e.eventLocation = this.eventLocation;
-    e.eventBoxes = this.eventBoxes;
-    e.active = true;
-    return e;
-  }
-  private getTimeStamp(time: string): ZonedDateTime {
-    const d = ZonedDateTime.parse(this.date.toISOString());
-    const timeList = time.split(':');
-    return d.withHour(parseInt(timeList[0])).withMinute(parseInt(timeList[1])).withSecond(0).withNano(0);
-  }
-
-  private createNewID(): string {
-    // TODO: proper ID
-    return 'id' + Math.floor(Math.random() * 1000);
-  }
-
-  private getRoundedTime(minutes: number, time: ZonedDateTime): ZonedDateTime {
-    const currentMinutes = time.minute();
-    const mod = currentMinutes % minutes;
-    return time.plusMinutes(minutes-mod);
-  }
-
-  private getRoundedTimeString(minutes: number, time: ZonedDateTime): string {
-    const roundedTime = this.getRoundedTime(minutes, time);
-    return DateTimeFormatter.ofPattern('HH:mm').format(roundedTime);
-  }
-
   private onAddBox() {
     //Backend logic to allocate eventbox
     console.log('Add box - Not implemented');
@@ -150,6 +104,37 @@ export default class AdminEditEvent extends Vue {
     if (this.eventBoxes) {
       this.eventBoxes = this.eventBoxes.filter(eb => eb.eventBoxId !== id);
     }
+  }
+
+  private updateTimestamps(newTimestamps: {timeStampFrom: ZonedDateTime, timeStampTo: ZonedDateTime}) {
+    console.log(newTimestamps);
+  }
+
+  private createEvent(): Event {
+    const e = new Event();
+    e.id = this.event ? this.event.id : this.createNewID();
+    e.eventName = this.eventName;
+    e.timestampFrom = this.timestamps ? this.timestamps.timestampFrom : undefined;
+    e.timestampTo = this.timestamps ? this.timestamps.timestampTo : undefined;
+    e.eventLocation = this.eventLocation;
+    e.eventBoxes = this.eventBoxes;
+    e.active = true;
+    return e;
+  }
+
+  private createNewID(): string {
+    // TODO: proper ID
+    return 'id' + Math.floor(Math.random() * 1000);
+  }
+
+  private getTimestamps(): {timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime} | undefined {
+    if (this.event && this.event.timestampFrom && this.event.timestampTo) {
+      return {
+        timestampFrom: this.event.timestampFrom,
+        timestampTo: this.event.timestampTo
+      };
+    }
+
   }
 }
 </script>
@@ -234,7 +219,7 @@ export default class AdminEditEvent extends Vue {
 .date-picker:hover {
   background-color: #b7debd;
 }
-.svg {
+::v-deep .svg {
   filter: invert(52%) sepia(0%) saturate(980%) hue-rotate(315deg)
     brightness(81%) contrast(105%);
   height: 20px;

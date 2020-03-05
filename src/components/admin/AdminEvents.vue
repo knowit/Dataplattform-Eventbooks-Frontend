@@ -17,7 +17,7 @@ import Event from '@/models/event.model';
 import AdminCurrentEvent from './AdminCurrentEvent.vue';
 import AdminEventItemInfo from './AdminEventItemInfo.vue';
 import { RowType } from './AdminEventItem.vue';
-import AdminEditEvent from './AdminEditEvent.vue';
+import AdminEditEvent from './EditEvent/AdminEditEvent.vue';
 
 //TODO: Remove with helper
 import EventFeedback, { FeedbackDetails } from '@/models/eventFeedback.model';
