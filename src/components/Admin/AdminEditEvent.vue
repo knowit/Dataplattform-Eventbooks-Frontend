@@ -78,17 +78,24 @@ export default class AdminEditEvent extends Vue {
   private get startTime() {
     return this.event
       ? DateTimeFormatter.ofPattern('HH:mm').format(this.event.timestampFrom!)
-      : this.now();
+      : this.getRoundedTimeString(15, ZonedDateTime.now());
   }
 
   private get endTime() {
     return this.event
       ? DateTimeFormatter.ofPattern('HH:mm').format(this.event.timestampTo!)
-      : this.now();
+      : this.getRoundedTimeString(15, ZonedDateTime.now().plusHours(1));
   }
 
-  private now() {
-    return DateTimeFormatter.ofPattern('HH:mm').format(ZonedDateTime.now());
+  private getRoundedTime(minutes: number, time: ZonedDateTime): ZonedDateTime {
+    const currentMinutes = time.minute();
+    const mod = currentMinutes % minutes;
+    return time.plusMinutes(minutes-mod);
+  }
+
+  private getRoundedTimeString(minutes: number, time: ZonedDateTime): string {
+    const roundedTime = this.getRoundedTime(minutes, time);
+    return DateTimeFormatter.ofPattern('HH:mm').format(roundedTime);
   }
 
   private onAddBox() {
