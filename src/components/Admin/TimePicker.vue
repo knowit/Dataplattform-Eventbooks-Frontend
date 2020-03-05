@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <input type="text" class="input clickable" v-bind:class="{ green: show}" v-model="input" @click="show = !show" />
+  <div class="container" @mouseover="show = true" @mouseleave="show = false">
+    <input type="text" class="input clickable" v-bind:class="{ green: show}" v-model="input"/>
     <div class="autocomplete-items" v-if="show">
       <div class="autocomplete-item clickable" v-for="item in timestamps" :key="item" @click="onSelect(item)">
         {{ item }}
@@ -151,6 +151,7 @@ export default class TimePicker extends Vue {
   width: 100%;
   height: 127px;
   overflow: scroll;
+  transition-delay: 1s;
 }
 
 .autocomplete-item {

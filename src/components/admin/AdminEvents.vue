@@ -93,7 +93,8 @@ export default class AdminEvents extends Vue {
   // Helper
   private createEvent(): Event {
     const e = new Event();
-    e.id = 'idhei' + Math.floor(Math.random() * 100);
+    e.id = 'id' + Math.floor(Math.random() * 1000);
+    e.creator = 'Admin';
     e.timestampFrom = ZonedDateTime.now();
     e.timestampTo = ZonedDateTime.now();
     e.eventName = 'Navn på event';
