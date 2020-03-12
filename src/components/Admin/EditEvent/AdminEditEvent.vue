@@ -74,6 +74,11 @@ export default class AdminEditEvent extends Vue {
 
   private onCreate() {
     // Feilsjekking
+    if (!this.validateEvent()) {
+      // Varsel om feil
+      console.log('Invalid event');
+      return;
+    }
     // Opprett eller oppdater event
     const newEvent = this.createEvent();
     console.log(newEvent);
@@ -81,6 +86,7 @@ export default class AdminEditEvent extends Vue {
   }
   private onDelete() {
     // Popup varsel før det tar effekt?
+    // Nytt event med deleted felt
     // Oppdater database
     console.log('Slett - Not implemented');
   }
@@ -123,7 +129,35 @@ export default class AdminEditEvent extends Vue {
         timestampTo: this.event.timestampTo
       };
     }
+  }
 
+  private validateEvent(): boolean {
+    return this.validateName() && this.validateDateTime() && this.validateLoaction();
+  }
+
+  private validateName(): boolean {
+    return this.eventName ? this.eventName.length > 0 : false;
+  }
+
+  private validateDateTime(): boolean {
+    const now = ZonedDateTime.now();
+    if (!this.timestamps) {
+      console.log('Timestamps not set');
+      return false;
+    }
+    else if (!this.timestamps.timestampFrom.isAfter(now)) {
+      console.log('Timestamp cannot start before current time');
+      return false;
+    }
+    else if (!this.timestamps.timestampTo.isAfter(this.timestamps.timestampFrom)) {
+      console.log('Timestamp cannot end before it starts');
+      return false;
+    }
+    return true;
+  }
+
+  private validateLoaction(): boolean {
+    return this.eventLocation ? this.eventLocation.length > 0 : false;
   }
 }
 </script>
