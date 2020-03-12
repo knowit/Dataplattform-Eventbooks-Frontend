@@ -36,10 +36,14 @@ export default class DateTimePicker extends Vue {
     DateTimeFormatter.ofPattern('HH:mm').format(this.timestamps.timestampTo!)
     : this.getRoundedTimeString(15, ZonedDateTime.now().plusHours(1));
 
+  mounted() {
+    this.update();
+  }
+
   private update() {
     this.$emit('input', {
-      timeStampFrom: this.getTimeStamp(this.startTime),
-      timeStampTo: this.getTimeStamp(this.endTime)
+      timestampFrom: this.getTimeStamp(this.startTime),
+      timestampTo: this.getTimeStamp(this.endTime)
     });
   }
   @Watch('date')
