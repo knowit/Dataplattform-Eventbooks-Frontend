@@ -8,11 +8,11 @@
     </div>
     <div class="description">
       Tid:
-      <div class="content">{{ startTime }} - {{ endTime }}</div>
+      <div class="content adjust-position">{{ startTime }} - {{ endTime }}</div>
     </div>
     <div class="description">
       Eventkode:
-      <div class="content">{{ event.eventId ? event.eventId : "" }}</div>
+      <div class="content adjust-position">{{ event.eventId ? event.eventId : "" }}</div>
     </div>
     <div class="description space-between">
       <div>
@@ -120,5 +120,8 @@ table {
 .space-between {
   justify-content: space-between;
   width: 100%;
+}
+.adjust-position {
+  margin-top: 3.2px;
 }
 </style>
