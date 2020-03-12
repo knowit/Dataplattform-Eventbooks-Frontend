@@ -1,6 +1,6 @@
 <template>
   <div class="container" @mouseover="show = true" @mouseleave="show = false">
-    <input type="text" class="input clickable" v-bind:class="{ green: show}" v-model="input"/>
+    <input type="text" readonly class="input clickable" v-bind:class="{ green: show}" v-model="input"/>
     <div class="autocomplete-items" v-if="show">
       <div class="autocomplete-item clickable" v-for="item in timestamps" :key="item" @click="onSelect(item)">
         {{ item }}

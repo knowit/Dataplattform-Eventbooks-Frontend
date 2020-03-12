@@ -132,11 +132,19 @@ export default class AdminEditEvent extends Vue {
   }
 
   private validateEvent(): boolean {
-    return this.validateName() && this.validateDateTime() && this.validateLoaction();
+    return this.validateName() && this.validateDateTime() && this.validateLocation();
   }
 
   private validateName(): boolean {
-    return this.eventName ? this.eventName.length > 0 : false;
+    if (this.eventName && this.eventName.length <= 0) {
+      if (this.eventName.length > 255) {
+        console.log('Name to long');
+        return false;
+      }
+      return true;
+    }
+    console.log('Name missing');
+    return false;
   }
 
   private validateDateTime(): boolean {
@@ -145,8 +153,8 @@ export default class AdminEditEvent extends Vue {
       console.log('Timestamps not set');
       return false;
     }
-    else if (!this.timestamps.timestampFrom.isAfter(now)) {
-      console.log('Timestamp cannot start before current time');
+    else if (!this.timestamps.timestampTo.isAfter(now)) {
+      console.log('Timestamp cannot end before current time');
       return false;
     }
     else if (!this.timestamps.timestampTo.isAfter(this.timestamps.timestampFrom)) {
@@ -156,8 +164,17 @@ export default class AdminEditEvent extends Vue {
     return true;
   }
 
-  private validateLoaction(): boolean {
-    return this.eventLocation ? this.eventLocation.length > 0 : false;
+  private validateLocation(): boolean {
+    if (this.eventLocation && this.eventLocation.length > 0) {
+      if (this.eventLocation.length > 255) {
+        console.log('Location to long');
+        return false;
+      }
+      return true;
+
+    }
+    console.log('Location missing');
+    return false;
   }
 }
 </script>
