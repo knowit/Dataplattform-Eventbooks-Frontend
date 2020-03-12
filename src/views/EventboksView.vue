@@ -14,14 +14,13 @@ export default class EventboksView extends Vue {
 </script>
 
 <style scoped>
-
 .eventboks-container {
   display: inline-block;
 }
 
 #logo {
-  position: relative;
+  position: static;
   bottom: 3em;
 }
-
 </style>
+
