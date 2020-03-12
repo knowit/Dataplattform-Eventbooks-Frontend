@@ -48,10 +48,14 @@ export default class AdminView extends Vue {
 <style scoped>
 .admin-container {
   display: inline-block;
+  margin-top: auto;
+  padding-top: 100px;
+  padding-bottom: 50px;
 }
 
 #logo {
-  position: relative;
+  position: static;
   bottom: 3em;
+  padding-bottom: 2rem;
 }
 </style>
