@@ -167,7 +167,8 @@ export default class AdminEvents extends Vue {
 
 @media only screen and (max-width: 580px) {
   .container {
-    width: 100%;
+    width: 18em;
+    overflow-x: hidden;
   }
 }
 </style>

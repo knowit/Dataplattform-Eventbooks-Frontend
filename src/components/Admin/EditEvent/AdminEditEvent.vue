@@ -1,9 +1,39 @@
 <template>
   <div class="container">
     <input class="input-name" placeholder="Hva skal eventet hete?" v-model="eventName" />
+
+    <div class="wrapper-mobile">
+      <date-time-picker :timestamps="this.getTimestamps()" @input="updateTimestamps" />
+      <div class="row">
+        <div class="mobile-add-eventbox">
+          <div class="row-eventbox">
+            <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
+              <div>{{ eb.eventBoxName }}</div>
+              <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
+            </div>
+          </div>
+          <button @click="onAddBox" class="add-box blue clickable">
+            <img class="plus" src="@/assets/plus.svg" />
+            <div class="button-text">Legg til boks</div>
+          </button>
+        </div>
+      </div>
+      <div class="row location-row">
+
+        <img class="svg" src="@/assets/position.svg" />
+        <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
+      </div>
+      <div class="row">
+        <img class="svg" src="@/assets/person.svg" />
+        <div class="user">{{creator}}</div>
+      </div>
+
+    </div>
+
     <div class="wrapper">
       <div class="half">
-        <date-time-picker :timestamps="this.getTimestamps()" @input="updateTimestamps"/>
+        <date-time-picker :timestamps="this.getTimestamps()" @input="updateTimestamps" />
+
         <div class="row location-row">
           <img class="svg" src="@/assets/position.svg" />
           <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
@@ -25,6 +55,7 @@
           </button>
         </div>
       </div>
+
     </div>
     <div class="option-buttons">
       <button class="cancel button clickable" @click="onCancel">Avbryt</button>
@@ -50,13 +81,13 @@ export default class AdminEditEvent extends Vue {
   @Prop()
   private event?: Event;
 
-  private createButtonString: string = this.event? 'Oppdater' : 'Opprett';
+  private createButtonString: string = this.event ? 'Oppdater' : 'Opprett';
 
   private eventName: string | undefined = this.event
     ? this.event.eventName
     : '';
 
-  private timestamps: {timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime} | undefined = this.getTimestamps();
+  private timestamps: { timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime } | undefined = this.getTimestamps();
 
   private eventBoxes: EventBox[] | undefined = this.event ?
     this.event.eventBoxes
@@ -101,7 +132,7 @@ export default class AdminEditEvent extends Vue {
     }
   }
 
-  private updateTimestamps(newTimestamps: {timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime}) {
+  private updateTimestamps(newTimestamps: { timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime }) {
     this.timestamps = newTimestamps;
   }
 
@@ -122,7 +153,7 @@ export default class AdminEditEvent extends Vue {
     return 'id' + Math.floor(Math.random() * 1000);
   }
 
-  private getTimestamps(): {timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime} | undefined {
+  private getTimestamps(): { timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime } | undefined {
     if (this.event && this.event.timestampFrom && this.event.timestampTo) {
       return {
         timestampFrom: this.event.timestampFrom,
@@ -192,7 +223,7 @@ export default class AdminEditEvent extends Vue {
   border: none;
 }
 .delete {
-  background: #D51919 0% 0% no-repeat padding-box;
+  background: #d51919 0% 0% no-repeat padding-box;
   color: #ffffff;
   border: none;
 }
@@ -314,5 +345,77 @@ export default class AdminEditEvent extends Vue {
 }
 .dash {
   margin-left: 1.8rem;
+}
+
+.wrapper-mobile {
+  display: none;
+}
+
+@media only screen and (max-width: 580px) {
+  .input-location {
+    margin-bottom: 10px;
+    font-size: 20px;
+    border-radius: 0px;
+    padding-left: 0px;
+  }
+  .location-row {
+    height: 40px;
+  }
+
+  .input-name {
+    border-radius: 0px;
+    font-size: 24px;
+  }
+  .user {
+    font-size: 20px;
+  }
+  .column {
+    display: none;
+  }
+  .button {
+    width: 4.6rem;
+    margin-left: 0px;
+  }
+
+  .mobile-add-eventbox {
+    display: block;
+    width: 100%;
+  }
+  .add-box {
+    height: 35px;
+  }
+
+  .option-buttons {
+    width: 100%;
+    margin-left: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+  .add-box {
+    height: 35px;
+    width: 100%;
+  }
+  .wrapper-mobile {
+    display: block;
+    width: 100%;
+  }
+  .wrapper {
+    display: none;
+  }
+  .button-text {
+    margin-top: 1px;
+    margin-left: 17px;
+  }
+  .plus {
+    margin-left: -8px;
+  }
+
+  .row-eventbox {
+    display: flex;
+    margin-bottom: 0px;
+    justify-content: space-between;
+  }
 }
 </style>
