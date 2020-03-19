@@ -1,10 +1,11 @@
 <template>
   <div class="container">
-    <input class="input-name" placeholder="Hva skal eventet hete?" v-model="eventName" />
+    <div v-if="errorExist()" class="error-message">{{error.errorMessage}}</div>
+    <input class="input-name" v-bind:class="{ error: error.nameError }" placeholder="Hva skal eventet hete?" v-model="eventName" />
     <div class="wrapper">
-      <div class="half">
-        <date-time-picker :timestamps="this.getTimestamps()" @input="updateTimestamps"/>
-        <div class="row location-row">
+      <div class="left-half">
+        <date-time-picker v-bind:class="{ error: error.datetimeError }" :timestamps="this.getTimestamps()" @input="updateTimestamps"/>
+        <div class="row location-row" v-bind:class="{ error: error.locationError }">
           <img class="svg" src="@/assets/position.svg" />
           <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
         </div>
@@ -13,7 +14,7 @@
           <div class="user">{{creator}}</div>
         </div>
       </div>
-      <div class="row half right">
+      <div class="row right-half">
         <div class="column">
           <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
             <div>{{ eb.eventBoxName }}</div>
@@ -68,6 +69,17 @@ export default class AdminEditEvent extends Vue {
 
   private creator: string = this.event ? this.event.creator ? this.event.creator : '' : 'Logged in user'; // No way to update atm, the logged in user will be the creator
 
+  private error: {nameError: boolean, datetimeError: boolean, locationError: boolean, errorMessage: string} = {
+    nameError: false,
+    datetimeError: false,
+    locationError: false,
+    errorMessage: 'Feilmelding'
+  }
+
+  private errorExist(): boolean {
+    return this.error.nameError || this.error.datetimeError || this.error.locationError;
+  }
+
   private onCancel() {
     this.$emit('cancel');
   }
@@ -75,7 +87,6 @@ export default class AdminEditEvent extends Vue {
   private onCreate() {
     // Feilsjekking
     if (!this.validateEvent()) {
-      // Varsel om feil
       console.log('Invalid event');
       return;
     }
@@ -88,6 +99,7 @@ export default class AdminEditEvent extends Vue {
     // Popup varsel før det tar effekt?
     // Nytt event med deleted felt
     // Oppdater database
+
     console.log('Slett - Not implemented');
   }
 
@@ -136,44 +148,57 @@ export default class AdminEditEvent extends Vue {
   }
 
   private validateName(): boolean {
-    if (this.eventName && this.eventName.length <= 0) {
+    if (this.eventName && this.eventName.length > 0) {
       if (this.eventName.length > 255) {
-        console.log('Name to long');
+        this.error.nameError = true;
+        this.error.errorMessage = 'Navnet på arrangementet er for langt';
         return false;
       }
+      this.error.nameError = false;
+      this.error.errorMessage = '';
       return true;
     }
-    console.log('Name missing');
+    this.error.nameError = true;
+    this.error.errorMessage = 'Navnet på arrangementet mangler';
     return false;
   }
 
   private validateDateTime(): boolean {
     const now = ZonedDateTime.now();
     if (!this.timestamps) {
-      console.log('Timestamps not set');
-      return false;
-    }
-    else if (!this.timestamps.timestampTo.isAfter(now)) {
-      console.log('Timestamp cannot end before current time');
+      this.error.datetimeError = true;
+      this.error.errorMessage = 'Mangler tidspunkt for arrangementet';
       return false;
     }
     else if (!this.timestamps.timestampTo.isAfter(this.timestamps.timestampFrom)) {
-      console.log('Timestamp cannot end before it starts');
+      this.error.datetimeError = true;
+      this.error.errorMessage = 'Arrangementet kan ikke ha sluttidspunkt før starttidspunkt';
       return false;
     }
+    else if (!this.timestamps.timestampTo.isAfter(now)) {
+      this.error.datetimeError = true;
+      this.error.errorMessage = 'Arrangementet kan ikke være før nåværende tidspunkt';
+      return false;
+    }
+    this.error.datetimeError = false;
+    this.error.errorMessage = '';
     return true;
   }
 
   private validateLocation(): boolean {
     if (this.eventLocation && this.eventLocation.length > 0) {
       if (this.eventLocation.length > 255) {
-        console.log('Location to long');
+        this.error.locationError = true;
+        this.error.errorMessage = 'Stedsnavnet for arrangementet er for langt';
         return false;
       }
+      this.error.locationError = false;
+      this.error.errorMessage = '';
       return true;
 
     }
-    console.log('Location missing');
+    this.error.locationError = true;
+    this.error.errorMessage = 'Stedsnavnet for arrangementet mangler';
     return false;
   }
 }
@@ -223,7 +248,7 @@ export default class AdminEditEvent extends Vue {
   color: #212121;
   font: 20px/26px Roboto;
   border-bottom: 1.2px solid rgba(148, 148, 148, 0.2);
-  width: 100%;
+  width: 29.35rem;
   text-align: left;
   padding-left: 6px;
   margin-bottom: 25px;
@@ -274,8 +299,13 @@ export default class AdminEditEvent extends Vue {
 .time {
   margin: 0px 5px 0px 5px;
 }
-.half {
-  width: 50%;
+.left-half {
+  width: 54%;
+}
+.right-half{
+  width: 46%;
+  justify-content: flex-end;
+  margin-top: 3px;
 }
 .input-location {
   color: #212121;
@@ -304,11 +334,6 @@ export default class AdminEditEvent extends Vue {
   display: flex;
   width: 100%;
 }
-
-.right {
-  justify-content: flex-end;
-  margin-top: 3px;
-}
 .location-row {
   height: 20px;
 }
@@ -331,5 +356,15 @@ export default class AdminEditEvent extends Vue {
 }
 .dash {
   margin-left: 1.8rem;
+}
+.error {
+  border: 2px solid #D51919;
+}
+.error-message {
+  width: 29.35rem;
+  color: #D51919;
+  margin-bottom: 15px;
+  padding: 0px 8px 0px 8px;
+  text-align: left;
 }
 </style>

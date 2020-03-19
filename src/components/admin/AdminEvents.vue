@@ -96,7 +96,7 @@ export default class AdminEvents extends Vue {
     e.id = 'id' + Math.floor(Math.random() * 1000);
     e.creator = 'Admin';
     e.timestampFrom = ZonedDateTime.now();
-    e.timestampTo = ZonedDateTime.now();
+    e.timestampTo = ZonedDateTime.now().plusHours(1);
     e.eventName = 'Navn på event';
     e.active = true;
     e.eventLocation = 'Her';
