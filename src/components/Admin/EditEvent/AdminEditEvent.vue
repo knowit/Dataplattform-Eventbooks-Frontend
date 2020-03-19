@@ -84,25 +84,23 @@ export default class AdminEditEvent extends Vue {
     errorMessage: 'Feilmelding'
   }
 
-  private errorExist(): boolean {
-    return this.error.nameError || this.error.datetimeError || this.error.locationError;
-  }
-
   private onCancel() {
     this.$emit('cancel');
   }
 
   private onCreate() {
-    // Feilsjekking
     if (!this.validateEvent()) {
-      console.log('Invalid event');
       return;
     }
-    // Opprett eller oppdater event
     const newEvent = this.createEvent();
-    console.log(newEvent);
-    // Oppdater database
-    this.$emit('cancel');
+    // TODO: Oppdater database
+    if (this.createButtonString === 'Opprett') { // Sjekker om emit message skal være at et event ble opprettet eller oppdatert
+      this.$emit('finished', 'Arrangementet \'' + this.eventName + '\' ble opprettet.');
+    }
+    else {
+      this.$emit('finished', 'Arrangementet \'' + this.eventName + '\' ble endret.');
+    }
+
 
   }
   private onDelete() {
@@ -117,13 +115,13 @@ export default class AdminEditEvent extends Vue {
 
   private onDeleteConfirmed() {
     this.showDeletePrompt = false;
-    // Oppdater database
+    // TODO: Oppdater database
     console.log('Slett - Not implemented');
-    this.$emit('cancel');
+    this.$emit('finished', 'Arrangementet \'' + this.eventName + '\' ble slettet.');
   }
 
   private onAddBox() {
-    //Backend logic to allocate eventbox
+    // TODO: Backend logic to allocate eventbox
     console.log('Add box - Not implemented');
   }
   private removeBox(id: string) {
@@ -162,63 +160,55 @@ export default class AdminEditEvent extends Vue {
     }
   }
 
-  private validateEvent(): boolean {
-    return this.validateName() && this.validateDateTime() && this.validateLocation();
+  private errorExist(): boolean {
+    return this.error.nameError || this.error.datetimeError || this.error.locationError;
   }
 
-  private validateName(): boolean {
+  private validateEvent(): boolean {
+    const nameError = this.validateName();
+    const datetimeError = this.validateDateTime();
+    const locationError = this.validateLocation();
+    this.error = {
+      nameError: nameError.error,
+      datetimeError: datetimeError.error,
+      locationError: locationError.error,
+      errorMessage: [nameError.message, datetimeError.message, locationError.message].filter(Boolean).join('. ')
+    };
+    return !this.errorExist();
+  }
+
+  private validateName(): {error: boolean, message: string} {
     if (this.eventName && this.eventName.length > 0) {
       if (this.eventName.length > 255) {
-        this.error.nameError = true;
-        this.error.errorMessage = 'Navnet på arrangementet er for langt';
-        return false;
+        return {error: true, message: 'Navnet på arrangementet er for langt'};
       }
-      this.error.nameError = false;
-      this.error.errorMessage = '';
-      return true;
+      return {error: false, message: ''};
     }
-    this.error.nameError = true;
-    this.error.errorMessage = 'Navnet på arrangementet mangler';
-    return false;
+    return {error: true, message: 'Navnet på arrangementet mangler'};
   }
 
-  private validateDateTime(): boolean {
+  private validateDateTime(): {error: boolean, message: string} {
     const now = ZonedDateTime.now();
     if (!this.timestamps) {
-      this.error.datetimeError = true;
-      this.error.errorMessage = 'Mangler tidspunkt for arrangementet';
-      return false;
+      return {error: true, message: 'Mangler tidspunkt for arrangementet'};
     }
     else if (!this.timestamps.timestampTo.isAfter(this.timestamps.timestampFrom)) {
-      this.error.datetimeError = true;
-      this.error.errorMessage = 'Arrangementet kan ikke ha sluttidspunkt før starttidspunkt';
-      return false;
+      return {error: true, message: 'Arrangementet kan ikke ha sluttidspunkt før starttidspunkt'};
     }
     else if (!this.timestamps.timestampTo.isAfter(now)) {
-      this.error.datetimeError = true;
-      this.error.errorMessage = 'Arrangementet kan ikke være før nåværende tidspunkt';
-      return false;
+      return {error: true, message: 'Arrangementet kan ikke være før nåværende tidspunkt'};
     }
-    this.error.datetimeError = false;
-    this.error.errorMessage = '';
-    return true;
+    return {error: false, message: ''};
   }
 
-  private validateLocation(): boolean {
+  private validateLocation(): {error: boolean, message: string} {
     if (this.eventLocation && this.eventLocation.length > 0) {
       if (this.eventLocation.length > 255) {
-        this.error.locationError = true;
-        this.error.errorMessage = 'Stedsnavnet for arrangementet er for langt';
-        return false;
+        return {error: true, message: 'Stedsnavnet for arrangementet er for langt'};
       }
-      this.error.locationError = false;
-      this.error.errorMessage = '';
-      return true;
-
+      return {error: false, message: ''};
     }
-    this.error.locationError = true;
-    this.error.errorMessage = 'Stedsnavnet for arrangementet mangler';
-    return false;
+    return {error: true, message: 'Stedsnavnet for arrangementet mangler'};
   }
 }
 </script>

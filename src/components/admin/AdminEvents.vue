@@ -1,7 +1,8 @@
 <template>
   <div class="container">
+    <div class="edit-event-response">{{editEventResponse}}</div>
     <button class="create-event-button clickable" v-if="!showEdit" @click="onCreate">Opprett event</button>
-    <admin-edit-event v-else :event="this.editEvent" @cancel="onCancel" />
+    <admin-edit-event v-else :event="this.editEvent" @cancel="onCancel" @finished="onFinished"/>
     <admin-current-event title="Pågår nå" :event="this.active" @edit="onEdit" />
     <admin-event-list title="Mine kommende eventer" :events="this.future" :type="type[0]" @edit="onEdit" />
     <admin-event-item-info v-if="showEvent" :event="this.showEvent" @toggle="onToggle" />
@@ -38,6 +39,7 @@ export default class AdminEvents extends Vue {
   private showEdit: boolean = false;
   private editEvent: Event | null = null;
   private showEvent: Event | null = null;
+  private editEventResponse: string = '';
 
   private active: Event = this.createEvent();
   private future: Event[] = [this.createEvent(), this.createEvent()];
@@ -66,11 +68,19 @@ export default class AdminEvents extends Vue {
     this.showEdit = true;
 
   }
+  // Handles output message from EditEvent component
+  private onFinished(message: string) {
+    this.showEdit = false;
+    this.editEvent = null;
+    this.editEventResponse = message;
+    setTimeout(() => {
+      this.editEventResponse = '';
+    }, 5000);
 
+  }
   private onCancel() {
     this.showEdit = false;
     this.editEvent = null;
-
   }
 
   private findPastEvent(id: string): Event | null {
@@ -163,6 +173,11 @@ export default class AdminEvents extends Vue {
 }
 ::v-deep .clickable {
   cursor: pointer;
+}
+.edit-event-response {
+  width: 100%;
+  text-align: center;
+  margin: 0px 0 22px 0;
 }
 
 @media only screen and (max-width: 580px) {
