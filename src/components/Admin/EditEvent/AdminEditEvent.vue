@@ -1,36 +1,39 @@
 <template>
   <div class="container">
-    <div v-if="errorExist()" class="error-message">{{error.errorMessage}}</div>
-    <input class="input-name" v-bind:class="{ error: error.nameError }" placeholder="Hva skal eventet hete?" v-model="eventName" />
-    <div class="wrapper">
-      <div class="left-half">
-        <date-time-picker v-bind:class="{ error: error.datetimeError }" :timestamps="this.getTimestamps()" @input="updateTimestamps"/>
-        <div class="row location-row" v-bind:class="{ error: error.locationError }">
-          <img class="svg" src="@/assets/position.svg" />
-          <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
-        </div>
-        <div class="row">
-          <img class="svg" src="@/assets/person.svg" />
-          <div class="user">{{creator}}</div>
-        </div>
-      </div>
-      <div class="row right-half">
-        <div class="column">
-          <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
-            <div>{{ eb.eventBoxName }}</div>
-            <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
+    <delete-prompt v-if="showDeletePrompt" @cancel="onCancelDelete" @delete="onDeleteConfirmed"/>
+    <div v-else>
+      <div v-if="errorExist()" class="error-message">{{error.errorMessage}}</div>
+      <input class="input-name" v-bind:class="{ error: error.nameError }" placeholder="Hva skal arrangementet hete?" v-model="eventName" />
+      <div class="wrapper">
+        <div class="left-half">
+          <date-time-picker v-bind:class="{ error: error.datetimeError }" :timestamps="this.getTimestamps()" @input="updateTimestamps"/>
+          <div class="row location-row" v-bind:class="{ error: error.locationError }">
+            <img class="svg" src="@/assets/position.svg" />
+            <input class="input-location" placeholder="Hvor er arrangementet?" v-model="eventLocation" />
           </div>
-          <button @click="onAddBox" class="add-box blue clickable">
-            <img class="plus" src="@/assets/plus.svg" />
-            <div class="button-text">Legg til boks</div>
-          </button>
+          <div class="row">
+            <img class="svg" src="@/assets/person.svg" />
+            <div class="user">{{creator}}</div>
+          </div>
+        </div>
+        <div class="row right-half">
+          <div class="column">
+            <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
+              <div>{{ eb.eventBoxName }}</div>
+              <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
+            </div>
+            <button @click="onAddBox" class="add-box blue clickable">
+              <img class="plus" src="@/assets/plus.svg" />
+              <div class="button-text">Legg til boks</div>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="option-buttons">
-      <button class="cancel button clickable" @click="onCancel">Avbryt</button>
-      <button class="delete button clickable" @click="onDelete">Slett</button>
-      <button class="blue button clickable" @click="onCreate">{{createButtonString}}</button>
+      <div class="option-buttons">
+        <button class="cancel button clickable" @click="onCancel">Avbryt</button>
+        <button v-if="showDeleteButton" class="delete button clickable" @click="onDelete">Slett</button>
+        <button class="blue button clickable" @click="onCreate">{{createButtonString}}</button>
+      </div>
     </div>
   </div>
 </template>
@@ -41,17 +44,22 @@ import Event from '@/models/event.model';
 import EventBox from '@/models/eventBox.model';
 import TimePicker from './TimePicker.vue';
 import DateTimePicker from './DateTimePicker.vue';
+import DeletePrompt from './DeletePrompt.vue';
 import { ZonedDateTime, DateTimeFormatter, convert } from '@js-joda/core';
 import { DatePicker } from 'v-calendar';
 
 @Component({
-  components: { DatePicker, TimePicker, DateTimePicker }
+  components: { DatePicker, TimePicker, DateTimePicker, DeletePrompt }
 })
 export default class AdminEditEvent extends Vue {
   @Prop()
   private event?: Event;
 
   private createButtonString: string = this.event? 'Oppdater' : 'Opprett';
+
+  private showDeleteButton: boolean = this.event? true : false;
+
+  private showDeletePrompt: boolean = false;
 
   private eventName: string | undefined = this.event
     ? this.event.eventName
@@ -94,13 +102,24 @@ export default class AdminEditEvent extends Vue {
     const newEvent = this.createEvent();
     console.log(newEvent);
     // Oppdater database
+    this.$emit('cancel');
+
   }
   private onDelete() {
-    // Popup varsel før det tar effekt?
-    // Nytt event med deleted felt
-    // Oppdater database
+    // Popup varsel før det tar effekt
+    this.showDeletePrompt = true;
 
+  }
+
+  private onCancelDelete() {
+    this.showDeletePrompt = false;
+  }
+
+  private onDeleteConfirmed() {
+    this.showDeletePrompt = false;
+    // Oppdater database
     console.log('Slett - Not implemented');
+    this.$emit('cancel');
   }
 
   private onAddBox() {
@@ -209,10 +228,12 @@ export default class AdminEditEvent extends Vue {
   margin-bottom: 22px;
 }
 .option-buttons {
+  width: 100%;
   margin-left: auto;
+  text-align: right;
 }
 
-.button {
+::v-deep .button {
   height: 35px;
   border-radius: 2px;
   text-align: center;
@@ -233,12 +254,12 @@ export default class AdminEditEvent extends Vue {
   color: #ffffff;
   border: none;
 }
-.delete {
+::v-deep .delete {
   background: #D51919 0% 0% no-repeat padding-box;
   color: #ffffff;
   border: none;
 }
-.cancel {
+::v-deep .cancel {
   border: 1px solid #949494;
   background: #f1f0ed;
   color: #949494;
