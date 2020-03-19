@@ -1,6 +1,11 @@
 <template>
   <tr id="container" @click="onClickItem">
-    <td class="event-name">{{ event.eventName }}</td>
+    <div class="space-between">
+      <td class="event-name">{{ event.eventName }}</td>
+      <td class="edit-button clickable" v-if="type === 1">
+        <img src="@/assets/edit-symbol.svg" @click="onEdit" />
+      </td>
+    </div>
     <td class="event-info">Dato: {{ date }}</td>
     <td class="event-info">Tid: {{ startTime }}-{{ endTime }}</td>
     <td class="event-info" v-if="type === 1">
@@ -9,6 +14,7 @@
     <td class="event-info" v-if="type === 1">
       Eventboks: {{ eventBoxes }}
     </td>
+
   </tr>
 </template>
 
@@ -60,6 +66,9 @@ export default class AdminEventItemMobile extends Vue {
       this.$emit('show', this.event.id);
     }
   }
+  private onEdit() {
+    this.$emit('edit', this.event.id);
+  }
 }
 </script>
 
@@ -96,5 +105,10 @@ export default class AdminEventItemMobile extends Vue {
 
 tr:nth-child(odd) {
   background-color: #f5f5f3;
+}
+.space-between {
+  display: flex;
+  justify-content: space-between;
+  width: 18em;
 }
 </style>

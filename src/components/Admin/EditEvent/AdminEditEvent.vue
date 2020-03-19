@@ -6,12 +6,12 @@
       <date-time-picker :timestamps="this.getTimestamps()" @input="updateTimestamps" />
       <div class="row">
         <div class="mobile-add-eventbox">
-          <div class="row-eventbox">
-            <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
-              <div>{{ eb.eventBoxName }}</div>
-              <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
-            </div>
+
+          <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
+            <div>{{ eb.eventBoxName }}</div>
+            <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
           </div>
+
           <button @click="onAddBox" class="add-box blue clickable">
             <img class="plus" src="@/assets/plus.svg" />
             <div class="button-text">Legg til boks</div>
@@ -373,7 +373,7 @@ export default class AdminEditEvent extends Vue {
     display: none;
   }
   .button {
-    width: 4.6rem;
+    width: 5.5rem;
     margin-left: 0px;
   }
 
@@ -410,12 +410,6 @@ export default class AdminEditEvent extends Vue {
   }
   .plus {
     margin-left: -8px;
-  }
-
-  .row-eventbox {
-    display: flex;
-    margin-bottom: 0px;
-    justify-content: space-between;
   }
 }
 </style>
