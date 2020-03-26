@@ -1,8 +1,11 @@
 <template>
   <div class="container">
-    <input class="input-name" placeholder="Hva skal eventet hete?" v-model="eventName" />
 
-    <div class="wrapper-mobile">
+    <delete-prompt v-if="showDeletePrompt" @cancel="onCancelDelete" @delete="onDeleteConfirmed"/>
+    <div v-else>
+      <div v-if="errorExist()" class="error-message">{{error.errorMessage}}</div>
+      <input class="input-name" v-bind:class="{ error: error.nameError }" placeholder="Hva skal arrangementet hete?" v-model="eventName" />
+      <div class="wrapper-mobile">
       <date-time-picker :timestamps="this.getTimestamps()" @input="updateTimestamps" />
       <div class="row">
         <div class="mobile-add-eventbox">
@@ -29,40 +32,41 @@
       </div>
 
     </div>
-
-    <div class="wrapper">
-      <div class="half">
-        <date-time-picker :timestamps="this.getTimestamps()" @input="updateTimestamps" />
-
-        <div class="row location-row">
-          <img class="svg" src="@/assets/position.svg" />
-          <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
-        </div>
-        <div class="row">
-          <img class="svg" src="@/assets/person.svg" />
-          <div class="user">{{creator}}</div>
-        </div>
-      </div>
-      <div class="row half right">
-        <div class="column">
-          <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
-            <div>{{ eb.eventBoxName }}</div>
-            <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
+      <div class="wrapper">
+        <div class="left-half">
+          <date-time-picker v-bind:class="{ error: error.datetimeError }" :timestamps="this.getTimestamps()" @input="updateTimestamps"/>
+          <div class="row location-row" v-bind:class="{ error: error.locationError }">
+            <img class="svg" src="@/assets/position.svg" />
+            <input class="input-location" placeholder="Hvor er arrangementet?" v-model="eventLocation" />
           </div>
-          <button @click="onAddBox" class="add-box blue clickable">
-            <img class="plus" src="@/assets/plus.svg" />
-            <div class="button-text">Legg til boks</div>
-          </button>
+          <div class="row">
+            <img class="svg" src="@/assets/person.svg" />
+            <div class="user">{{creator}}</div>
+          </div>
+
+        </div>
+        <div class="row right-half">
+          <div class="column">
+            <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
+              <div>{{ eb.eventBoxName }}</div>
+              <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
+            </div>
+            <button @click="onAddBox" class="add-box blue clickable">
+              <img class="plus" src="@/assets/plus.svg" />
+              <div class="button-text">Legg til boks</div>
+            </button>
+          </div>
         </div>
       </div>
 
+      <div class="option-buttons">
+        <button class="cancel button clickable" @click="onCancel">Avbryt</button>
+        <button v-if="showDeleteButton" class="delete button clickable" @click="onDelete">Slett</button>
+        <button class="blue button clickable" @click="onCreate">{{createButtonString}}</button>
+      </div>
+
     </div>
-    <div class="option-buttons">
-      <button class="cancel button clickable" @click="onCancel">Avbryt</button>
-      <button class="delete button clickable" @click="onDelete">Slett</button>
-      <button class="blue button clickable" @click="onCreate">{{createButtonString}}</button>
-    </div>
-  </div>
+  
 </template>
 
 <script lang="ts">
@@ -71,17 +75,22 @@ import Event from '@/models/event.model';
 import EventBox from '@/models/eventBox.model';
 import TimePicker from './TimePicker.vue';
 import DateTimePicker from './DateTimePicker.vue';
+import DeletePrompt from './DeletePrompt.vue';
 import { ZonedDateTime, DateTimeFormatter, convert } from '@js-joda/core';
 import { DatePicker } from 'v-calendar';
 
 @Component({
-  components: { DatePicker, TimePicker, DateTimePicker }
+  components: { DatePicker, TimePicker, DateTimePicker, DeletePrompt }
 })
 export default class AdminEditEvent extends Vue {
   @Prop()
   private event?: Event;
 
   private createButtonString: string = this.event ? 'Oppdater' : 'Opprett';
+
+  private showDeleteButton: boolean = this.event? true : false;
+
+  private showDeletePrompt: boolean = false;
 
   private eventName: string | undefined = this.event
     ? this.event.eventName
@@ -99,31 +108,51 @@ export default class AdminEditEvent extends Vue {
 
   private creator: string = this.event ? this.event.creator ? this.event.creator : '' : 'Logged in user'; // No way to update atm, the logged in user will be the creator
 
+  private error: {nameError: boolean, datetimeError: boolean, locationError: boolean, errorMessage: string} = {
+    nameError: false,
+    datetimeError: false,
+    locationError: false,
+    errorMessage: 'Feilmelding'
+  }
+
   private onCancel() {
     this.$emit('cancel');
   }
 
   private onCreate() {
-    // Feilsjekking
     if (!this.validateEvent()) {
-      // Varsel om feil
-      console.log('Invalid event');
       return;
     }
-    // Opprett eller oppdater event
     const newEvent = this.createEvent();
-    console.log(newEvent);
-    // Oppdater database
+    // TODO: Oppdater database
+    if (this.createButtonString === 'Opprett') { // Sjekker om emit message skal være at et event ble opprettet eller oppdatert
+      this.$emit('finished', 'Arrangementet \'' + this.eventName + '\' ble opprettet.');
+    }
+    else {
+      this.$emit('finished', 'Arrangementet \'' + this.eventName + '\' ble endret.');
+    }
+
+
   }
   private onDelete() {
-    // Popup varsel før det tar effekt?
-    // Nytt event med deleted felt
-    // Oppdater database
+    // Popup varsel før det tar effekt
+    this.showDeletePrompt = true;
+
+  }
+
+  private onCancelDelete() {
+    this.showDeletePrompt = false;
+  }
+
+  private onDeleteConfirmed() {
+    this.showDeletePrompt = false;
+    // TODO: Oppdater database
     console.log('Slett - Not implemented');
+    this.$emit('finished', 'Arrangementet \'' + this.eventName + '\' ble slettet.');
   }
 
   private onAddBox() {
-    //Backend logic to allocate eventbox
+    // TODO: Backend logic to allocate eventbox
     console.log('Add box - Not implemented');
   }
   private removeBox(id: string) {
@@ -162,33 +191,55 @@ export default class AdminEditEvent extends Vue {
     }
   }
 
+  private errorExist(): boolean {
+    return this.error.nameError || this.error.datetimeError || this.error.locationError;
+  }
+
   private validateEvent(): boolean {
-    return this.validateName() && this.validateDateTime() && this.validateLoaction();
+    const nameError = this.validateName();
+    const datetimeError = this.validateDateTime();
+    const locationError = this.validateLocation();
+    this.error = {
+      nameError: nameError.error,
+      datetimeError: datetimeError.error,
+      locationError: locationError.error,
+      errorMessage: [nameError.message, datetimeError.message, locationError.message].filter(Boolean).join('. ')
+    };
+    return !this.errorExist();
   }
 
-  private validateName(): boolean {
-    return this.eventName ? this.eventName.length > 0 : false;
+  private validateName(): {error: boolean, message: string} {
+    if (this.eventName && this.eventName.length > 0) {
+      if (this.eventName.length > 255) {
+        return {error: true, message: 'Navnet på arrangementet er for langt'};
+      }
+      return {error: false, message: ''};
+    }
+    return {error: true, message: 'Navnet på arrangementet mangler'};
   }
 
-  private validateDateTime(): boolean {
+  private validateDateTime(): {error: boolean, message: string} {
     const now = ZonedDateTime.now();
     if (!this.timestamps) {
-      console.log('Timestamps not set');
-      return false;
-    }
-    else if (!this.timestamps.timestampFrom.isAfter(now)) {
-      console.log('Timestamp cannot start before current time');
-      return false;
+      return {error: true, message: 'Mangler tidspunkt for arrangementet'};
     }
     else if (!this.timestamps.timestampTo.isAfter(this.timestamps.timestampFrom)) {
-      console.log('Timestamp cannot end before it starts');
-      return false;
+      return {error: true, message: 'Arrangementet kan ikke ha sluttidspunkt før starttidspunkt'};
     }
-    return true;
+    else if (!this.timestamps.timestampTo.isAfter(now)) {
+      return {error: true, message: 'Arrangementet kan ikke være før nåværende tidspunkt'};
+    }
+    return {error: false, message: ''};
   }
 
-  private validateLoaction(): boolean {
-    return this.eventLocation ? this.eventLocation.length > 0 : false;
+  private validateLocation(): {error: boolean, message: string} {
+    if (this.eventLocation && this.eventLocation.length > 0) {
+      if (this.eventLocation.length > 255) {
+        return {error: true, message: 'Stedsnavnet for arrangementet er for langt'};
+      }
+      return {error: false, message: ''};
+    }
+    return {error: true, message: 'Stedsnavnet for arrangementet mangler'};
   }
 }
 </script>
@@ -198,10 +249,12 @@ export default class AdminEditEvent extends Vue {
   margin-bottom: 22px;
 }
 .option-buttons {
+  width: 100%;
   margin-left: auto;
+  text-align: right;
 }
 
-.button {
+::v-deep .button {
   height: 35px;
   border-radius: 2px;
   text-align: center;
@@ -222,12 +275,15 @@ export default class AdminEditEvent extends Vue {
   color: #ffffff;
   border: none;
 }
-.delete {
-  background: #d51919 0% 0% no-repeat padding-box;
+
+
+::v-deep .delete {
+  background: #D51919 0% 0% no-repeat padding-box;
+
   color: #ffffff;
   border: none;
 }
-.cancel {
+::v-deep .cancel {
   border: 1px solid #949494;
   background: #f1f0ed;
   color: #949494;
@@ -237,7 +293,7 @@ export default class AdminEditEvent extends Vue {
   color: #212121;
   font: 20px/26px Roboto;
   border-bottom: 1.2px solid rgba(148, 148, 148, 0.2);
-  width: 100%;
+  width: 29.35rem;
   text-align: left;
   padding-left: 6px;
   margin-bottom: 25px;
@@ -288,8 +344,13 @@ export default class AdminEditEvent extends Vue {
 .time {
   margin: 0px 5px 0px 5px;
 }
-.half {
-  width: 50%;
+.left-half {
+  width: 54%;
+}
+.right-half{
+  width: 46%;
+  justify-content: flex-end;
+  margin-top: 3px;
 }
 .input-location {
   color: #212121;
@@ -318,11 +379,6 @@ export default class AdminEditEvent extends Vue {
   display: flex;
   width: 100%;
 }
-
-.right {
-  justify-content: flex-end;
-  margin-top: 3px;
-}
 .location-row {
   height: 20px;
 }
@@ -346,6 +402,7 @@ export default class AdminEditEvent extends Vue {
 .dash {
   margin-left: 1.8rem;
 }
+
 
 .wrapper-mobile {
   display: none;
@@ -411,5 +468,16 @@ export default class AdminEditEvent extends Vue {
   .plus {
     margin-left: -8px;
   }
+
+.error {
+  border: 2px solid #D51919;
+}
+.error-message {
+  width: 29.35rem;
+  color: #D51919;
+  margin-bottom: 15px;
+  padding: 0px 8px 0px 8px;
+  text-align: left;
+
 }
 </style>
