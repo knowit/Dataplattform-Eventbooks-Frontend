@@ -6,7 +6,7 @@
     </div>
     <div v-if="isExpanded">
       <table v-if="isMobile">
-        <admin-event-item-mobile v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" />
+        <admin-event-item-mobile v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" @edit="onEdit" />
       </table>
       <table v-else>
         <admin-event-item v-for="e in events" :key="e.id" :type="type" :event="e" @show="onShow" @edit="onEdit" />
