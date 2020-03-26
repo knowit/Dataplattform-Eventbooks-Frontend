@@ -12,9 +12,9 @@ import { verifyEventCode } from '@/services/event.service';
 import EventCodeInput from './EventCodeInput.vue';
 
 @Component({
-    components: {
-        EventCodeInput
-    }
+  components: {
+    EventCodeInput
+  }
 })
 export default class EventSelector extends Vue {
 
@@ -59,6 +59,7 @@ export default class EventSelector extends Vue {
   background: #949494 0% 0% no-repeat padding-box;
   color: #ffffff;
   margin-top: 10px;
+  cursor: pointer;
 }
 
 .ok-button:enabled {

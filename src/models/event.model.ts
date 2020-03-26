@@ -40,6 +40,9 @@ export default class Event {
   @Expose({ name: 'event_box' })
   public eventBoxes?: EventBox[];
 
+  @Expose({ name: 'event_location' })
+  public eventLocation?: string;
+
   @Expose({ name: 'feedback' })
   public eventFeedback?: EventFeedback;
 }

@@ -8,17 +8,20 @@
     </div>
     <div class="description">
       Tid:
-      <div class="content">{{ startTime }} - {{ endTime }}</div>
+      <div class="content adjust-position">{{ startTime }} - {{ endTime }}</div>
     </div>
     <div class="description">
       Eventkode:
-      <div class="content">{{ event.eventId ? event.eventId : "" }}</div>
+      <div class="content adjust-position">{{ event.eventId ? event.eventId : "" }}</div>
     </div>
-    <div class="description">
-      Eventboks:
-      <div class="content" v-for="eb in event.eventBoxes" :key="eb.eventBoxName">
-        {{ eb.eventBoxName }}<span v-if="isActive" class="indicator active"></span><span v-else class="indicator inactive"></span>
+    <div class="description space-between">
+      <div>
+        Eventboks:
+        <div class="content" v-for="eb in event.eventBoxes" :key="eb.eventBoxName">
+          {{ eb.eventBoxName }}<span v-if="isActive" class="indicator active"></span><span v-else class="indicator inactive"></span>
+        </div>
       </div>
+      <img class="edit-button clickable" src="@/assets/edit-symbol.svg" @click="onEdit" />
     </div>
   </div>
 </template>
@@ -58,6 +61,9 @@ export default class AdminCurrentEvent extends Vue {
     const last = names.slice(-1)[0];
     return first.length ? first.join(', ') + ' & ' + last : last;
   }
+  private onEdit() {
+    this.$emit('edit', this.event.id);
+  }
 }
 </script>
 
@@ -86,6 +92,7 @@ table {
   letter-spacing: 0;
   color: #212121;
   padding: 1px 0px 1px 0px;
+  display: flex;
 }
 .content {
   display: inline;
@@ -108,5 +115,13 @@ table {
 }
 .inactive {
   background-color: #d51919;
+}
+
+.space-between {
+  justify-content: space-between;
+  width: 100%;
+}
+.adjust-position {
+  margin-top: 3.2px;
 }
 </style>

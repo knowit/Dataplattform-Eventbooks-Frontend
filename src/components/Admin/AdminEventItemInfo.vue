@@ -50,7 +50,7 @@ export default class AdminEventItemInfo extends Vue {
   }
 
   private get date() {
-    return DateTimeFormatter.ofPattern('DD.MM').format(
+    return DateTimeFormatter.ofPattern('dd.MM').format(
       this.event.timestampFrom!
     );
   }
