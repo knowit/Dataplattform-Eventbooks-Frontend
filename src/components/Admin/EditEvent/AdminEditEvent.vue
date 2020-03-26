@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <delete-prompt v-if="showDeletePrompt" @cancel="onCancelDelete" @delete="onDeleteConfirmed" />
     <div v-else>
       <div v-if="errorExist()" class="error-message">{{error.errorMessage}}</div>
@@ -9,12 +8,10 @@
         <date-time-picker v-bind:class="{ error: error.datetimeError }" :timestamps="this.getTimestamps()" @input="updateTimestamps" />
         <div class="row">
           <div class="mobile-add-eventbox">
-
             <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
               <div>{{ eb.eventBoxName }}</div>
               <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
             </div>
-
             <button @click="onAddBox" class="add-box blue clickable">
               <img class="plus" src="@/assets/plus.svg" />
               <div class="button-text">Legg til boks</div>
@@ -29,7 +26,6 @@
           <img class="svg" src="@/assets/person.svg" />
           <div class="user">{{creator}}</div>
         </div>
-
       </div>
       <div class="wrapper">
         <div class="left-half">
@@ -42,7 +38,6 @@
             <img class="svg" src="@/assets/person.svg" />
             <div class="user">{{creator}}</div>
           </div>
-
         </div>
         <div class="row right-half">
           <div class="column">
@@ -57,7 +52,6 @@
           </div>
         </div>
       </div>
-
       <div class="option-buttons">
         <button class="cancel button clickable" @click="onCancel">Avbryt</button>
         <button v-if="showDeleteButton" class="delete button clickable" @click="onDelete">Slett</button>
@@ -423,7 +417,7 @@ export default class AdminEditEvent extends Vue {
     margin-bottom: 20px;
   }
   .input-name{
-    width: 16.7rem;
+    width: 18rem;
     border-radius: 0px;
   }
   .input-location {
