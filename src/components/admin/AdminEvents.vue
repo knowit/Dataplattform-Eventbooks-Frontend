@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="edit-event-response">{{editEventResponse}}</div>
-    <button class="create-event-button clickable" v-if="!showEdit" @click="onCreate">Opprett event</button>
-    <admin-edit-event v-else :event="this.editEvent" @cancel="onCancel" @finished="onFinished"/>
+    <admin-edit-event v-if="showEdit" :event="this.editEvent" :key="this.editEvent ? this.editEvent.id : 0" @cancel="onCancel" @finished="onFinished"/>
+    <button class="create-event-button clickable" v-else @click="onCreate">Opprett event</button>
     <admin-current-event title="Pågår nå" :event="this.active" @edit="onEdit" />
     <admin-event-list title="Mine kommende eventer" :events="this.future" :type="type[0]" @edit="onEdit" />
     <admin-event-item-info v-if="showEvent" :event="this.showEvent" @toggle="onToggle" />
