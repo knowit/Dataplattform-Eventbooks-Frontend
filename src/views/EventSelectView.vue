@@ -1,5 +1,8 @@
 <template>
-  <router-view />
+  <div>
+    <img id="logo" src="@/assets/app-logo.svg" />
+    <router-view />
+  </div>
 </template>
 
 <script lang="ts">

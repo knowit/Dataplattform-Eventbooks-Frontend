@@ -1,5 +1,6 @@
 <template>
   <div id="container">
+    <img id="logo" src="@/assets/app-logo.svg" />
     <p id="event-name">EVENT NAME GOES HERE</p>
     <component :is="stepComponent" :rating="rating" @rating-click="ratingClick" @send-comment="sendComment"/>
   </div>

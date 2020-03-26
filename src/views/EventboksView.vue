@@ -1,6 +1,6 @@
 <template>
   <div class="eventboks-container">
-    <!-- <img id="logo" src="../assets/app-logo.svg" /> -->
+    <img id="logo" src="@/assets/app-logo.svg" />
     <router-view />
   </div>
 </template>
@@ -23,4 +23,3 @@ export default class EventboksView extends Vue {
   bottom: 3em;
 }
 </style>
-

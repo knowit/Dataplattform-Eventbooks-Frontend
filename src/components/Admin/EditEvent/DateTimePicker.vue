@@ -98,7 +98,7 @@ export default class DateTimePicker extends Vue {
 }
 
 .date-picker {
-  width: 5.3rem;
+  width: 5.8rem;
   margin-left: 28px;
   padding: 6px 5px 4px 5px;
 }

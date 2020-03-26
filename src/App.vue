@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img id="logo" src="@/assets/app-logo.svg" />
+    <!-- <img id="logo" src="@/assets/app-logo.svg" /> -->
     <router-view />
   </div>
 </template>
@@ -25,7 +25,7 @@ export default class App extends Vue { }
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  min-height: 100%;
   width: 100vw;
   background-color: #f1f0ed;
 }

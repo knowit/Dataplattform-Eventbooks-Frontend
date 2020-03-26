@@ -52,7 +52,6 @@ export default class AdminView extends Vue {
   padding-top: 100px;
   padding-bottom: 50px;
 }
-
 #logo {
   position: static;
   bottom: 3em;

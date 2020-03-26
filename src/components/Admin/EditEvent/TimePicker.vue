@@ -130,7 +130,7 @@ export default class TimePicker extends Vue {
 <style scoped>
 .input {
   color: #212121;
-  width: 42px;
+  width: 3.7rem;
   font-size: 15px;
   background-color: #f1f0ed;
   outline: none;
