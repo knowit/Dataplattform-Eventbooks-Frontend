@@ -1,11 +1,13 @@
 <template>
-  <div class="container">
-    <label for="feedback">Hva likte du? Hva kunne vært bedre? (Valgfritt)</label>
-    <br />
-    <textarea v-model="comment" id="comment"></textarea>
-    <div class="nav-btn-container">
-      <button class="nav-btn back-btn" @click="emitBack">Tilbake</button>
-      <button class="nav-btn next-btn" @click="emitFinished">Ferdig</button>
+  <div class="container" @mouseup.self="onMouseUp" @mousedown.self="onMouseDown">
+    <div class="inner-container">
+      <button id="comment-back-btn" class="btn" @click="emitBack">
+        <i class="material-icons">arrow_back</i>
+      </button>
+      <textarea v-model="comment" ref="field" class="comment-txt-area" placeholder="Din kommentar her..."></textarea>
+      <button id="comment-ok-btn" class="btn" @click="emitFinished">
+        <i class="material-icons">check</i>
+      </button>
     </div>
   </div>
 </template>
@@ -22,15 +24,12 @@ export default class EventComment extends Vue {
 
   private comment = this.value
 
+  private mouseDown = false;
+
   @Watch('comment')
   @Emit('input')
   private emitInput() {
     return this.comment;
-  }
-
-  @Emit('back')
-  private emitBack() {
-    return;
   }
 
   @Emit('finished')
@@ -38,56 +37,75 @@ export default class EventComment extends Vue {
     return;
   }
 
+  @Emit('back')
+  private emitBack() {
+    return;
+  }
+
+  // Close only if click started AND ended in container.self
+  // @click does not work because this is fired if click started OR ended in container.self
+  private onMouseDown() {
+    this.mouseDown = true;
+  }
+
+  private onMouseUp() {
+    const mouseDown = this.mouseDown;
+    this.mouseDown = false;
+
+    if (mouseDown) {
+      this.emitBack();
+    }
+  }
+
+  private mounted() {
+    (this.$refs.field as HTMLElement).focus();
+  }
 }
 
 </script>
 
 <style scoped>
-
-.nav-btn {
-  font-size: 14px;
-  padding: 1em 3em;
-  font: 400 12px "Roboto", sans-serif;
-  margin-left: 2em;
-  margin-top: 1em;
-  border-radius: 2px;
+#comment-back-btn {
+  float: left;
+  background-color: transparent;
+  color: #232323;
 }
 
-.next-btn {
+#comment-ok-btn {
+  float: right;
+  border-radius: 50%;
+  margin: 8px;
   background-color: var(--btn-blue);
-  border: none;
-  color: #fff;
-}
-
-.back-btn {
-  background-color: rgba(0, 0, 0, 0);
-  border: 2px solid #949494;
-  color: #696969;
+  color: white;
 }
 
 .container {
-  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
   text-align: start;
-  width: 90vw;
-  max-width: 48em;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(1, 1, 1, 0.5);
+  align-items: center;
+  justify-content: center;
 }
 
-#comment {
-  color: #707070;
+.inner-container {
+  display: block;
+  width: 48em;
+  background-color: white;
+}
+
+.comment-txt-area {
+  color: #232323;
   border-radius: 2px;
   border-style: none;
   resize: none;
+  padding: 2em;
   height: 15em;
   width: 100%;
-  padding: 2em;
   font: 400 14px "Roboto", sans-serif;
-  box-sizing: border-box;
 }
-
-.nav-btn-container {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-}
-  
 </style>

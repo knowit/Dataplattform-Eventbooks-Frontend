@@ -26,8 +26,6 @@ export default class EventCodeInput extends Vue {
   private inputs!: HTMLInputElement[];
 
   private onInput(value: string, n: number) {
-    console.log('onInput', value);
-
     // Use last value because maxValue is only checked
     // on chrome-android after focus lost
     const last = value ? value[value.length - 1] : '';
