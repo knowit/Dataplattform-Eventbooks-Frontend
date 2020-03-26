@@ -1,12 +1,39 @@
 <template>
   <div class="container">
-    <delete-prompt v-if="showDeletePrompt" @cancel="onCancelDelete" @delete="onDeleteConfirmed"/>
+
+    <delete-prompt v-if="showDeletePrompt" @cancel="onCancelDelete" @delete="onDeleteConfirmed" />
     <div v-else>
       <div v-if="errorExist()" class="error-message">{{error.errorMessage}}</div>
       <input class="input-name" v-bind:class="{ error: error.nameError }" placeholder="Hva skal arrangementet hete?" v-model="eventName" />
+      <div class="wrapper-mobile">
+        <date-time-picker v-bind:class="{ error: error.datetimeError }" :timestamps="this.getTimestamps()" @input="updateTimestamps" />
+        <div class="row">
+          <div class="mobile-add-eventbox">
+
+            <div class="eventbox" v-for="eb in eventBoxes" :key="eb.eventBoxName">
+              <div>{{ eb.eventBoxName }}</div>
+              <img class="cross clickable" @click="removeBox(eb.eventBoxId)" src="@/assets/plus.svg" />
+            </div>
+
+            <button @click="onAddBox" class="add-box blue clickable">
+              <img class="plus" src="@/assets/plus.svg" />
+              <div class="button-text">Legg til boks</div>
+            </button>
+          </div>
+        </div>
+        <div class="row location-row" v-bind:class="{ error: error.locationError }">
+          <img class="location-svg svg" src="@/assets/position.svg" />
+          <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
+        </div>
+        <div class="row">
+          <img class="svg" src="@/assets/person.svg" />
+          <div class="user">{{creator}}</div>
+        </div>
+
+      </div>
       <div class="wrapper">
         <div class="left-half">
-          <date-time-picker v-bind:class="{ error: error.datetimeError }" :timestamps="this.getTimestamps()" @input="updateTimestamps"/>
+          <date-time-picker v-bind:class="{ error: error.datetimeError }" :timestamps="this.getTimestamps()" @input="updateTimestamps" />
           <div class="row location-row" v-bind:class="{ error: error.locationError }">
             <img class="svg" src="@/assets/position.svg" />
             <input class="input-location" placeholder="Hvor er arrangementet?" v-model="eventLocation" />
@@ -15,6 +42,7 @@
             <img class="svg" src="@/assets/person.svg" />
             <div class="user">{{creator}}</div>
           </div>
+
         </div>
         <div class="row right-half">
           <div class="column">
@@ -29,6 +57,7 @@
           </div>
         </div>
       </div>
+
       <div class="option-buttons">
         <button class="cancel button clickable" @click="onCancel">Avbryt</button>
         <button v-if="showDeleteButton" class="delete button clickable" @click="onDelete">Slett</button>
@@ -36,6 +65,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script lang="ts">
@@ -55,9 +85,9 @@ export default class AdminEditEvent extends Vue {
   @Prop()
   private event?: Event;
 
-  private createButtonString: string = this.event? 'Oppdater' : 'Opprett';
+  private createButtonString: string = this.event ? 'Oppdater' : 'Opprett';
 
-  private showDeleteButton: boolean = this.event? true : false;
+  private showDeleteButton: boolean = this.event ? true : false;
 
   private showDeletePrompt: boolean = false;
 
@@ -65,7 +95,7 @@ export default class AdminEditEvent extends Vue {
     ? this.event.eventName
     : '';
 
-  private timestamps: {timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime} | undefined = this.getTimestamps();
+  private timestamps: { timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime } | undefined = this.getTimestamps();
 
   private eventBoxes: EventBox[] | undefined = this.event ?
     this.event.eventBoxes
@@ -77,7 +107,7 @@ export default class AdminEditEvent extends Vue {
 
   private creator: string = this.event ? this.event.creator ? this.event.creator : '' : 'Logged in user'; // No way to update atm, the logged in user will be the creator
 
-  private error: {nameError: boolean, datetimeError: boolean, locationError: boolean, errorMessage: string} = {
+  private error: { nameError: boolean, datetimeError: boolean, locationError: boolean, errorMessage: string } = {
     nameError: false,
     datetimeError: false,
     locationError: false,
@@ -130,7 +160,7 @@ export default class AdminEditEvent extends Vue {
     }
   }
 
-  private updateTimestamps(newTimestamps: {timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime}) {
+  private updateTimestamps(newTimestamps: { timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime }) {
     this.timestamps = newTimestamps;
   }
 
@@ -151,7 +181,7 @@ export default class AdminEditEvent extends Vue {
     return 'id' + Math.floor(Math.random() * 1000);
   }
 
-  private getTimestamps(): {timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime} | undefined {
+  private getTimestamps(): { timestampFrom: ZonedDateTime, timestampTo: ZonedDateTime } | undefined {
     if (this.event && this.event.timestampFrom && this.event.timestampTo) {
       return {
         timestampFrom: this.event.timestampFrom,
@@ -177,38 +207,38 @@ export default class AdminEditEvent extends Vue {
     return !this.errorExist();
   }
 
-  private validateName(): {error: boolean, message: string} {
+  private validateName(): { error: boolean, message: string } {
     if (this.eventName && this.eventName.length > 0) {
       if (this.eventName.length > 255) {
-        return {error: true, message: 'Navnet på arrangementet er for langt'};
+        return { error: true, message: 'Navnet på arrangementet er for langt' };
       }
-      return {error: false, message: ''};
+      return { error: false, message: '' };
     }
-    return {error: true, message: 'Navnet på arrangementet mangler'};
+    return { error: true, message: 'Navnet på arrangementet mangler' };
   }
 
-  private validateDateTime(): {error: boolean, message: string} {
+  private validateDateTime(): { error: boolean, message: string } {
     const now = ZonedDateTime.now();
     if (!this.timestamps) {
-      return {error: true, message: 'Mangler tidspunkt for arrangementet'};
+      return { error: true, message: 'Mangler tidspunkt for arrangementet' };
     }
     else if (!this.timestamps.timestampTo.isAfter(this.timestamps.timestampFrom)) {
-      return {error: true, message: 'Arrangementet kan ikke ha sluttidspunkt før starttidspunkt'};
+      return { error: true, message: 'Arrangementet kan ikke ha sluttidspunkt før starttidspunkt' };
     }
     else if (!this.timestamps.timestampTo.isAfter(now)) {
-      return {error: true, message: 'Arrangementet kan ikke være før nåværende tidspunkt'};
+      return { error: true, message: 'Arrangementet kan ikke være før nåværende tidspunkt' };
     }
-    return {error: false, message: ''};
+    return { error: false, message: '' };
   }
 
-  private validateLocation(): {error: boolean, message: string} {
+  private validateLocation(): { error: boolean, message: string } {
     if (this.eventLocation && this.eventLocation.length > 0) {
       if (this.eventLocation.length > 255) {
-        return {error: true, message: 'Stedsnavnet for arrangementet er for langt'};
+        return { error: true, message: 'Stedsnavnet for arrangementet er for langt' };
       }
-      return {error: false, message: ''};
+      return { error: false, message: '' };
     }
-    return {error: true, message: 'Stedsnavnet for arrangementet mangler'};
+    return { error: true, message: 'Stedsnavnet for arrangementet mangler' };
   }
 }
 </script>
@@ -244,8 +274,10 @@ export default class AdminEditEvent extends Vue {
   color: #ffffff;
   border: none;
 }
+
 ::v-deep .delete {
-  background: #D51919 0% 0% no-repeat padding-box;
+  background: #d51919 0% 0% no-repeat padding-box;
+
   color: #ffffff;
   border: none;
 }
@@ -265,6 +297,7 @@ export default class AdminEditEvent extends Vue {
   margin-bottom: 25px;
   background-color: #f1f0ed;
   outline: none;
+  text-overflow: ellipsis;
 }
 .baseline {
   align-items: baseline;
@@ -298,7 +331,7 @@ export default class AdminEditEvent extends Vue {
 ::v-deep .svg {
   filter: invert(52%) sepia(0%) saturate(980%) hue-rotate(315deg)
     brightness(81%) contrast(105%);
-  height: 20px;
+  height: 1.25rem;
 }
 .plus {
   filter: invert(96%) sepia(48%) saturate(429%) hue-rotate(45deg)
@@ -313,7 +346,7 @@ export default class AdminEditEvent extends Vue {
 .left-half {
   width: 54%;
 }
-.right-half{
+.right-half {
   width: 46%;
   justify-content: flex-end;
   margin-top: 3px;
@@ -344,6 +377,7 @@ export default class AdminEditEvent extends Vue {
 .wrapper {
   display: flex;
   width: 100%;
+
 }
 .location-row {
   height: 20px;
@@ -354,6 +388,7 @@ export default class AdminEditEvent extends Vue {
   text-align: left;
   margin-bottom: 5px;
   justify-content: space-between;
+  align-items:center;
 }
 
 .cross {
@@ -368,14 +403,97 @@ export default class AdminEditEvent extends Vue {
 .dash {
   margin-left: 1.8rem;
 }
+
+.wrapper-mobile {
+  display: none;
+}
 .error {
-  border: 2px solid #D51919;
+  border: 2px solid #d51919;
 }
 .error-message {
   width: 29.35rem;
-  color: #D51919;
+  color: #d51919;
   margin-bottom: 15px;
   padding: 0px 8px 0px 8px;
   text-align: left;
+}
+
+@media only screen and (max-width: 580px) {
+  .container {
+    margin-bottom: 20px;
+  }
+  .input-name{
+    width: 16.7rem;
+    border-radius: 0px;
+  }
+  .input-location {
+    font-size: 20px;
+    border-radius: 0px;
+    padding-left: 0px;
+  }
+  .location-row {
+    height: 35px;
+  }
+  .location-svg{
+    margin-top: 5px;
+  }
+  .svg {
+    height: 1.4rem;
+  }
+  .user {
+    font-size: 20px;
+  }
+  .column {
+    display: none;
+  }
+  .button {
+    width: 5.5rem;
+    margin-left: 0px;
+  }
+  .eventbox {
+    width: 17.8rem;
+    padding-left: 4px;
+    margin-bottom: 10px;
+  }
+  .mobile-add-eventbox {
+    display: block;
+    width: 100%;
+  }
+  .cross{
+    height: 1.6rem;
+  }
+  .add-box {
+    height: 35px;
+  }
+  .option-buttons {
+    width: 100%;
+    margin-left: 0px;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .add-box {
+    height: 35px;
+    width: 100%;
+  }
+  .wrapper-mobile {
+    display: block;
+    width: 18rem;
+    /*width: 50%;*/
+  }
+  .wrapper {
+    display: none;
+  }
+  .button-text {
+    margin-top: 1px;
+    margin-left: 17px;
+  }
+  .plus {
+    margin-left: -8px;
+  }
+  .error-message {
+    width: 17rem;
+  }
 }
 </style>
