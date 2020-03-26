@@ -22,8 +22,7 @@
           </div>
         </div>
         <div class="row location-row" v-bind:class="{ error: error.locationError }">
-
-          <img class="svg" src="@/assets/position.svg" />
+          <img class="location-svg svg" src="@/assets/position.svg" />
           <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
         </div>
         <div class="row">
@@ -332,7 +331,7 @@ export default class AdminEditEvent extends Vue {
 ::v-deep .svg {
   filter: invert(52%) sepia(0%) saturate(980%) hue-rotate(315deg)
     brightness(81%) contrast(105%);
-  height: 20px;
+  height: 1.25rem;
 }
 .plus {
   filter: invert(96%) sepia(48%) saturate(429%) hue-rotate(45deg)
@@ -378,7 +377,7 @@ export default class AdminEditEvent extends Vue {
 .wrapper {
   display: flex;
   width: 100%;
-  
+
 }
 .location-row {
   height: 20px;
@@ -389,6 +388,7 @@ export default class AdminEditEvent extends Vue {
   text-align: left;
   margin-bottom: 5px;
   justify-content: space-between;
+  align-items:center;
 }
 
 .cross {
@@ -419,21 +419,27 @@ export default class AdminEditEvent extends Vue {
 }
 
 @media only screen and (max-width: 580px) {
+  .container {
+    margin-bottom: 20px;
+  }
+  .input-name{
+    width: 16.7rem;
+    border-radius: 0px;
+  }
   .input-location {
-    margin-bottom: 10px;
     font-size: 20px;
     border-radius: 0px;
     padding-left: 0px;
   }
   .location-row {
-    height: 40px;
+    height: 35px;
   }
-
-  .input-name {
-    border-radius: 0px;
-    /*max-width: 18rem;*/
+  .location-svg{
+    margin-top: 5px;
   }
-
+  .svg {
+    height: 1.4rem;
+  }
   .user {
     font-size: 20px;
   }
@@ -444,22 +450,28 @@ export default class AdminEditEvent extends Vue {
     width: 5.5rem;
     margin-left: 0px;
   }
-
+  .eventbox {
+    width: 17.8rem;
+    padding-left: 4px;
+    margin-bottom: 10px;
+  }
   .mobile-add-eventbox {
     display: block;
     width: 100%;
   }
+  .cross{
+    height: 1.6rem;
+  }
   .add-box {
     height: 35px;
   }
-
   .option-buttons {
     width: 100%;
     margin-left: 0px;
+    text-align: left;
     display: flex;
     flex-direction: row;
-    justify-content: baseline;
-    margin-bottom: 40px;
+    justify-content: space-between;
   }
   .add-box {
     height: 35px;
@@ -480,17 +492,8 @@ export default class AdminEditEvent extends Vue {
   .plus {
     margin-left: -8px;
   }
-
-  .error {
-    border: 2px solid #d51919;
-  }
   .error-message {
     width: 17rem;
-    color: #d51919;
-    margin-bottom: 15px;
-    padding: 0px 8px 0px 8px;
-    text-align: left;
   }
 }
 </style>
-
