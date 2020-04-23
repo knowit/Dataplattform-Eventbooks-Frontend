@@ -7,8 +7,8 @@
       &ndash; {{ eventBoxes }}
     </td>
     <td class="event-name-wrapper event-name" v-else>{{ event.eventName }}</td>
-    <td class="event-id" v-if="type === 1">
-      {{ event.eventId ? event.eventId : "" }}
+    <td class="event-code" v-if="type === 1">
+      {{ event.eventCode ? event.eventCode : "" }}
     </td>
     <td class="edit-button clickable" v-if="type === 1">
       <img src="@/assets/edit-symbol.svg" @click="onEdit" />
@@ -105,7 +105,7 @@ export default class AdminEventItem extends Vue {
   min-width: 13.3rem;
   margin-right: 0.5rem;
 }
-.event-id {
+.event-code {
   font-style: italic;
   margin-right: 5px;
   margin-left: auto;

@@ -11,7 +11,7 @@
     <div class="row">
       <div class="description column">Tid: {{ startTime }} - {{ endTime }}</div>
       <div class="description">
-        Eventkode: {{ event.eventId ? event.eventId : "" }}
+        Eventkode: {{ event.eventCode ? event.eventCode : "" }}
       </div>
     </div>
     <admin-event-votes :event="this.event" />

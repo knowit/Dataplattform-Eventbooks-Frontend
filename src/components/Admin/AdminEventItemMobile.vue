@@ -9,7 +9,7 @@
     <td class="event-info">Dato: {{ date }}</td>
     <td class="event-info">Tid: {{ startTime }}-{{ endTime }}</td>
     <td class="event-info" v-if="type === 1">
-      Eventkode: {{ event.eventId ? event.eventId : "" }}
+      Eventkode: {{ event.eventCode ? event.eventCode : "" }}
     </td>
     <td class="event-info" v-if="type === 1">
       Eventboks: {{ eventBoxes }}
