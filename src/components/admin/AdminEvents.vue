@@ -109,7 +109,6 @@ export default class AdminEvents extends Vue {
     e.timestampTo = ZonedDateTime.now().plusHours(1);
     e.eventName = 'Navn på event';
     e.active = true;
-    e.eventLocation = 'Her';
     e.eventId = '12345';
     e.eventBoxes = [
       new EventBox(),

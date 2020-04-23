@@ -18,10 +18,6 @@
             </button>
           </div>
         </div>
-        <div class="row location-row" v-bind:class="{ error: error.locationError }">
-          <img class="location-svg svg" src="@/assets/position.svg" />
-          <input class="input-location" placeholder="Hvor er eventet?" v-model="eventLocation" />
-        </div>
         <div class="row">
           <img class="svg" src="@/assets/person.svg" />
           <div class="user">{{creator}}</div>
@@ -30,10 +26,6 @@
       <div class="wrapper">
         <div class="left-half">
           <date-time-picker v-bind:class="{ error: error.datetimeError }" :timestamps="this.getTimestamps()" @input="updateTimestamps" />
-          <div class="row location-row" v-bind:class="{ error: error.locationError }">
-            <img class="svg" src="@/assets/position.svg" />
-            <input class="input-location" placeholder="Hvor er arrangementet?" v-model="eventLocation" />
-          </div>
           <div class="row">
             <img class="svg" src="@/assets/person.svg" />
             <div class="user">{{creator}}</div>
@@ -95,16 +87,11 @@ export default class AdminEditEvent extends Vue {
     this.event.eventBoxes
     : [];
 
-  private eventLocation: string | undefined = this.event ?
-    this.event.eventLocation
-    : '';
-
   private creator: string = this.event ? this.event.creator ? this.event.creator : '' : 'Logged in user'; // No way to update atm, the logged in user will be the creator
 
-  private error: { nameError: boolean, datetimeError: boolean, locationError: boolean, errorMessage: string } = {
+  private error: { nameError: boolean, datetimeError: boolean, errorMessage: string } = {
     nameError: false,
     datetimeError: false,
-    locationError: false,
     errorMessage: 'Feilmelding'
   }
 
@@ -164,7 +151,6 @@ export default class AdminEditEvent extends Vue {
     e.eventName = this.eventName;
     e.timestampFrom = this.timestamps ? this.timestamps.timestampFrom : undefined;
     e.timestampTo = this.timestamps ? this.timestamps.timestampTo : undefined;
-    e.eventLocation = this.eventLocation;
     e.eventBoxes = this.eventBoxes;
     e.active = true;
     return e;
@@ -185,18 +171,16 @@ export default class AdminEditEvent extends Vue {
   }
 
   private errorExist(): boolean {
-    return this.error.nameError || this.error.datetimeError || this.error.locationError;
+    return this.error.nameError || this.error.datetimeError;
   }
 
   private validateEvent(): boolean {
     const nameError = this.validateName();
     const datetimeError = this.validateDateTime();
-    const locationError = this.validateLocation();
     this.error = {
       nameError: nameError.error,
       datetimeError: datetimeError.error,
-      locationError: locationError.error,
-      errorMessage: [nameError.message, datetimeError.message, locationError.message].filter(Boolean).join('. ')
+      errorMessage: [nameError.message, datetimeError.message].filter(Boolean).join('. ')
     };
     return !this.errorExist();
   }
@@ -225,15 +209,6 @@ export default class AdminEditEvent extends Vue {
     return { error: false, message: '' };
   }
 
-  private validateLocation(): { error: boolean, message: string } {
-    if (this.eventLocation && this.eventLocation.length > 0) {
-      if (this.eventLocation.length > 255) {
-        return { error: true, message: 'Stedsnavnet for arrangementet er for langt' };
-      }
-      return { error: false, message: '' };
-    }
-    return { error: true, message: 'Stedsnavnet for arrangementet mangler' };
-  }
 }
 </script>
 
@@ -345,17 +320,6 @@ export default class AdminEditEvent extends Vue {
   justify-content: flex-end;
   margin-top: 3px;
 }
-.input-location {
-  color: #212121;
-  border: none;
-  margin-left: 15px;
-  border-bottom: 1.2px solid rgba(148, 148, 148, 0.2);
-  text-align: left;
-  width: 100%;
-  background-color: #f1f0ed;
-  font-size: 15px;
-  outline: none;
-}
 .user {
   color: #212121;
   margin-left: 15px;
@@ -372,9 +336,6 @@ export default class AdminEditEvent extends Vue {
   display: flex;
   width: 100%;
 
-}
-.location-row {
-  height: 20px;
 }
 .eventbox {
   display: flex;
@@ -419,17 +380,6 @@ export default class AdminEditEvent extends Vue {
   .input-name{
     width: 18rem;
     border-radius: 0px;
-  }
-  .input-location {
-    font-size: 20px;
-    border-radius: 0px;
-    padding-left: 0px;
-  }
-  .location-row {
-    height: 35px;
-  }
-  .location-svg{
-    margin-top: 5px;
   }
   .svg {
     height: 1.4rem;
