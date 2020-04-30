@@ -9,8 +9,8 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-import EventRatingButtons, { RatingButtonType } from '@/components/EventRating/EventRatingButtons.vue';
-import EventRatingFinished from '@/components/EventRating/EventRatingFinished.vue';
+import EventRatingButtons, { RatingButtonType } from '@/components/eventRating/EventRatingButtons.vue';
+import EventRatingFinished from '@/components/eventRating/EventRatingFinished.vue';
 import { sendVote, sendComment } from '@/services/event.service';
 
 @Component({

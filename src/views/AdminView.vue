@@ -15,8 +15,8 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 import { signOut, isAuthenticated } from '@/services/authentication.service';
-import User from '@/components/Admin/User.vue';
-import AdminEvents from '@/components/Admin/AdminEvents.vue';
+import User from '@/components/admin/User.vue';
+import AdminEvents from '@/components/admin/AdminEvents.vue';
 
 @Component({
   components: {

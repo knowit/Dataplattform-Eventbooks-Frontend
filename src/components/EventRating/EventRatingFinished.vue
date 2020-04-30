@@ -6,7 +6,7 @@
       </div>
       <img class="icon" src="@/assets/success.svg" />
     </div>
-    <button id="comment-btn" class="btn" @click="showCommentClick" >
+    <button id="comment-btn" class="btn" @click="showCommentClick">
       <div id="icon-container">
         <i class="material-icons-outlined comment-icon">add_comment</i>
       </div>
@@ -21,8 +21,8 @@
 <script lang="ts">
 
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { RatingButtonType } from '@/components/EventRating/EventRatingButtons.vue';
-import EventComment from '@/components/EventRating/EventComment.vue';
+import { RatingButtonType } from '@/components/eventRating/EventRatingButtons.vue';
+import EventComment from '@/components/eventRating/EventComment.vue';
 import { sendComment } from '../../services/event.service';
 
 @Component({
@@ -99,7 +99,7 @@ export default class EventRatingFinished extends Vue {
 }
 
 #comment-btn {
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
   color: #232323;
   width: 20em;
   margin: auto;
@@ -109,9 +109,8 @@ export default class EventRatingFinished extends Vue {
   vertical-align: bottom;
   display: flex;
   flex-direction: row;
-  align-items: center
+  align-items: center;
 }
-
 
 #icon-container {
   height: 62px;
@@ -137,5 +136,4 @@ export default class EventRatingFinished extends Vue {
     width: 15em;
   }
 }
-
 </style>
