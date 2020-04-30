@@ -21,8 +21,8 @@
 <script lang="ts">
 
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { RatingButtonType } from '@/components/eventRating/EventRatingButtons.vue';
-import EventComment from '@/components/eventRating/EventComment.vue';
+import { RatingButtonType } from '@/components/eventrating/EventRatingButtons.vue';
+import EventComment from '@/components/eventrating/EventComment.vue';
 import { sendComment } from '../../services/event.service';
 
 @Component({

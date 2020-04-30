@@ -4,9 +4,9 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import EventboksView from '@/views/EventboksView.vue';
 import EventSelectView from '@/views/EventSelectView.vue';
 import EventRatingView from '@/views/EventRatingView.vue';
-import EventSelector from '@/components/eventSelect/EventSelector.vue';
-import EventRating from '@/components/eventRating/EventRating.vue';
-import EventRatingFinished from '@/components/eventRating/EventRatingFinished.vue';
+import EventSelector from '@/components/eventselect/EventSelector.vue';
+import EventRating from '@/components/eventrating/EventRating.vue';
+import EventRatingFinished from '@/components/eventrating/EventRatingFinished.vue';
 import AdminView from '@/views/AdminView.vue';
 import AdminEvents from '@/components/admin/AdminEvents.vue';
 
