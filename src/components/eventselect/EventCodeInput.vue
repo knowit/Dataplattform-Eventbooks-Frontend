@@ -1,16 +1,7 @@
 <template>
   <div id="container">
     <template v-for="n in 5">
-      <input
-        :key="n"
-        class="input-field"
-        :maxlength="10"
-        @input="onInput($event.target.value, n)"
-        @keyup="back($event, n)"
-        :value="inputData[n-1]"
-        ref="inputs"
-        v-on:focus="$event.target.select()"
-      />
+      <input :key="n" class="input-field" :maxlength="10" @input="onInput($event.target.value, n)" @keyup="back($event, n)" :value="inputData[n-1]" ref="inputs" v-on:focus="$event.target.select()" />
     </template>
   </div>
 </template>
@@ -64,5 +55,11 @@ export default class EventCodeInput extends Vue {
   letter-spacing: 0;
   color: #707070;
   text-transform: uppercase;
+}
+
+@media only screen and (max-width: 580px) {
+  .input-field {
+    width: 1.8em;
+  }
 }
 </style>
