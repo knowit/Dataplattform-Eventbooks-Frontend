@@ -18,7 +18,7 @@ import Event from '@/models/event.model';
 import AdminCurrentEvent from './AdminCurrentEvent.vue';
 import AdminEventItemInfo from './AdminEventItemInfo.vue';
 import { RowType } from './AdminEventItem.vue';
-import AdminEditEvent from './EditEvent/AdminEditEvent.vue';
+import AdminEditEvent from '@/components/admin/editevent/AdminEditEvent.vue';
 import { getCurrentEvents, getPreviousEvents, getFutureEvents } from '@/services/event.service';
 
 @Component({

@@ -4,11 +4,11 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import EventboksView from '@/views/EventboksView.vue';
 import EventSelectView from '@/views/EventSelectView.vue';
 import EventRatingView from '@/views/EventRatingView.vue';
-import EventSelector from '@/components/EventSelect/EventSelector.vue';
-import EventRating from '@/components/EventRating/EventRating.vue';
-import EventRatingFinished from '@/components/EventRating/EventRatingFinished.vue';
+import EventSelector from '@/components/eventselect/EventSelector.vue';
+import EventRating from '@/components/eventrating/EventRating.vue';
+import EventRatingFinished from '@/components/eventrating/EventRatingFinished.vue';
 import AdminView from '@/views/AdminView.vue';
-import AdminEvents from '@/components/Admin/AdminEvents.vue';
+import AdminEvents from '@/components/admin/AdminEvents.vue';
 
 import CallbackView from '@/views/CallbackView.vue';
 import SignInView from '@/views/SignInView.vue';
