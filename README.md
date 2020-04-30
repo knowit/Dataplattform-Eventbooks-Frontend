@@ -25,5 +25,4 @@ Prosjektet har noen flagg/bygg variabler som kan settes, de er som følger
 
 |Navn|Påkrevd|Beskrivelse|
 |:--:|:-----:|:----------|
-|`VUE_APP_INGEST_APIKEY`|`true`|API nøkkel for ingest API til dataplattform|
 |`VUE_APP_MOCK_NETWORK`|`false`|Flagg som brukes for å mocke nettverks-laget i `development` modus. Disse er definert [her](./tests/mock/services/event.service.ts).|
