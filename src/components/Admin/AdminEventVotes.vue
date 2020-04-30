@@ -28,10 +28,6 @@
         <div class="big-number">{{voteCount}}</div>
         <div class="big-number-type">Stemmer</div>
       </div>
-      <div class="participants">
-        <div class="big-number">{{participants}}</div>
-        <div class="big-number-type">Deltagere</div>
-      </div>
     </div>
   </div>
 </template>
@@ -66,10 +62,6 @@ export default class AdminEventVotes extends Vue {
     const negative = this.event.eventFeedback ? this.event.eventFeedback.negativeCount : 0;
     return positive + neutral + negative;
   }
-  private get participants() {
-    // Not currently in model
-    return 100;
-  }
 }
 </script>
 
@@ -92,7 +84,7 @@ export default class AdminEventVotes extends Vue {
 .stats {
   display: flex;
   width: 25%;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 .circle {
   height: 38px;
@@ -136,9 +128,8 @@ export default class AdminEventVotes extends Vue {
   margin-left: 0.2rem;
 }
 
-.votes,
-.participants {
-  width: 5rem;
+.votes {
+  width: 3.5rem;
   text-align: center;
 }
 

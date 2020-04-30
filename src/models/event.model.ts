@@ -6,42 +6,35 @@ import { ZonedDateTime } from '@js-joda/core';
 export default class Event {
   public id?: string;
 
-  @Expose({ name: 'calendar_id' })
-  public calendarId?: string;
-
   public creator?: string;
+
+  @Expose({ name: 'isgoogle' })
+  @Transform(value => !!value, { toClassOnly: true })
+  @Transform(value => (value ? 1 : 0), { toPlainOnly: true })
+  public isGoogleEvent?: boolean;
 
   @Transform(value => !!value, { toClassOnly: true })
   @Transform(value => (value ? 1 : 0), { toPlainOnly: true })
   public active?: boolean;
 
-  @Expose({ name: 'event_id' })
-  public eventId?: string;
-
-  @Expose({ name: 'event_code' })
+  @Expose({ name: 'eventcode' })
   public eventCode?: number;
 
-  @Expose({ name: 'event_name' })
+  @Expose({ name: 'eventname' })
   public eventName?: string;
 
-  @Expose({ name: 'event_summary' })
-  public eventSummary?: string;
-
-  @Expose({ name: 'timestamp_from' })
+  @Expose({ name: 'start' })
   @Transform(value => ZonedDateTime.parse(value), { toClassOnly: true })
   @Transform(value => value.toString(), { toPlainOnly: true })
   public timestampFrom?: ZonedDateTime;
 
-  @Expose({ name: 'timestamp_to' })
+  @Expose({ name: 'end' })
   @Transform(value => ZonedDateTime.parse(value), { toClassOnly: true })
   @Transform(value => value.toString(), { toPlainOnly: true })
   public timestampTo?: ZonedDateTime;
 
-  @Expose({ name: 'event_box' })
+  @Expose({ name: 'eventbox' })
   public eventBoxes?: EventBox[];
-
-  @Expose({ name: 'event_location' })
-  public eventLocation?: string;
 
   @Expose({ name: 'feedback' })
   public eventFeedback?: EventFeedback;

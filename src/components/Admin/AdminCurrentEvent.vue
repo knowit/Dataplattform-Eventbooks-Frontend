@@ -12,7 +12,7 @@
     </div>
     <div class="description">
       Eventkode:
-      <div class="content adjust-position">{{ event.eventId ? event.eventId : "" }}</div>
+      <div class="content adjust-position">{{ event.eventCode ? event.eventCode : "" }}</div>
     </div>
     <div class="description space-between">
       <div>

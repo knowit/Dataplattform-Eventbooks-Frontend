@@ -19,11 +19,7 @@ import AdminCurrentEvent from './AdminCurrentEvent.vue';
 import AdminEventItemInfo from './AdminEventItemInfo.vue';
 import { RowType } from './AdminEventItem.vue';
 import AdminEditEvent from './EditEvent/AdminEditEvent.vue';
-
-//TODO: Remove with helper
-import EventFeedback, { FeedbackDetails } from '@/models/eventFeedback.model';
-import EventBox from '@/models/eventBox.model';
-import { ZonedDateTime } from '@js-joda/core';
+import { getCurrentEvents, getPreviousEvents, getFutureEvents } from '@/services/event.service';
 
 @Component({
   components: {
@@ -41,9 +37,9 @@ export default class AdminEvents extends Vue {
   private showEvent: Event | null = null;
   private editEventResponse: string = '';
 
-  private active: Event = this.createEvent();
-  private future: Event[] = [this.createEvent(), this.createEvent()];
-  private past: Event[] = [this.createEvent(), this.createEvent()];
+  private active: Event = getCurrentEvents()[0]; // TODO: Update to allow multiple current events in design
+  private future: Event[] = getFutureEvents();
+  private past: Event[] = getPreviousEvents();
 
   private details: boolean = false;
 
@@ -98,45 +94,6 @@ export default class AdminEvents extends Vue {
       }
     });
     return event ? event : null;
-  }
-
-  // Helper
-  private createEvent(): Event {
-    const e = new Event();
-    e.id = 'id' + Math.floor(Math.random() * 1000);
-    e.creator = 'Admin';
-    e.timestampFrom = ZonedDateTime.now();
-    e.timestampTo = ZonedDateTime.now().plusHours(1);
-    e.eventName = 'Navn på event';
-    e.active = true;
-    e.eventId = '12345';
-    e.eventBoxes = [
-      new EventBox(),
-      new EventBox()
-    ];
-    e.eventBoxes[0].eventBoxName = 'Alpha';
-    e.eventBoxes[0].eventBoxId = 'id1';
-    e.eventBoxes[1].eventBoxName = 'Bravo';
-    e.eventBoxes[1].eventBoxId = 'id2';
-    e.eventFeedback = new EventFeedback();
-    e.eventFeedback.negativeCount = 12;
-    e.eventFeedback.neutralCount = 8;
-    e.eventFeedback.positiveCount = 54;
-    e.eventFeedback.details = [
-      new FeedbackDetails(),
-      new FeedbackDetails(),
-      new FeedbackDetails()
-    ];
-    e.eventFeedback.details[0].comment = 'Lorem Ipsum Dolor Sit Amet';
-    e.eventFeedback.details[0].vote = 1;
-    e.eventFeedback.details[1].comment = 'The quick brown fox jumps over the lazy dogfox jumps over the lazy dog fox jumps over the lazy dog fox jumps over the lazy dog fox jumps over the lazy dog'.repeat(
-      10
-    );
-    e.eventFeedback.details[1].vote = -1;
-    e.eventFeedback.details[2].comment =
-      'The difference is that an element with v-show will always be rendered and remain in the DOM; v-show only toggles the display CSS property of the element.';
-    e.eventFeedback.details[2].vote = 0;
-    return e;
   }
 }
 </script>
